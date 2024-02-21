@@ -18,7 +18,12 @@ nav{
        padding:0 20px;
        position: relative;
    }
-   
+
+   a{
+    text-decoration: none;
+    color :white;
+    
+ }
    #navbar li a{
       text-decoration: none;
       font-size: 1.3rem;
