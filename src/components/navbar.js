@@ -23,10 +23,10 @@ class navbar extends Component {
             <div>
                <ul id ="navbar">
                     <li><a className="active"
-                    href = "index.html">Home</a></li>
-                    <li><a href = "services.html">Services</a></li>    
-                    <li><a href = "zipcode.html">Zipcode</a></li>    
-                    <li><a href = "signup_login.html">Login/Register</a></li>    
+                    href = "/">Home</a></li>
+                    <li><a href = "/Services">Services</a></li>    
+                    <li><a href = "/Location">Zipcode</a></li>    
+                    <li><a href = "/Login">Login/Register</a></li>    
                 </ul> 
             </div>
             
