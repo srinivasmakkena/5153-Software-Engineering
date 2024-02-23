@@ -1,0 +1,28 @@
+/* Filename: components/ServicesPage.css */
+
+.services-container {
+    padding: 20px;
+  }
+  
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(100px, 1fr)); /* Adjust grid-template-columns for 3 cards per row */
+    gap: 40px;
+  }
+  
+  .service-card {
+    border: none; /* Remove the border */
+    padding: 50px; /* Adjust padding as needed */
+    border-radius: 5px; /* Adjust border-radius */
+    background-color: white; /* Change background color to button color */
+    text-align: center;
+    font-size: 16px;
+    color: black; /* Set text color to contrast with button background */
+    cursor: pointer; /* Change cursor to pointer to indicate interactivity */
+    transition: background-color 0.3s ease; /* Add transition for smoother hover effect */
+  }
+  
+  .service-card:hover {
+    background-color: rgba(245, 163, 9, 0.8); /* Darken button color on hover */
+  }
+  

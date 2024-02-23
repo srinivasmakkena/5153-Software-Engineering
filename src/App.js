@@ -22,7 +22,6 @@ export default function App() {
         <Route path="Register" element={<Register/>}></Route>
         <Route path="ProfessionalLogin" element={<ProfessionalLogin/>}></Route>
         <Route path="ProfessionalRegister" element={<ProfessionalRegister/>}></Route>
-
       </Route>
     </Routes>  
   )
