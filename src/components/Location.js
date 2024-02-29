@@ -1,62 +1,85 @@
 import React, { useState } from 'react';
+import pro from "./assets/Pro_image.png";
+import "./Location.css";
 
 const Location = () => {
-  const [zipcode, setZipcode] = useState('');
-  const [professionals, setProfessionals] = useState([]);
+  const [zipCode, setZipCode] = useState('');
+  const [searchClicked, setSearchClicked] = useState(false); // State to track if search button is clicked
+
+  // Dummy data for professionals
+  const professionals = [
+    {
+      id: 1,
+      name: "John Doe",
+      expertise: "Plumber",
+      hourlyRate: "$50",
+      rating: 4 // Rating out of 5
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      expertise: "Electrician",
+      hourlyRate: "$60",
+      rating: 3.5 // Rating out of 5
+    },
+    // Add more professionals as needed
+  ];
+
+  // Function to render star ratings based on the rating value
+  const renderStarRatings = (rating) => {
+    const stars = [];
+    const maxRating = 5; // Maximum rating value
+    for (let i = 1; i <= maxRating; i++) {
+      if (i <= rating) {
+        stars.push(<span key={i} className="star yellow">&#9733;</span>);
+      } else {
+        stars.push(<span key={i} className="star">&#9733;</span>);
+      }
+    }
+    return stars;
+  };
 
   const handleSearch = () => {
-    // Here you would perform a search based on the entered zipcode
-    // For now, we'll just populate the list with dummy data
-    const dummyProfessionals = [
-      {
-        name: 'John Doe',
-        expertise: 'Plumber',
-        starRatings: 4.5,
-        hourlyCharges: '$50'
-      },
-      {
-        name: 'Jane Smith',
-        expertise: 'Electrician',
-        starRatings: 4.8,
-        hourlyCharges: '$60'
-      },
-      {
-        name: 'Michael Johnson',
-        expertise: 'Carpenter',
-        starRatings: 4.2,
-        hourlyCharges: '$55'
-      },
-      // Add more dummy professional data as needed
-    ];
-
-    setProfessionals(dummyProfessionals);
+    console.log('Searching for professionals with zip code:', zipCode);
+    // Implement your search logic here
+    setSearchClicked(true); // Set searchClicked to true when search button is clicked
   };
 
   return (
     <div>
-      <h2>Search by Location</h2>
-      <div>
-        <input
-          type="text"
-          placeholder="Enter zipcode"
-          value={zipcode}
-          onChange={(e) => setZipcode(e.target.value)}
-        />
-        <button onClick={handleSearch}>Search</button>
+      <div className="location-container">
+        <h2>Search for Professionals by Zip Code</h2>
+        <div className="search-bar">
+          <input
+            type="text"
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value)}
+            placeholder="Enter Zip Code"
+          />
+          <button onClick={handleSearch}>Search</button>
+        </div>
       </div>
-      <div>
-        <h3>Results:</h3>
-        <ul>
-          {professionals.map((professional, index) => (
-            <li key={index}>
-              <p>Name: {professional.name}</p>
-              <p>Expertise: {professional.expertise}</p>
-              <p>Star Ratings: {professional.starRatings}</p>
-              <p>Hourly Charges: {professional.hourlyCharges}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+
+      {searchClicked && ( // Conditionally render the professional list only if searchClicked is true
+        <div>
+          <h2>Search Results</h2>
+          <div className="professional-cards">
+            {/* Map through the array of professionals and render each professional card */}
+            {professionals.map((professional) => (
+              <div key={professional.id} className="professional-card">
+                <img src={pro} alt="Professional" />
+                <h3>{professional.name}</h3>
+                <p>Expertise: {professional.expertise}</p>
+                <p>Hourly Rate: {professional.hourlyRate}</p>
+                <div className="ratings">
+                  <span>Ratings: </span>
+                  {renderStarRatings(professional.rating)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
