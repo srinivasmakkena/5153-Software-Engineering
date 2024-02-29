@@ -1,11 +1,9 @@
 // Filename - components/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Register from "./Register";
 
 
-
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // Corrected variable name
@@ -15,9 +13,10 @@ const Login = () => {
     // Here you can implement the logic to handle form submission, such as sending the data to the server for authentication
     // For demonstration purposes, let's assume the login is successful and redirect to the homepage
     // Replace this with your actual authentication logic
-    if (email === 'abc@example.com' && password === 'edotinokkehe') {
+    if (email === 'abc@abc.com' && password === '1234') {
       
       // Redirect to the homepage
+      setIsLoggedIn(true);
       navigate('/'); // Redirect to the homepage after successful login
     } else {
       // Handle authentication failure
@@ -27,6 +26,8 @@ const Login = () => {
   const handleRegisterClick = () => {
     navigate('/register'); // Navigate to the "Register" component
   };
+
+  
 
   return (
     <div>

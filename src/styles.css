@@ -80,13 +80,5 @@
     background-color: #777; /* Change background color on hover */
   }
 
-  .Services {
-    width: calc(20.33% - 20px); /* Set width for each card to fit three cards in a row */
-    background-color: white; /* Gray background color */
-    border: 1px solid #b4b4b4; /* Black border */
-    border-radius: 10px;
-    padding: 20px; /* Padding around the card content */
-    margin-bottom: 10px; /* Spacing between cards */
-  }
   
   

@@ -12,7 +12,7 @@
   
   .service-card {
     border: none; /* Remove the border */
-    padding: 50px; /* Adjust padding as needed */
+    padding: 30px; /* Adjust padding as needed */
     border-radius: 5px; /* Adjust border-radius */
     background-color: white; /* Change background color to button color */
     text-align: center;

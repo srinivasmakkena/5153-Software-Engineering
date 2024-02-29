@@ -1,6 +1,7 @@
 import { Component } from "react";
 import "./Navbarstyles.css";
 
+
 class Footer extends Component {
    state = { clicked: false };
    handleClick =() => {
