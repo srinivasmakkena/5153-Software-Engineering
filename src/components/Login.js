@@ -16,7 +16,7 @@ const Login = ({ setIsLoggedIn }) => {
     if (email === 'abc@abc.com' && password === '1234') {
       
       // Redirect to the homepage
-      setIsLoggedIn(true);
+      setIsLoggedIn = true;
       navigate('/'); // Redirect to the homepage after successful login
     } else {
       // Handle authentication failure
