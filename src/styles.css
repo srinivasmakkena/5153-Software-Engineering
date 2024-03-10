@@ -53,32 +53,7 @@
     -webkit-text-stroke: 1px black; /* Add black border */
   }
 
-  footer {
-    background-color: #484747; /* Background color for the footer */
-    padding: 30px; /* Add padding for spacing */
-    border-radius: 10px;
-    text-align: center; /* Center align text */
-    margin-top: 50px;
-  }
   
-  .footer-buttons {
-    display: flex; /* Arrange buttons in a row */
-    justify-content: center; /* Center align buttons */
-  }
-  
-  .footer-button {
-    background-color: orange; /* Button background color */
-    color: #fff; /* Button text color */
-    border: none; /* Remove button border */
-    border-radius: 10px;
-    padding: 10px 20px; /* Add padding for spacing */
-    margin: 0 10px; /* Add margin between buttons */
-    cursor: pointer; /* Add cursor pointer on hover */
-  }
-  
-  .footer-button:hover {
-    background-color: #777; /* Change background color on hover */
-  }
 
   
   

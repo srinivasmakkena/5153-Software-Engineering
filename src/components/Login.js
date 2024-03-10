@@ -1,6 +1,7 @@
 // Filename - components/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "./Login.css";
 
 
 const Login = ({ setIsLoggedIn }) => {
@@ -14,10 +15,10 @@ const Login = ({ setIsLoggedIn }) => {
     // For demonstration purposes, let's assume the login is successful and redirect to the homepage
     // Replace this with your actual authentication logic
     if (email === 'abc@abc.com' && password === '1234') {
-      
-      // Redirect to the homepage
-      setIsLoggedIn = true;
-      navigate('/'); // Redirect to the homepage after successful login
+      // Call the setIsLoggedIn function to update the login status
+      setIsLoggedIn(true); // Set login status to true
+      // Redirect to the homepage after successful login
+      navigate('/'); // Redirect to the homepage
     } else {
       // Handle authentication failure
       alert('Invalid email or password');
@@ -52,10 +53,11 @@ const Login = ({ setIsLoggedIn }) => {
           />
         </div>
         <button type="submit">Login</button>
-        <div>
-            <label>Don't Have an Account?</label>
+        <div >
+            <p>Don't Have an Account? <a href="/Register" id="register">Register</a></p>
+            {/* <button type="submit" onClick={handleRegisterClick} href="/Register">Register</button> */}
         </div>
-        <button type="button" onClick={handleRegisterClick} href="/Register">Register</button>
+        
       </form>
     </div>
   );

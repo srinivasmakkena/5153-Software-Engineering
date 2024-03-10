@@ -52,9 +52,9 @@ const ProLogin = () => {
         </div>
         <button type="submit">Login</button>
         <div>
-            <label>Don't Have an Account?</label>
+            <p>Don't Have an Account?<a id="register" href="/ProfessionalRegister"> Professional Register</a></p>
         </div>
-        <button type="button" onClick={handleRegisterClick} href="/ProfessionalRegister">Professional Register</button>
+        
       </form>
     </div>
   );

@@ -30,6 +30,11 @@ body {
   label {
     margin-bottom: 5px;
     text-align: left;
+    align-self: flex-start;
+    box-sizing: border-box;
+    width: 150px;
+    padding-right: 10px;
+    display: inline-block;
   }
   
   input[type="text"],
@@ -40,6 +45,8 @@ body {
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    align-self: flex-end;
+    margin-left: 10px;
     
     
   }
@@ -51,6 +58,9 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    width: auto;
+    margin: 0 auto;
+    display: block;
   }
   
   button[type="submit" ]:hover {
