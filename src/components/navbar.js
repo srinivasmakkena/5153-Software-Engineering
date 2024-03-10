@@ -1,16 +1,35 @@
-// Filename: components/navbar.js
 import React, { Component } from 'react';
+import { NavLink} from 'react-router-dom';
 import "./Navbarstyles.css";
 import mainLogo from "./assets/logo1.png";
-import { Link } from 'react-router-dom';
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       clicked: false,
-      isLoggedIn: false // Initially set to false, assuming user is not logged in
+      userName: "SuperMario", // Initialize userName state to hold user's name
+      showNotifications: false,
+      hasUnreadNotifications: false,
+      notifications: [], // Array to hold notifications with message and timestamp
     };
+  }
+
+  toggleNotifications = () => {
+    console.log('Toggle notifications');
+    this.setState(prevState => ({
+      showNotifications: !prevState.showNotifications,
+      hasUnreadNotifications: false, // Mark all notifications as read when opening the dropdown
+      notifications: [], // Clear any existing notifications
+    }));
+    // Add a new notification message
+    const newNotification = {
+      message: "You are all caught up :)",
+      timestamp: new Date().toLocaleString(), // Add timestamp for the message
+    };
+    this.setState({
+      notifications: [newNotification], // Set the notifications array to contain only the new notification
+    });
   }
 
   handleClick = () => {
@@ -18,24 +37,83 @@ class Navbar extends Component {
   }
 
   render() {
-    const { clicked, isLoggedIn } = this.state;
+    const { clicked, showNotifications, hasUnreadNotifications, notifications, userName } = this.state;
+    const { isLoggedIn } = this.props;
+
+    const handleNavLinkClick = (e) => {
+      if (!isLoggedIn) {
+        e.preventDefault();
+        alert('Please login to see the details.');
+      }
+    };
+
     return (
       <nav>
-        <div id="desktop" onClick={this.handleClick}>
-          <i id="bar" className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
-        </div>
         <a href="/">
           <img src={mainLogo} width="161" height="55" viewBox="0 0 161 44" fill="none" alt="QuickLocalFix Logo" />
         </a>
+        <div className="search-form">
+          <input type="text" placeholder="Search..." />
+          <button type="button">Search</button>
+        </div>
+
+        <div id="desktop" onClick={this.handleClick}>
+          <i id="bar" className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
+        </div>
         <div>
           <ul id="navbar">
-            <li><a className="active" href="/">Home</a></li>
-            <li><a href="/Services">Services</a></li>
-            <li><a href="/Location">Location</a></li>
-            {/* Conditionally render either "Account" or "Login/Register" based on isLoggedIn state */}
+            <li><NavLink exact to="/" activeClassName="active">Home</NavLink></li>
             <li>
-              {isLoggedIn ? (<Link to="/Account">Account</Link>) : (<Link to="/Login">Login/Register</Link>)}
+              <NavLink to="/Services" activeClassName="active" onClick={handleNavLinkClick}>
+                Services
+              </NavLink>
             </li>
+            <li>
+              <NavLink to="/Location" activeClassName="active" onClick={handleNavLinkClick}>
+                Location
+              </NavLink>
+            </li>
+            <li>
+              {isLoggedIn ? (
+                <div className="dropdown">
+                  {/* Change to profile icon */}
+                  <NavLink to="/Account" className="profile-icon" onClick={this.handleClick}>
+                    <i className="fas fa-user"></i>
+                  </NavLink>
+                  <div className={clicked ? 'dropdown-content show' : 'dropdown-content'}>
+                    <NavLink to="/Account">Account</NavLink>
+                    <NavLink to="/" onClick={this.handleLogout}>Logout</NavLink>
+                  </div>
+                </div>
+              ) : (
+                <NavLink to="/Login">Login/Register</NavLink>
+              )}
+            </li>
+            {isLoggedIn && (
+              <>
+                <li className="dropdown">
+                  <button className="notification-button" onClick={this.toggleNotifications}>
+                    <i className={`fas ${hasUnreadNotifications ? 'fa-bell' : 'fa-bell-slash'}`}></i>
+                  </button>
+                  {showNotifications && (
+                    <div className="dropdown-content">
+                      {notifications.map((notification, index) => (
+                        <div key={index} className="notification-item">
+                          <p>{notification.message}</p>
+                          <p>{notification.timestamp}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </li>
+                {/* </li> Add shopping cart icon */}
+                <li className="dropdown">
+                  <NavLink to="/ShoppingCart">
+                    <i className="fas fa-shopping-cart"></i>
+                  </NavLink>
+                </li>
+             </>
+            )}
           </ul>
         </div>
       </nav>

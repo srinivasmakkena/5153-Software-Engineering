@@ -53,32 +53,80 @@
     -webkit-text-stroke: 1px black; /* Add black border */
   }
 
-  footer {
-    background-color: #484747; /* Background color for the footer */
-    padding: 30px; /* Add padding for spacing */
-    border-radius: 10px;
-    text-align: center; /* Center align text */
-    margin-top: 50px;
-  }
+  /* Style for the banner container */
+.banner {
+  margin-top: 65px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Style for the image container */
+.banner .box {
+  display: flex;
+  align-items: center;
+  position: relative; /* Set position to relative for button positioning */
+}
+
+/* Style for the previous and next buttons */
+.banner button {
+  background-color: white;
+  color:black;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.banner button.prev {
+  left: 10px; /* Position previous button to the left */
+  background-color: orange;
+}
+
+.banner button.next {
+  right: 10px; /* Position next button to the right */
+}
   
-  .footer-buttons {
-    display: flex; /* Arrange buttons in a row */
-    justify-content: center; /* Center align buttons */
-  }
+
+.banner button:hover {
+  background-color: orange; /* Change background color to orange on hover */
+  color:orange; /* Change text color to white on hover */
+}
+
+.banner {
+  display: flex;
+  justify-content: center;
+  margin-top: 65px;
+}
+
+.box {
+  position: relative;
+}
+
+.banner-image {
+  width: 450px; /* Adjust as needed */
+  height: auto;
+  margin: 0 10px;
+}
+
+
+.heading {
+  font-size: 2.0rem;
+  margin-bottom: 0.6rem;
+  font-family: Roboto, sans-serif;
+  color: orange;
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+
   
-  .footer-button {
-    background-color: orange; /* Button background color */
-    color: #fff; /* Button text color */
-    border: none; /* Remove button border */
-    border-radius: 10px;
-    padding: 10px 20px; /* Add padding for spacing */
-    margin: 0 10px; /* Add margin between buttons */
-    cursor: pointer; /* Add cursor pointer on hover */
-  }
+
   
-  .footer-button:hover {
-    background-color: #777; /* Change background color on hover */
-  }
 
   
   

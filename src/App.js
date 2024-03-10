@@ -10,14 +10,16 @@ import {Routes, Route} from 'react-router-dom';
 import Register from "./components/Register";
 import ProfessionalLogin from "./components/ProfessionalLogin";
 import ProfessionalRegister from "./components/ProfessionalRegister";
+import Account from "./components/Account";
 
 
 
 export default function App() {
-  const [setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Corrected state initialization
+  console.log('isLoggedIn in App:', isLoggedIn); // to check the isLoogedIn value in App.js whether it is being passed correctly or not
   return (
       <Routes>
-        <Route path="/" element={<Layout/>}>
+        <Route path="/" element={<Layout isLoggedIn={isLoggedIn}/>}>
           <Route index element={<Home/>}></Route>
           <Route path="Login" element={<Login setIsLoggedIn={setIsLoggedIn} />}/>
           <Route path="Services" element={<Services/>}></Route>
@@ -25,6 +27,7 @@ export default function App() {
           <Route path="Register" element={<Register/>}></Route>
           <Route path="ProfessionalLogin" element={<ProfessionalLogin/>}></Route>
           <Route path="ProfessionalRegister" element={<ProfessionalRegister/>}></Route>
+          <Route path="Account" element={<Account/>}></Route>
         </Route>
       </Routes> 
   )

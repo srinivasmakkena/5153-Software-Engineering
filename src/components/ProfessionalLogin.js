@@ -13,7 +13,7 @@ const ProLogin = () => {
     // Here you can implement the logic to handle form submission, such as sending the data to the server for authentication
     // For demonstration purposes, let's assume the login is successful and redirect to the homepage
     // Replace this with your actual authentication logic
-    if (email === 'abc@example.com' && password === 'edotinokkehe') {
+    if (email === 'abc@abc.com' && password === '1234') {
       
       // Redirect to the homepage
       navigate('/'); // Redirect to the homepage after successful login
@@ -52,9 +52,9 @@ const ProLogin = () => {
         </div>
         <button type="submit">Login</button>
         <div>
-            <label>Don't Have an Account?</label>
+            <p>Don't Have an Account?<a id="register" href="/ProfessionalRegister"> Professional Register</a></p>
         </div>
-        <button type="button" onClick={handleRegisterClick} href="/ProfessionalRegister">Professional Register</button>
+        
       </form>
     </div>
   );

@@ -1,5 +1,6 @@
 import { Component } from "react";
-import "./Navbarstyles.css";
+// import "./Navbarstyles.css";
+import "./Footerstyles.css";
 
 
 class Footer extends Component {

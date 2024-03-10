@@ -2,11 +2,16 @@ import React from 'react'
 import Footer from "./components/Footer";
 import {Outlet } from "react-router-dom";
 import Navbar from "./components/navbar";
-const Layout = () => {
+import "./Layout.css";
+const Layout = ({ isLoggedIn, setIsLoggedIn, children}) => {
+  console.log('isLoggedIn in Layout:', isLoggedIn); // Add this line
   return (
     <div className="App">
-        <Navbar />
-        <Outlet></Outlet>
+        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+        <div className="content-container">
+          <Outlet></Outlet>
+        </div>
+        
         <Footer/>
     </div>
   )
