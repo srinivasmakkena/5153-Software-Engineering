@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { NavLink} from 'react-router-dom';
+import { NavLink, Navigate, useNavigate} from 'react-router-dom';
 import "./Navbarstyles.css";
 import mainLogo from "./assets/logo1.png";
+
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
+    console.log(props); // Log the props object to the console
     this.state = {
       clicked: false,
       userName: "SuperMario", // Initialize userName state to hold user's name
@@ -14,6 +16,8 @@ class Navbar extends Component {
       notifications: [], // Array to hold notifications with message and timestamp
     };
   }
+
+  
 
   toggleNotifications = () => {
     console.log('Toggle notifications');
@@ -36,9 +40,15 @@ class Navbar extends Component {
     this.setState({ clicked: !this.state.clicked });
   }
 
+  handleLogout = () => {
+    const { setIsLoggedIn } = this.props;
+    setIsLoggedIn(false); // Call setIsLoggedIn to update login status to false
+  }
+
   render() {
     const { clicked, showNotifications, hasUnreadNotifications, notifications, userName } = this.state;
     const { isLoggedIn } = this.props;
+  
 
     const handleNavLinkClick = (e) => {
       if (!isLoggedIn) {
@@ -46,6 +56,8 @@ class Navbar extends Component {
         alert('Please login to see the details.');
       }
     };
+
+
 
     return (
       <nav>
