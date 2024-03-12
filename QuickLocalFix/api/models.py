@@ -1,50 +1,143 @@
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.utils import timezone
 
-# Create your models here.
 class Customer(models.Model):
-    username = models.CharField(max_length=50, unique = True,null = False)
-    password = models.CharField()  # In production you would probably want to store a hashed password
+    user_name = models.CharField(max_length=50, unique = True,null = False)
+    password = models.CharField()  
     email = models.EmailField()
-    phonenumber = models.CharField(max_length=20)
-    # address = models.ManyToManyField(max_length=255)
-    # # One customer can have many orders, so we use a ForeignKey relationship
-    # orders = models.ManyToManyField('Order', on_delete=models.CASCADE)  # One customer can have many orders
-    # # A customer can have many notifications, so we use a ManyToMany relationship
-    # notifications = models.ManyToManyField('Notification', blank=True)  # A customer can have many notifications
+    phone_number = models.CharField(max_length=20)
+    
+    def __str__(self):
+        return "User :" + self.user_name
+    
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='category_images/')
+    description = models.TextField()
+    
+    def __str__(self):
+        return "Category: " + self.name
+    
+class RepairPerson(models.Model):
+    user_name = models.CharField(max_length=50)
+    password = models.CharField()  
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=20)
+    categories_of_repairs = models.ManyToManyField(Category, blank=True)  # A repair person can have many categories of repair
+    price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return "Repair Person: " + self.user_name
+    
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image_url = models.URLField()
+
+    def __str__(self):
+        return "Product: "+self.name
+
+class Address(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)  
+    street_address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.street_address}, {self.city}, {self.state}, {self.postal_code}, {self.country}"
+
+class Order(models.Model):
+    ORDER_STATUS_CHOICES = (
+        ('Pending', 'Pending'),
+        ('Processing', 'Processing'),
+        ('Shipped', 'Shipped'),
+        ('Delivered', 'Delivered'),
+        ('Cancelled', 'Cancelled')
+    )
+
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product)
+    ordered_date = models.DateTimeField(auto_now_add=True)
+    delivery_date = models.DateTimeField(null=True, blank=True)
+    order_status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='Pending')
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    order_cost = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"Order #{self.id} by {self.customer.user_name}"
+
+class Cart(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)  
+    products = models.ManyToManyField('Product')
+
+    def __str__(self):
+        return f"Cart for {self.customer.user_name}"
+    
+class Payment(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE) 
+    card_number = models.CharField(max_length=16)
+    card_holder_name = models.CharField(max_length=255)
+    expiration_date = models.DateField()
+    cvv = models.CharField(max_length=4)
+
+    def __str__(self):
+        return f"Payment method for {self.customer.user_name}"
+    
+class Notification(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    notification_title = models.CharField(max_length=255)
+    notification_text = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.notification_title
+    
+class Review(models.Model):
+    review_repair_person = models.ForeignKey(RepairPerson, on_delete=models.CASCADE)
+    review_customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    review_text = models.TextField()
+    review_rating = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return f"Review by {self.review_customer.username} for {self.review_repair_person.user_name}"
 
 
-# class RepairPerson(models.Model):
-#     name = models.CharField(max_length=50)
-#     password = models.CharField(max_length=50)  # In production you would probably want to store a hashed password
-#     email = models.EmailField()
-#     phone_number = models.CharField(max_length=20)
-#     # A repair person can have many services performed, so we use a ManyToMany relationship
-#     services_done = models.ManyToManyField('Service', through='ServiceDone', blank=True)  # A repair person can have many services performed
-#     # A repair person can have many services pending, so we use a ManyToMany relationship
-#     services_pending = models.ManyToManyField('Service', through='ServicePending', blank=True)  # A repair person can have many services pending
-#     # A repair person can have many reviews, so we use a ManyToMany relationship
-#     reviews = models.ManyToManyField('Review', blank=True)  # A repair person can have many reviews
-#     # A repair person can have many categories of repair, so we use a ManyToMany relationship
-#     categories_of_repair = models.ManyToManyField('RepairCategory', blank=True)  # A repair person can have many categories of repair
-#     price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
-#     # A repair person can have many notifications, so we use a ManyToMany relationship
-#     notifications = models.ManyToManyField('Notification', blank=True)  # A repair person can have many notifications
+class Service(models.Model):
+    date_of_service = models.DateField()
+    customer_of_service = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    repair_person_of_service = models.ForeignKey(RepairPerson, on_delete=models.CASCADE)
+    servicing_price = models.DecimalField(max_digits=10, decimal_places=2)
+    servicing_status = models.CharField(max_length=50) 
+    servicing_address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    category_of_service = models.ForeignKey(Category, on_delete=models.CASCADE)
+    type_of_service = models.TextField()
 
-# class Order(models.Model):
-#     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)  # Foreign key to the Customer model
-#     order_date = models.DateField(auto_now_add=True)  # Date the order was placed
-#     order_status = models.CharField(max_length=50)  # Order status (e.g., "placed", "assigned", "in progress", "completed", "cancelled")
-#     assigned_repair_person = models.ForeignKey(RepairPerson, on_delete=models.SET_NULL, null=True, blank=True)  # Repair person assigned to the order
-#     # Additional order details (optional)
-#     total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Total cost of the order
-#     estimated_completion_date = models.DateField(null=True, blank=True)  # Estimated completion date
-#     description = models.TextField(null=True, blank=True)  # Description of the order
+    def __str__(self):
+        return f"Service #{self.id} for {self.customer_of_service.user_name} by {self.repair_person_of_service.user_name}"
 
-# class OrderItem(models.Model):
-#     order = models.ForeignKey(Order, on_delete=models.CASCADE)  # Foreign key to the Order model
-#     # Part information
-#     part_name = models.CharField(max_length=255)
-#     part_price = models.DecimalField(max_digits=10, decimal_places=2)  # Price of the individual item
-#     quantity = models.PositiveIntegerField()  # Number of units of the part
-#     # Additional item details (optional)
-#     description = models.TextField(null=True, blank=True)  # Specific details about the item
+class Chat(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer_chats')
+    repair_person = models.ForeignKey(RepairPerson, on_delete=models.CASCADE)
+    text = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    way_of_msg = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"Chat from {self.customer.username} to {self.repair_person.user_name}"
+
+class Offer(models.Model):
+    offer_percentage = models.DecimalField(max_digits=3, decimal_places=2)
+    offer_categories = models.ManyToManyField(Category)
+    offer_end_date = models.DateField()
+
+    def __str__(self):
+        return f"{self.offer_percentage}% off for {', '.join(str(category) for category in self.offer_categories.all())} until {self.offer_end_date}"
+
+@receiver(pre_save, sender=Offer)
+def delete_expired_offer(sender, instance, **kwargs):
+    if instance.offer_end_date < timezone.now().date():
+        instance.delete()

@@ -2,8 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
-from .models import Customer
+from .models import Customer, RepairPerson, Product, Cart, Payment, Address, Category, Chat, Offer, Order, Notification, Service, Review
 from django.contrib.auth.hashers import make_password, check_password
+from . import products_util
+from django.core.serializers import serialize
+import json
 
 
 def home(request):   
@@ -37,3 +40,21 @@ def login_user(request):
                 return JsonResponse({"error":"User Logged in successfully.", "status": "200"})    
     
     return JsonResponse({"error":"Invalid Username/Password.", "status":"401"})
+
+def get_products(request):
+    query = request.GET.get('query')
+    products_list = products_util.scrape_ebay_products(query = query)
+    # Add products to the database if they don't already exist
+    for item in products_list:
+        if not Product.objects.filter(name=item['name']).exists():
+            # Create new product
+            new_product = Product(name=item['name'], price=item['price'], image_url=item['image_url'])
+            new_product.save()
+    products = Product.objects.filter(name__icontains=query) if query else Product.objects.all()
+    # Serialize products to JSON
+    products_data = serialize('json', products)
+
+    # Convert serialized data to dictionary
+    products_dict = json.loads(products_data)
+
+    return JsonResponse(products_dict, safe=False)
