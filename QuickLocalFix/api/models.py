@@ -1,7 +1,8 @@
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save,pre_delete
 from django.dispatch import receiver
 from django.utils import timezone
+import os
 
 class Customer(models.Model):
     user_name = models.CharField(max_length=50, unique = True,null = False)
@@ -141,3 +142,11 @@ class Offer(models.Model):
 def delete_expired_offer(sender, instance, **kwargs):
     if instance.offer_end_date < timezone.now().date():
         instance.delete()
+
+
+@receiver(pre_delete, sender=Category)
+def delete_category_image(sender, instance, **kwargs):
+    # Delete the image file associated with the category
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
