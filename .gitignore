@@ -1,6 +1,7 @@
-myenv
-node_modules
-QuickLocalFix\QuickLocalFix\.env
+# python env
+/venv
+# python env variables
+/QuickLocalFix\QuickLocalFix\.env
 
 # dependencies
 /node_modules
