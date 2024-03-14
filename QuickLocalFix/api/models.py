@@ -4,11 +4,13 @@ from django.dispatch import receiver
 from django.utils import timezone
 import os
 
-class Customer(models.Model):
+class User(models.Model):
     user_name = models.CharField(max_length=50, unique = True,null = False)
     password = models.CharField()  
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
+
+class Customer(User):
     
     def __str__(self):
         return "User :" + self.user_name
@@ -21,14 +23,10 @@ class Category(models.Model):
     def __str__(self):
         return "Category: " + self.name
     
-class RepairPerson(models.Model):
-    user_name = models.CharField(max_length=50)
-    password = models.CharField()  
-    email = models.EmailField()
-    phone_number = models.CharField(max_length=20)
+class RepairPerson(User):
     categories_of_repairs = models.ManyToManyField(Category, blank=True)  # A repair person can have many categories of repair
     price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
-
+    zip_location = models.CharField(max_length=20)
     def __str__(self):
         return "Repair Person: " + self.user_name
     
@@ -36,7 +34,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image_url = models.URLField()
-
+    query = models.CharField()
     def __str__(self):
         return "Product: "+self.name
 

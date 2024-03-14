@@ -15,17 +15,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
-# Uncomment next two lines to enable admin:
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+# from rest_framework_docs import include as includefw
 
 urlpatterns = [
-    # Uncomment the next line to enable the admin:
     path('admin/', admin.site.urls),
-    path('',include("api.urls"))
-
+    path('', include("api.urls")),
 ]
+
+# Serving media files during development
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
