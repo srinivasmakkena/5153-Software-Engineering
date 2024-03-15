@@ -15,14 +15,14 @@ def home(request):
 @csrf_exempt
 def register_user(request):
     if request.method == "POST":
-        username = request.POST.get("user_name")
+        user_name = request.POST.get("user_name")
         password = request.POST.get("password")
         email = request.POST.get("email")
         phonenumber = request.POST.get("phone_number")
-        if Customer.objects.filter(username = username).exists():
-            return JsonResponse({"error":"User with this username already exists.", "status": "406"})
+        if Customer.objects.filter(user_name = user_name).exists():
+            return JsonResponse({"error":"User with this user_name already exists.", "status": "406"})
         else:
-            customer = Customer(username = username,password = make_password(password), email = email,phonenumber = phonenumber)
+            customer = Customer(user_name = user_name,password = make_password(password), email = email,phonenumber = phonenumber)
             customer.save()
             return JsonResponse({"Success":"Registered user successfully.", "status":"200"})
         
@@ -31,29 +31,29 @@ def register_user(request):
 @csrf_exempt
 def login_user(request):
     if request.method == "POST":
-        username = request.POST.get("user_name")
+        user_name = request.POST.get("user_name")
         password = request.POST.get("password")
-        if Customer.objects.filter(username = username).exists():
-            user =  Customer.objects.get(username = username)
-            print(password, user.password,username,user.username, check_password(password, user.password))
-            if user.username == username and check_password(password,user.password):
+        if Customer.objects.filter(user_name = user_name).exists():
+            user =  Customer.objects.get(user_name = user_name)
+            print(password, user.password,user_name,user.user_name, check_password(password, user.password))
+            if user.user_name == user_name and check_password(password,user.password):
                 return JsonResponse({"Success":"User Logged in successfully.", "status": "200"})    
     
-    return JsonResponse({"error":"Invalid Username/Password.", "status":"401"})
+    return JsonResponse({"error":"Invalid user_name/Password.", "status":"401"})
 
 @csrf_exempt
 def register_professional_user(request):
     if request.method == "POST":
-        username = request.POST.get("user_name")
+        user_name = request.POST.get("user_name")
         password = request.POST.get("password")
         email = request.POST.get("email")
         phonenumber = request.POST.get("phone_number")
         zip_code = request.POST.get("zip_code")
         price_per_hour = request.POST.get("price_per_hour")
-        if RepairPerson.objects.filter(user_name = username).exists():
-            return JsonResponse({"error":"Professional User with this username already exists.", "status": "406"})
+        if RepairPerson.objects.filter(user_name = user_name).exists():
+            return JsonResponse({"error":"Professional User with this user_name already exists.", "status": "406"})
         else:
-            customer = RepairPerson(user_name = username,password = make_password(password),price_per_hour= price_per_hour, email = email,phone_number = phonenumber, zip_location = zip_code)
+            customer = RepairPerson(user_name = user_name,password = make_password(password),price_per_hour= price_per_hour, email = email,phone_number = phonenumber, zip_location = zip_code)
             customer.save()
             return JsonResponse({"Success":"Registered professional user successfully.", "status":"200"})
     return HttpResponse(request)
@@ -61,15 +61,14 @@ def register_professional_user(request):
 @csrf_exempt
 def login_professional_user(request):
     if request.method == "POST":
-        username = request.POST.get("user_name")
+        user_name = request.POST.get("user_name")
         password = request.POST.get("password")
-        if Customer.objects.filter(username = username).exists():
-            user =  Customer.objects.get(username = username)
-            print(password, user.password,username,user.username, check_password(password, user.password))
-            if user.username == username and check_password(password,user.password):
+        if RepairPerson.objects.filter(user_name = user_name).exists():
+            user =  RepairPerson.objects.get(user_name = user_name)
+            if user.user_name == user_name and check_password(password,user.password):
                 return JsonResponse({"Success":"Professional User Logged in successfully.", "status": "200"})    
     
-    return JsonResponse({"error":"Invalid Username/Password.", "status":"401"})
+    return JsonResponse({"error":"Invalid user_name/Password.", "status":"401"})
 
 
 def get_products(request):
