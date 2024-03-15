@@ -24,7 +24,7 @@ def register_user(request):
         else:
             customer = Customer(username = username,password = make_password(password), email = email,phonenumber = phonenumber)
             customer.save()
-            return JsonResponse({"error":"Registered user successfully.", "status":"200"})
+            return JsonResponse({"Success":"Registered user successfully.", "status":"200"})
         
     return HttpResponse(request)
 
@@ -37,7 +37,7 @@ def login_user(request):
             user =  Customer.objects.get(username = username)
             print(password, user.password,username,user.username, check_password(password, user.password))
             if user.username == username and check_password(password,user.password):
-                return JsonResponse({"error":"User Logged in successfully.", "status": "200"})    
+                return JsonResponse({"Success":"User Logged in successfully.", "status": "200"})    
     
     return JsonResponse({"error":"Invalid Username/Password.", "status":"401"})
 
@@ -55,7 +55,7 @@ def register_professional_user(request):
         else:
             customer = RepairPerson(user_name = username,password = make_password(password),price_per_hour= price_per_hour, email = email,phone_number = phonenumber, zip_location = zip_code)
             customer.save()
-            return JsonResponse({"error":"Registered professional user successfully.", "status":"200"})
+            return JsonResponse({"Success":"Registered professional user successfully.", "status":"200"})
     return HttpResponse(request)
 
 @csrf_exempt
@@ -67,7 +67,7 @@ def login_professional_user(request):
             user =  Customer.objects.get(username = username)
             print(password, user.password,username,user.username, check_password(password, user.password))
             if user.username == username and check_password(password,user.password):
-                return JsonResponse({"error":"Professional User Logged in successfully.", "status": "200"})    
+                return JsonResponse({"Success":"Professional User Logged in successfully.", "status": "200"})    
     
     return JsonResponse({"error":"Invalid Username/Password.", "status":"401"})
 

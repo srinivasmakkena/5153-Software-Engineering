@@ -1,4 +1,3 @@
-from selenium import webdriver
 from bs4 import BeautifulSoup
 import requests,random
 
@@ -6,7 +5,6 @@ def scrape_ebay_products(query):
     url = f"https://www.ebay.com/sch/i.html?_nkw={query}"
     source = requests.get(url)
     soup = BeautifulSoup(source.text, 'html.parser')
-    # with open("a.html",'w') as f:f.writelines(source.text)
     products = []
     items = soup.find_all('div', {'class': 's-item__wrapper'})
     print(len(items))
