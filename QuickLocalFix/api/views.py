@@ -18,11 +18,11 @@ def register_user(request):
         user_name = request.POST.get("user_name")
         password = request.POST.get("password")
         email = request.POST.get("email")
-        phonenumber = request.POST.get("phone_number")
+        phone_number = request.POST.get("phone_number")
         if Customer.objects.filter(user_name = user_name).exists():
             return JsonResponse({"error":"User with this user_name already exists.", "status": "406"})
         else:
-            customer = Customer(user_name = user_name,password = make_password(password), email = email,phonenumber = phonenumber)
+            customer = Customer(user_name = user_name,password = make_password(password), email = email,phone_number = phone_number)
             customer.save()
             return JsonResponse({"Success":"Registered user successfully.", "status":"200"})
         
@@ -47,13 +47,13 @@ def register_professional_user(request):
         user_name = request.POST.get("user_name")
         password = request.POST.get("password")
         email = request.POST.get("email")
-        phonenumber = request.POST.get("phone_number")
+        phone_number = request.POST.get("phone_number")
         zip_code = request.POST.get("zip_code")
         price_per_hour = request.POST.get("price_per_hour")
         if RepairPerson.objects.filter(user_name = user_name).exists():
             return JsonResponse({"error":"Professional User with this user_name already exists.", "status": "406"})
         else:
-            customer = RepairPerson(user_name = user_name,password = make_password(password),price_per_hour= price_per_hour, email = email,phone_number = phonenumber, zip_location = zip_code)
+            customer = RepairPerson(user_name = user_name,password = make_password(password),price_per_hour= price_per_hour, email = email,phone_number = phone_number, zip_location = zip_code)
             customer.save()
             return JsonResponse({"Success":"Registered professional user successfully.", "status":"200"})
     return HttpResponse(request)
@@ -73,6 +73,8 @@ def login_professional_user(request):
 
 def get_products(request):
     query = request.GET.get('query')
+    if query == None:
+        query = ""
     products_list = products_util.scrape_ebay_products(query = query)
     # Add products to the database if they don't already exist
     for item in products_list:
@@ -82,9 +84,31 @@ def get_products(request):
             new_product.save()
     products = Product.objects.filter(query = query) if query else Product.objects.all()
     # Serialize products to JSON
-    products_data = serialize('json', products)
+    products_data = []
+    for product in products:
+        product_data = {
+            'id': product.id,
+            'name': product.name,
+            'price': product.price,
+            'image_url': product.image_url,  # Include the image URL
+            'query': product.query
+        }
+        products_data.append(product_data)
 
-    # Convert serialized data to dictionary
-    products_dict = json.loads(products_data)
+    return JsonResponse(products_data, safe=False)
 
-    return JsonResponse(products_dict, safe=False)
+def get_categories(request):
+    categories = Category.objects.all()
+
+    # Manually serialize categories data
+    categories_data = []
+    for category in categories:
+        category_data = {
+            'id': category.id,
+            'name': category.name,
+            'description': category.description,
+            'image_url': category.image.url  # Get the URL of the image
+        }
+        categories_data.append(category_data)
+
+    return JsonResponse(categories_data, safe=False)

@@ -18,7 +18,10 @@ def scrape_ebay_products(query):
                 'image_url': image_url['src']
             }
             try:
-                product['price'] = float(price.text.replace('$', '').replace(',', ''))
+                if 'to' in price.text:
+                    product['price'] = float(price.text[:price.text.index('to')].replace('$', '').replace(',', ''))
+                else:
+                    product['price'] = float(price.text.replace('$', '').replace(',', ''))
             except ValueError:
                 product['price'] = random.uniform(0.0, 10000.0)
             if product['name'] != "Shop on eBay":

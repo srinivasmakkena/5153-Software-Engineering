@@ -9,6 +9,9 @@ class User(models.Model):
     password = models.CharField()  
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
+    
+    class Meta:
+        abstract = True  # Making User an abstract class
 
 class Customer(User):
     
