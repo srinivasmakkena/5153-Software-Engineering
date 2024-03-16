@@ -11,6 +11,7 @@ import Register from "./components/Register";
 import ProfessionalLogin from "./components/ProfessionalLogin";
 import ProfessionalRegister from "./components/ProfessionalRegister";
 import Account from "./components/Account";
+import Products from "./components/Products";
 
 
 
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="Login" element={<Login setIsLoggedIn={setIsLoggedIn} />}/>
           <Route path="Services" element={<Services/>}></Route>
           <Route path="Location" element={<Location/>}></Route>
+          <Route path="Products" element={<Products/>}></Route>
           <Route path="Register" element={<Register/>}></Route>
           <Route path="ProfessionalLogin" element={<ProfessionalLogin/>}></Route>
           <Route path="ProfessionalRegister" element={<ProfessionalRegister/>}></Route>

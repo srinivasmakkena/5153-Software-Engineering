@@ -10,7 +10,7 @@ class Navbar extends Component {
     console.log(props); // Log the props object to the console
     this.state = {
       clicked: false,
-      userName: "SuperMario", // Initialize userName state to hold user's name
+      userName: "Prakash", // Initialize userName state to hold user's name
       showNotifications: false,
       hasUnreadNotifications: false,
       notifications: [], // Array to hold notifications with message and timestamp
@@ -64,10 +64,6 @@ class Navbar extends Component {
         <a href="/">
           <img src={mainLogo} width="161" height="55" viewBox="0 0 161 44" fill="none" alt="QuickLocalFix Logo" />
         </a>
-        <div className="search-form">
-          <input type="text" placeholder="Search..." />
-          <button type="button">Search</button>
-        </div>
 
         <div id="desktop" onClick={this.handleClick}>
           <i id="bar" className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
@@ -86,11 +82,17 @@ class Navbar extends Component {
               </NavLink>
             </li>
             <li>
+              <NavLink to="/Products" activeClassName="active" onClick={handleNavLinkClick}>
+                Products
+              </NavLink>
+            </li>
+            <li>
               {isLoggedIn ? (
                 <div className="dropdown">
                   {/* Change to profile icon */}
                   <NavLink to="/Account" className="profile-icon" onClick={this.handleClick}>
-                    <i className="fas fa-user"></i>
+                <i className="fas fa-user"></i>
+                <div>{userName}</div>
                   </NavLink>
                   <div className={clicked ? 'dropdown-content show' : 'dropdown-content'}>
                     <NavLink to="/Account">Account</NavLink>
