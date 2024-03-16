@@ -10,6 +10,7 @@ urlpatterns = [
     path("professional_register/",views.register_professional_user,name="register_professional_user"),
     path("professional_login/",views.login_professional_user,name="login_professional_user"),
     path("get_products/",views.get_products,name="get_products"),
+    path("get_categories/",views.get_categories,name="get_categories"),
     # path("add_address/", views.add_address,name = "add_address"),
     # path("get_address/", views.get_address,name = "get_address"),
     # path("add_payment_option/", views.add_payment_option,name = "add_payment_option"),
