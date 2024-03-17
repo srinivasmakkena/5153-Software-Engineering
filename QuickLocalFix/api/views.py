@@ -8,38 +8,50 @@ from . import products_util
 from django.core.serializers import serialize
 import json
 
-
 def home(request):   
     return HttpResponse("QuickLocalFix")
 
 @csrf_exempt
 def register_user(request):
     if request.method == "POST":
-        user_name = request.POST.get("user_name")
-        password = request.POST.get("password")
-        email = request.POST.get("email")
-        phone_number = request.POST.get("phone_number")
+        data = json.loads(request.body) 
+        user_name = data.get("user_name")
+        password = data.get("password")
+        email = data.get("email")
+        phone_number = data.get("phone_number")
+        print(user_name,email,password,phone_number)
         if Customer.objects.filter(user_name = user_name).exists():
-            return JsonResponse({"error":"User with this user_name already exists.", "status": "406"})
+            return JsonResponse({"error":"User with this user name already exists.", "status": "406"})
         else:
             customer = Customer(user_name = user_name,password = make_password(password), email = email,phone_number = phone_number)
             customer.save()
-            return JsonResponse({"Success":"Registered user successfully.", "status":"200"})
+            return JsonResponse({"success":"Registered user successfully.", "status":"200"})
         
     return HttpResponse(request)
 
 @csrf_exempt
 def login_user(request):
     if request.method == "POST":
-        user_name = request.POST.get("user_name")
-        password = request.POST.get("password")
-        if Customer.objects.filter(user_name = user_name).exists():
-            user =  Customer.objects.get(user_name = user_name)
-            print(password, user.password,user_name,user.user_name, check_password(password, user.password))
-            if user.user_name == user_name and check_password(password,user.password):
-                return JsonResponse({"Success":"User Logged in successfully.", "status": "200"})    
-    
-    return JsonResponse({"error":"Invalid user_name/Password.", "status":"401"})
+        try:
+            data = json.loads(request.body)  # Parse JSON data from request body
+            user_name = data.get("user_name")
+            password = data.get("password")
+
+            if user_name and password:
+                if Customer.objects.filter(user_name=user_name).exists():
+                    user = Customer.objects.get(user_name=user_name)
+                    if user.user_name == user_name and check_password(password, user.password):
+                        serialized_user = serialize('json', [user,])
+                        serialized_user_data = json.loads(serialized_user)[0]['fields']
+                        serialized_user_data['id'] = user.id 
+                        return JsonResponse({"success": "User logged in successfully.", "status": 200,"customer": serialized_user_data})
+                return JsonResponse({"error": "Invalid username/password.", "status": 401})
+            else:
+                return JsonResponse({"error": "Missing username/password.", "status": 400})
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON data.", "status": 400})
+
+    return JsonResponse({"error": "Method not allowed.", "status": 405})
 
 @csrf_exempt
 def register_professional_user(request):
@@ -49,13 +61,30 @@ def register_professional_user(request):
         email = request.POST.get("email")
         phone_number = request.POST.get("phone_number")
         zip_code = request.POST.get("zip_code")
+        category_name = request.POST.get("category")
         price_per_hour = request.POST.get("price_per_hour")
-        if RepairPerson.objects.filter(user_name = user_name).exists():
-            return JsonResponse({"error":"Professional User with this user_name already exists.", "status": "406"})
+        
+        # Check if the category exists
+        if Category.objects.filter(name=category_name).exists():
+            category = Category.objects.get(name=category_name)
         else:
-            customer = RepairPerson(user_name = user_name,password = make_password(password),price_per_hour= price_per_hour, email = email,phone_number = phone_number, zip_location = zip_code)
-            customer.save()
-            return JsonResponse({"Success":"Registered professional user successfully.", "status":"200"})
+            return JsonResponse({"error": f"Category '{category_name}' does not exist.", "status": "400"})
+
+        # Check if the user_name already exists
+        if RepairPerson.objects.filter(user_name=user_name).exists():
+            return JsonResponse({"error": "Professional User with this user_name already exists.", "status": "406"})
+        else:
+            # Create a new RepairPerson instance and set categories_of_repairs using set()
+            repair_person = RepairPerson.objects.create(
+                user_name=user_name,
+                password=make_password(password),
+                price_per_hour=price_per_hour,
+                email=email,
+                phone_number=phone_number,
+                zip_location=zip_code,
+            )
+            repair_person.categories_of_repairs.set([category])  # Set the many-to-many relationship
+            return JsonResponse({"Success": "Registered professional user successfully.", "status": "200"})
     return HttpResponse(request)
 
 @csrf_exempt
