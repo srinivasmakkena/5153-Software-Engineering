@@ -1,0 +1,102 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  margin: 50px;
+  padding : 50px;
+  background-color: antiquewhite;
+  /* height: 100vh; Adjust height to fill the viewport */
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-form {
+  margin-bottom: 20px;
+}
+
+.product-container {
+  display: flex;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  background-color: white;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Add transition for smoother hover effect and shadow */
+  cursor: pointer; /* Change cursor to pointer to indicate interactivity */
+}
+
+.product-card:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Darken background color on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow effect on hover */
+}
+
+.product-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px;
+  height: 200px; /* Adjust as needed */
+  overflow: hidden;
+}
+
+.product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  transition: transform 0.3s ease; /* Add transition for smooth zoom effect */
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.2); /* Increase image size on hover */
+}
+
+.product-details {
+  padding: 20px;
+}
+
+.product-details h3 {
+  margin-top: 0;
+}
+
+.product-details p {
+  margin: 0;
+  margin-bottom: 10px;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.product-details button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.product-details button:hover {
+  background-color: #0056b3;
+}
+
+.no-product {
+  text-align: center;
+}
+
+.no-product img {
+  max-width: 60%;
+  height: auto;
+}

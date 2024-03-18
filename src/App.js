@@ -1,6 +1,6 @@
 import Layout from "./Layout";
 import './App.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import "./styles.css";
 import Login from "./components/Login";
 import Home from "./components/Home";
@@ -12,24 +12,65 @@ import ProfessionalLogin from "./components/ProfessionalLogin";
 import ProfessionalRegister from "./components/ProfessionalRegister";
 import Account from "./components/Account";
 import Products from "./components/Products";
+import Unauthorized from "./components/Unauthorized";
+import Professinals from "./components/Professinals";
 
+export class Customer {
+  constructor(id, name, email,phone_number) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.phone_number = phone_number;
+  }
+}
 
+export class Professional {
+  constructor(id, name, phone_number, email,zip_code, price_per_hour,category) {
+    this.id = id;
+    this.user_name = name;
+    this.phone_number = phone_number;
+    this.email = email;
+    this.zip_code = zip_code;
+    this.price_per_hour = price_per_hour;
+    this.category = category;
+  }
+}
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Corrected state initialization
+  const [customer, setCustomer] = useState(null);
+  const [ProUser, setProUser] = useState(null);
   console.log('isLoggedIn in App:', isLoggedIn); // to check the isLoogedIn value in App.js whether it is being passed correctly or not
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    setIsLoggedIn(isLoggedIn);
+    console.log('local storage'+isLoggedIn)
+    const storedCustomer = localStorage.getItem('customer');
+    if (storedCustomer) {
+      setCustomer(JSON.parse(storedCustomer));
+    }
+    const storedProUser = localStorage.getItem('proUser');
+    if (storedProUser) {
+      setProUser(JSON.parse(storedProUser));
+    }
+  }, []);
+ 
+
+  
   return (
+
       <Routes>
-        <Route path="/" element={<Layout isLoggedIn={isLoggedIn}/>}>
+        <Route path="/" element={<Layout isLoggedIn={isLoggedIn} customer={customer} />}>
           <Route index element={<Home/>}></Route>
-          <Route path="Login" element={<Login setIsLoggedIn={setIsLoggedIn} />}/>
-          <Route path="Services" element={<Services/>}></Route>
-          <Route path="Location" element={<Location/>}></Route>
-          <Route path="Products" element={<Products/>}></Route>
+          <Route path="Login" element={<Login setIsLoggedIn={setIsLoggedIn}  setCustomer={setCustomer}/>}/>
+          <Route path="Services" element={isLoggedIn ?<Services/> : <Unauthorized/>}></Route>
+          <Route path="Location" element={isLoggedIn ?<Location/> : <Unauthorized/>}></Route>
+          <Route path="Products" element={isLoggedIn ?<Products/> : <Unauthorized/>}></Route>
           <Route path="Register" element={<Register/>}></Route>
-          <Route path="ProfessionalLogin" element={<ProfessionalLogin/>}></Route>
-          <Route path="ProfessionalRegister" element={<ProfessionalRegister/>}></Route>
-          <Route path="Account" element={<Account/>}></Route>
+          <Route path="ProfessionalLogin" element={<ProfessionalLogin setIsLoggedIn={setIsLoggedIn} setProUser={setProUser}/>}></Route>
+          <Route path="ProfessionalRegister" element={<ProfessionalRegister  setIsLoggedIn={setIsLoggedIn} setProUser={setProUser}/>}></Route>
+          <Route path="Account" element={isLoggedIn ? <Account customer={customer}/> : <Unauthorized/>}></Route>
+          <Route path="categories/:categoryId" element={<Professinals />} />
         </Route>
       </Routes> 
   )

@@ -1,31 +1,30 @@
-import { Component } from "react";
-// import "./Navbarstyles.css";
+import React, { Component } from "react";
 import "./Footerstyles.css";
 
-
 class Footer extends Component {
-   state = { clicked: false };
-   handleClick =() => {
-    this.setState({clicked: !this.state.clicked})
-   }
-   render() {
-
-   return (
-    <>
-        <footer>
-            <div className="footer-buttons">
-              <div style={{ display:'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
-                <button className="footer-button">Locations</button>
-                <button className="footer-button">Support</button>
-                <button className="footer-button">About Us</button>
-                <button className="footer-button">Contact Us</button>
-                <button className="footer-button" > <a href="/ProfessionalLogin">Professional Login</a> </button>
-              </div>  
-            </div>
-          </footer>
-    </>
-    )
-}
+  render() {
+    return (
+      <footer>
+        <div className="footer-buttons">
+          <button className="footer-button">
+            <i className="fas fa-map-marker-alt"></i> Locations
+          </button>
+          <button className="footer-button">
+            <i className="fas fa-hands-helping"></i> Support
+          </button>
+          <button className="footer-button">
+            <i className="fas fa-info-circle"></i> About Us
+          </button>
+          <button className="footer-button">
+            <i className="fas fa-envelope"></i> Contact Us
+          </button>
+          <button className="footer-button">
+            <i className="fas fa-user"></i> <a href="/ProfessionalLogin">Professional Login</a>
+          </button>
+        </div>
+      </footer>
+    );
+  }
 }
 
 export default Footer;

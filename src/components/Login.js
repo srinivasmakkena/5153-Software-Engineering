@@ -1,64 +1,96 @@
-// Filename - components/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Login.css";
+import { Customer } from '../App';
+import loginImage from './assets/login-image.jpg'; // Import your login image here
 
-
-const Login = ({ setIsLoggedIn }) => {
-  const [email, setEmail] = useState('');
+const Login = ({ setIsLoggedIn, setCustomer }) => {
+  const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate(); // Corrected variable name
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    // Here you can implement the logic to handle form submission, such as sending the data to the server for authentication
-    // For demonstration purposes, let's assume the login is successful and redirect to the homepage
-    // Replace this with your actual authentication logic
-    if (email === 'abc@abc.com' && password === '1234') {
-      // Call the setIsLoggedIn function to update the login status
-      setIsLoggedIn(true); // Set login status to true
-      // Redirect to the homepage after successful login
-      navigate('/'); // Redirect to the homepage
-    } else {
-      // Handle authentication failure
-      alert('Invalid email or password');
-    }
-  };
-  const handleRegisterClick = () => {
-    navigate('/register'); // Navigate to the "Register" component
-  };
-
   
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    console.log('User Name:', user_name);
+    console.log('Password:', password);
+    try {
+        // Send a POST request to the server with email and password in the request body
+        const response = await fetch('http://localhost:8000/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 'user_name': user_name, 'password':password }), 
+        });
+
+        if (response.ok) {
+            const data = await response.json(); // Parse the JSON response
+            console.log(data);
+            if (data.success) {
+                setIsLoggedIn(true); // Set login status to true
+                navigate('/'); // Redirect to the homepage
+                localStorage.setItem('loggedIn', 'true');
+                const user = data.customer;
+                const customer = new Customer(user.id, user.user_name, user.email, user.phone_number);
+                localStorage.setItem('customer', JSON.stringify(customer));
+                setCustomer(customer);
+            } else {
+                // Handle authentication failure
+                setErrorMessage('Authentication failed. Please check your credentials.');
+            }
+        } else {
+            // Handle HTTP errors
+            setErrorMessage('Failed to login. Please try again later.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // Handle other errors
+        setErrorMessage('An error occurred. Please try again later.');
+    }
+};
 
   return (
     <div className='login-container'>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+      <div className="login-content">
+        <div className="login-image">
+          <img src={loginImage} alt="Login" />
         </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+        <div className="login-form">
+          <u><h2>Login</h2></u>
+          <form onSubmit={handleSubmit}>
+            {errorMessage && <div className="error-message" style={{color:"red"}}>*{errorMessage}*</div>}
+            <div>
+              <label htmlFor="user_name" style={{ display: 'none' }}>User Name:</label>
+              <input
+                type="text"
+                id="user_name"
+                placeholder="User Name"
+                value={user_name}
+                onChange={(e) => setUserName(e.target.value)}
+                required
+                style={{ width: '80%' }}
+              />
+            </div>
+            <div>
+              <label htmlFor="password" style={{ display: 'none' }}>Password:</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                
+              />
+            </div>
+            <button type="submit">Login</button>
+            <div >
+                <p>Don't Have an Account? <a href="/Register" id="register">Register</a></p>
+            </div>
+          </form>
         </div>
-        <button type="submit">Login</button>
-        <div >
-            <p>Don't Have an Account? <a href="/Register" id="register">Register</a></p>
-            {/* <button type="submit" onClick={handleRegisterClick} href="/Register">Register</button> */}
-        </div>
-        
-      </form>
+      </div>
     </div>
   );
 };

@@ -1,20 +1,14 @@
 import React from 'react';
 import "./Account.css";
 
-const Account = () => {
+const Account = ({customer} ) => {
   // Sample user data
+  console.log(customer,"  Hellow");
   const user = {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'johndoe@example.com',
-    phoneNumber: '123-456-7890',
-    address: {
-      street: '123 Main St',
-      city: 'Anytown',
-      state: 'CA',
-      zipcode: '12345',
-    },
-    membership: 'Gold',
+    name: customer.name,
+    email: customer.email,
+    phoneNumber: customer.phone_number,
+    
   };
 
   // Sample orders data
@@ -27,16 +21,12 @@ const Account = () => {
   return (
     <div className="account-container">
       <h2>Account Information</h2>
-      <p>Hi, {user.firstName} {user.lastName}!</p>
+      <p>Hi, {user.name} !</p>
       <div className="user-info">
         <div className="info-column">
           <div className="info-item">
-            <strong>First Name:</strong> 
-            <div className="info-item1">{user.firstName}</div> 
-          </div>
-          <div className="info-item">
-            <strong>Last Name:</strong> 
-            <div className="info-item1">{user.lastName}</div> 
+            <strong>User Name:</strong> 
+            <div className="info-item1">{user.name}</div> 
             
           </div>
           <div className="info-item">
@@ -50,29 +40,7 @@ const Account = () => {
              
           </div>
         </div>
-        <div className="info-column">
-          <div className="info-item">
-            <strong>Street Address:</strong> 
-            <div className="info-item1">{user.address.street}</div> 
-            
-          </div>
-          <div className="info-item">
-            <strong>City:</strong> 
-            <div className="info-item1">{user.address.city}</div> 
-            
-          </div>
-          <div className="info-item">
-            <strong>State:</strong> 
-            <div className="info-item1">{user.address.state}</div> 
-            
-          </div>
-          <div className="info-item">
-            <strong>Zipcode:</strong> 
-            <div className="info-item1">{user.address.zipcode}</div> 
-            
-
-          </div>
-        </div>
+      
         <button type="submit" className="btn btn-primary">Edit Account</button>
       </div>
       <h2>Orders Information</h2>

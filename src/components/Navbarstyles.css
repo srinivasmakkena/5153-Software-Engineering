@@ -49,7 +49,7 @@
    #navbar li a:hover::after,
    #navbar li a.active::after{
        content:"";
-       width:30%;
+       width:60%;
        height:2px;
        background: rgb(243, 159, 4);
        position: absolute;
@@ -259,6 +259,14 @@
   background-color: #f1f1f1;
 }
 
+.profile-icon {
+  display: flex; /* Ensure icon and username are displayed as flex items */
+  align-items: center; /* Align items vertically */
+  text-decoration: none; /* Remove default link decoration */
+  color: black; /* Set text color */
+  font-weight: bold; /* Set font weight */
+}
 
-   
-   
+.profile-icon i {
+  margin: 5px; /* Add some margin between the icon and the username */
+}
