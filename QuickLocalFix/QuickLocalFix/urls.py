@@ -22,8 +22,8 @@ from django.conf.urls.static import static
 # from rest_framework_docs import include as includefw
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include("api.urls")),
+    path('admin/', admin.site.urls),    # Admin site URL
+    path('', include("api.urls")),    # Including URLs from 'api' app
     
 ]
 

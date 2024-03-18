@@ -1,11 +1,12 @@
 from django.db import models
-from django.db.models.signals import pre_save,pre_delete
-from django.dispatch import receiver
-from django.utils import timezone
-import os
+from django.db.models.signals import pre_save, pre_delete  # Importing signals for pre-save and pre-delete operations
+from django.dispatch import receiver  # Importing receiver decorator to handle signals
+from django.utils import timezone  # Importing timezone utilities
+import os  # Importing os module for file operations
 
+# Defining a base User model which is abstract
 class User(models.Model):
-    user_name = models.CharField(max_length=50, unique = True,null = False)
+    user_name = models.CharField(max_length=50, unique=True, null=False)
     password = models.CharField()  
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
@@ -13,11 +14,13 @@ class User(models.Model):
     class Meta:
         abstract = True  # Making User an abstract class
 
+# Customer model inheriting from User
 class Customer(User):
     
     def __str__(self):
         return "User :" + self.user_name
     
+# Model representing different categories
 class Category(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='category_images/')
@@ -26,21 +29,26 @@ class Category(models.Model):
     def __str__(self):
         return "Category: " + self.name
     
+# RepairPerson model inheriting from User
 class RepairPerson(User):
     categories_of_repairs = models.ManyToManyField(Category, blank=True)  # A repair person can have many categories of repair
     price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
     zip_location = models.CharField(max_length=20)
+    
     def __str__(self):
         return "Repair Person: " + self.user_name
     
+# Model representing products
 class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image_url = models.URLField()
     query = models.CharField()
+    
     def __str__(self):
         return "Product: "+self.name
 
+# Model representing addresses
 class Address(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)  
     street_address = models.CharField(max_length=255)
@@ -52,6 +60,7 @@ class Address(models.Model):
     def __str__(self):
         return f"{self.street_address}, {self.city}, {self.state}, {self.postal_code}, {self.country}"
 
+# Model representing orders
 class Order(models.Model):
     ORDER_STATUS_CHOICES = (
         ('Pending', 'Pending'),
@@ -72,6 +81,7 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id} by {self.customer.user_name}"
 
+# Model representing a shopping cart
 class Cart(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)  
     products = models.ManyToManyField('Product')
@@ -79,6 +89,7 @@ class Cart(models.Model):
     def __str__(self):
         return f"Cart for {self.customer.user_name}"
     
+# Model representing payment information
 class Payment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE) 
     card_number = models.CharField(max_length=16)
@@ -89,6 +100,7 @@ class Payment(models.Model):
     def __str__(self):
         return f"Payment method for {self.customer.user_name}"
     
+# Model representing notifications for customers
 class Notification(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     notification_title = models.CharField(max_length=255)
@@ -98,6 +110,7 @@ class Notification(models.Model):
     def __str__(self):
         return self.notification_title
     
+# Model representing reviews
 class Review(models.Model):
     review_repair_person = models.ForeignKey(RepairPerson, on_delete=models.CASCADE)
     review_customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -107,7 +120,7 @@ class Review(models.Model):
     def __str__(self):
         return f"Review by {self.review_customer.username} for {self.review_repair_person.user_name}"
 
-
+# Model representing services
 class Service(models.Model):
     date_of_service = models.DateField()
     customer_of_service = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -121,6 +134,7 @@ class Service(models.Model):
     def __str__(self):
         return f"Service #{self.id} for {self.customer_of_service.user_name} by {self.repair_person_of_service.user_name}"
 
+# Model representing chat messages between customers and repair persons
 class Chat(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer_chats')
     repair_person = models.ForeignKey(RepairPerson, on_delete=models.CASCADE)
@@ -131,6 +145,7 @@ class Chat(models.Model):
     def __str__(self):
         return f"Chat from {self.customer.username} to {self.repair_person.user_name}"
 
+# Model representing offers
 class Offer(models.Model):
     offer_percentage = models.DecimalField(max_digits=3, decimal_places=2)
     offer_categories = models.ManyToManyField(Category)
@@ -139,12 +154,13 @@ class Offer(models.Model):
     def __str__(self):
         return f"{self.offer_percentage}% off for {', '.join(str(category) for category in self.offer_categories.all())} until {self.offer_end_date}"
 
+# Signal receiver to delete expired offers before saving
 @receiver(pre_save, sender=Offer)
 def delete_expired_offer(sender, instance, **kwargs):
     if instance.offer_end_date < timezone.now().date():
         instance.delete()
 
-
+# Signal receiver to delete category image file before deleting the category instance
 @receiver(pre_delete, sender=Category)
 def delete_category_image(sender, instance, **kwargs):
     # Delete the image file associated with the category

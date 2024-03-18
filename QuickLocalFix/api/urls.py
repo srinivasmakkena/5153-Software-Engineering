@@ -1,28 +1,29 @@
-from django.contrib import admin,auth
-from django.urls import path,include
-from . import views
-from django.contrib.auth import get_user_model
+from django.contrib import admin, auth  # Importing admin and auth modules from Django
+from django.urls import path, include  # Importing path and include functions from Django
+from . import views  # Importing views module from the current directory
+from django.contrib.auth import get_user_model  # Importing get_user_model function from auth module
 
 urlpatterns = [
-    path('', views.home,name = "home"),
-    path("register/",views.register_user,name="register_user"),
-    path("login/",views.login_user,name="login_user"),
-    path("professional_register/",views.register_professional_user,name="register_professional_user"),
-    path("professional_login/",views.login_professional_user,name="login_professional_user"),
-    path("get_products/",views.get_products,name="get_products"),
-    path("get_categories/",views.get_categories,name="get_categories"),
-    path('categories/', views.get_professionals_by_category,name='get_professionals_by_category'),
-    # path("add_address/", views.add_address,name = "add_address"),
-    # path("get_address/", views.get_address,name = "get_address"),
-    # path("add_payment_option/", views.add_payment_option,name = "add_payment_option"),
-    # path("get_payment_option/", views.get_payment_option,name = "get_payment_option"),
-    # path("add_order/", views.add_order,name = "add_order"),
-    # path("get_order_details/", views.get_order_details,name = "get_order_details"),
-    # path("add_to_cart/", views.add_to_cart,name = "add_to_cart"),
-    # path("get_cart/", views.get_cart,name = "get_cart"),
-    # path("remove_from_cart/", views.remove_from_cart,name = "remove_from_cart"),
-    # path("add_notification/", views.add_notification,name = "add_notification"),
-    # path("get_notifications/", views.get_notifications,name = "get_notifications"),
-    # path("get_professionals/",views.get_professionals, name="get_professionals"),
+    path('', views.home, name="home"),  # Mapping the root URL to the 'home' view function
+    path("register/", views.register_user, name="register_user"),  # Mapping '/register/' URL to 'register_user' view function
+    path("login/", views.login_user, name="login_user"),  # Mapping '/login/' URL to 'login_user' view function
+    path("professional_register/", views.register_professional_user, name="register_professional_user"),  # Mapping '/professional_register/' URL to 'register_professional_user' view function
+    path("professional_login/", views.login_professional_user, name="login_professional_user"),  # Mapping '/professional_login/' URL to 'login_professional_user' view function
+    path("get_products/", views.get_products, name="get_products"),  # Mapping '/get_products/' URL to 'get_products' view function
+    path("get_categories/", views.get_categories, name="get_categories"),  # Mapping '/get_categories/' URL to 'get_categories' view function
+    path('categories/', views.get_professionals_by_category, name='get_professionals_by_category'),  # Mapping '/categories/' URL to 'get_professionals_by_category' view function
 
+    # Uncomment the following paths as needed
+    # path("add_address/", views.add_address, name="add_address"),  # Mapping '/add_address/' URL to 'add_address' view function
+    # path("get_address/", views.get_address, name="get_address"),  # Mapping '/get_address/' URL to 'get_address' view function
+    # path("add_payment_option/", views.add_payment_option, name="add_payment_option"),  # Mapping '/add_payment_option/' URL to 'add_payment_option' view function
+    # path("get_payment_option/", views.get_payment_option, name="get_payment_option"),  # Mapping '/get_payment_option/' URL to 'get_payment_option' view function
+    # path("add_order/", views.add_order, name="add_order"),  # Mapping '/add_order/' URL to 'add_order' view function
+    # path("get_order_details/", views.get_order_details, name="get_order_details"),  # Mapping '/get_order_details/' URL to 'get_order_details' view function
+    # path("add_to_cart/", views.add_to_cart, name="add_to_cart"),  # Mapping '/add_to_cart/' URL to 'add_to_cart' view function
+    # path("get_cart/", views.get_cart, name="get_cart"),  # Mapping '/get_cart/' URL to 'get_cart' view function
+    # path("remove_from_cart/", views.remove_from_cart, name="remove_from_cart"),  # Mapping '/remove_from_cart/' URL to 'remove_from_cart' view function
+    # path("add_notification/", views.add_notification, name="add_notification"),  # Mapping '/add_notification/' URL to 'add_notification' view function
+    # path("get_notifications/", views.get_notifications, name="get_notifications"),  # Mapping '/get_notifications/' URL to 'get_notifications' view function
+    # path("get_professionals/", views.get_professionals, name="get_professionals"),  # Mapping '/get_professionals/' URL to 'get_professionals' view function
 ]
