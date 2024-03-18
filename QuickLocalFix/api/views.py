@@ -56,18 +56,19 @@ def login_user(request):
 @csrf_exempt
 def register_professional_user(request):
     if request.method == "POST":
-        user_name = request.POST.get("user_name")
-        password = request.POST.get("password")
-        email = request.POST.get("email")
-        phone_number = request.POST.get("phone_number")
-        zip_code = request.POST.get("zip_code")
-        category_name = request.POST.get("category")
-        price_per_hour = request.POST.get("price_per_hour")
+        data = json.loads(request.body)
+        user_name = data.get("user_name")
+        password = data.get("password")
+        email = data.get("email")
+        phone_number = data.get("phone_number")
+        zip_code = data.get("zip_code")
+        category_name = data.get("category")
+        price_per_hour = data.get("price_per_hour")
         
         # Check if the category exists
-        if Category.objects.filter(name=category_name).exists():
+        try:
             category = Category.objects.get(name=category_name)
-        else:
+        except Category.DoesNotExist:
             return JsonResponse({"error": f"Category '{category_name}' does not exist.", "status": "400"})
 
         # Check if the user_name already exists
@@ -83,22 +84,27 @@ def register_professional_user(request):
                 phone_number=phone_number,
                 zip_location=zip_code,
             )
-            repair_person.categories_of_repairs.set([category])  # Set the many-to-many relationship
-            return JsonResponse({"Success": "Registered professional user successfully.", "status": "200"})
+            repair_person.categories_of_repairs.add(category)  # Set the many-to-many relationship
+            return JsonResponse({"success": "Registered professional user successfully.", "status": "200"})
+        
     return HttpResponse(request)
 
 @csrf_exempt
 def login_professional_user(request):
     if request.method == "POST":
-        user_name = request.POST.get("user_name")
-        password = request.POST.get("password")
-        if RepairPerson.objects.filter(user_name = user_name).exists():
-            user =  RepairPerson.objects.get(user_name = user_name)
-            if user.user_name == user_name and check_password(password,user.password):
-                return JsonResponse({"Success":"Professional User Logged in successfully.", "status": "200"})    
-    
-    return JsonResponse({"error":"Invalid user_name/Password.", "status":"401"})
-
+        data = json.loads(request.body)
+        user_name = data.get("user_name")
+        password = data.get("password")
+        
+        if RepairPerson.objects.filter(user_name=user_name).exists():
+            user = RepairPerson.objects.get(user_name=user_name)
+            if user.user_name == user_name and check_password(password, user.password):
+                serialized_user = serialize('json', [user,])
+                serialized_user_data = json.loads(serialized_user)[0]['fields']
+                serialized_user_data['id'] = user.id 
+                return JsonResponse({"success": "Professional User logged in successfully.", "status": "200", "professional": serialized_user_data})
+        
+    return JsonResponse({"error": "Invalid user_name/password.", "status": "401"})
 
 def get_products(request):
     query = request.GET.get('query')
@@ -141,3 +147,32 @@ def get_categories(request):
         categories_data.append(category_data)
 
     return JsonResponse(categories_data, safe=False)
+
+
+def get_professionals_by_category(request):
+    if request.method == "GET":
+        try:
+            category_id = request.GET.get('id')
+            category = Category.objects.get(pk=category_id)
+        except Category.DoesNotExist:
+            return JsonResponse({"error": f"Category with ID {category_id} does not exist.", "status": "404"})
+
+        professionals = RepairPerson.objects.filter(categories_of_repairs=category)
+        professional_data = [
+            {
+                "id": professional.id,
+                "user_name": professional.user_name,
+                "email": professional.email,
+                "phone_number": professional.phone_number,
+                "zip_location": professional.zip_location,
+                "price_per_hour": professional.price_per_hour
+                # Add more fields as needed
+            }
+            for professional in professionals
+        ]
+        print(professional_data)
+        response = JsonResponse({"professionals": professional_data, "status": "200"})
+        response["Access-Control-Allow-Origin"] = "*"  # Allow requests from all origins
+        return response
+
+    return JsonResponse({"error": "Method not allowed.", "status": "405"})
