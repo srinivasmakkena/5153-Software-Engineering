@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Login.css"; // Import styles for Professional Login component
 import loginImage from './assets/pro-login-image.png';
-import { Professional } from '../App';
+import { Professional,Customer } from '../App';
 
-const ProLogin = ({ setIsLoggedIn, setProUser }) => {
+const ProLogin = ({ setIsLoggedIn, setProUser , setCustomer}) => {
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -34,7 +34,11 @@ const ProLogin = ({ setIsLoggedIn, setProUser }) => {
           const user = data.professional;
           const proUser = new Professional(user.id,user.user_name,user.email,user.phone_number,user.zip_location,user.price_per_hour,user.categories_of_repairs);
           localStorage.setItem('proUser', JSON.stringify(proUser));
+          const customer = new Customer(user.id, user.user_name, user.email, user.phone_number);
+          localStorage.setItem('customer', JSON.stringify(customer)); 
           setProUser(proUser);
+          setCustomer(customer);
+
         } else {
           // Handle authentication failure
           setErrorMessage('Invalid email or password');

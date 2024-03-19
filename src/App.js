@@ -68,7 +68,7 @@ export default function App() {
           <Route path="Products" element={isLoggedIn ?<Products/> : <Unauthorized/>}></Route>
           <Route path="Register" element={<Register/>}></Route>
           <Route path="ProfessionalLogin" element={<ProfessionalLogin setIsLoggedIn={setIsLoggedIn} setProUser={setProUser}/>}></Route>
-          <Route path="ProfessionalRegister" element={<ProfessionalRegister  setIsLoggedIn={setIsLoggedIn} setProUser={setProUser}/>}></Route>
+          <Route path="ProfessionalRegister" element={<ProfessionalRegister  setIsLoggedIn={setIsLoggedIn} setProUser={setProUser} setCustomer={setCustomer}/>}></Route>
           <Route path="Account" element={isLoggedIn ? <Account customer={customer}/> : <Unauthorized/>}></Route>
           <Route path="categories/:categoryId" element={<Professinals />} />
         </Route>
