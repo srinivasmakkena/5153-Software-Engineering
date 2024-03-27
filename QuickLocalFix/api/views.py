@@ -29,7 +29,7 @@ def register_user(request):
     """
     if request.method == "POST":
         data = json.loads(request.body)
-        user_name = data.get("user_name")
+        user_name = data.get("user_name").strip().capitalize()
         password = data.get("password")
         email = data.get("email")
         phone_number = data.get("phone_number")
@@ -59,7 +59,7 @@ def login_user(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            user_name = data.get("user_name")
+            user_name = data.get("user_name").strip().capitalize()
             password = data.get("password")
             
             # Check if both user_name and password are provided
@@ -94,7 +94,7 @@ def register_professional_user(request):
     """
     if request.method == "POST":
         data = json.loads(request.body)
-        user_name = data.get("user_name")
+        user_name = data.get("user_name").strip().capitalize()
         password = data.get("password")
         email = data.get("email")
         phone_number = data.get("phone_number")
@@ -142,7 +142,7 @@ def login_professional_user(request):
     """
     if request.method == "POST":
         data = json.loads(request.body)
-        user_name = data.get("user_name")
+        user_name = data.get("user_name").strip().capitalize()
         password = data.get("password")
         
         if RepairPerson.objects.filter(user_name=user_name).exists():
