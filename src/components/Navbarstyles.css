@@ -270,3 +270,48 @@
 .profile-icon i {
   margin: 5px; /* Add some margin between the icon and the username */
 }
+
+.location-input {
+  position: relative;
+  width: 95px; /* Adjust width as needed */
+  display: flex;
+  align-items: center;
+}
+.location-icon {
+  margin-right: 5px; /* Adjust spacing as needed */
+}
+
+/* Style for the input field */
+.location-input input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  height: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  margin-top: 15px;
+}
+
+/* Style for the search button */
+.location-input button[type="submit"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  background-color: #007bff; /* Change to desired button color */
+  border: none;
+  border-radius: 0 5px 5px 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Hover effect for the search button */
+.location-input button[type="submit"]:hover {
+  background-color: #0056b3; /* Change to desired hover color */
+}
+
+/* Font Awesome icon styling (assuming you're using Font Awesome for the search icon) */
+.location-input button[type="submit"] i {
+  font-size: 16px;
+}

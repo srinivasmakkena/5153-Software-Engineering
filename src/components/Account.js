@@ -1,15 +1,16 @@
 import React from 'react';
 import "./Account.css";
 
-const Account = ({customer} ) => {
+const Account = ({customer, ProUser} ) => {
   // Sample user data
-  console.log(customer,"  Hellow");
+  console.log(customer,ProUser,"  Hellow");
   const user = {
     name: customer.name,
     email: customer.email,
     phoneNumber: customer.phone_number,
     
   };
+  
 
   // Sample orders data
   const orders = [

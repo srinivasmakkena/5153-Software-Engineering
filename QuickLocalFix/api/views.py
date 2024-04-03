@@ -215,10 +215,10 @@ def get_categories(request):
 
 def get_professionals_by_category(request):
     """
-    View function for retrieving professionals by category.
+    View function for retrieving professionals by category and location.
 
-    Accepts GET requests with an 'id' parameter indicating the category ID.
-    Returns professionals associated with the given category as JSON.
+    Accepts GET requests with 'id' and 'location' parameters.
+    Returns professionals associated with the given category and location as JSON.
 
     Args:
     - request: HttpRequest object.
@@ -232,7 +232,10 @@ def get_professionals_by_category(request):
             category = Category.objects.get(pk=category_id)
         except Category.DoesNotExist:
             return JsonResponse({"error": f"Category with ID {category_id} does not exist.", "status": "404"})
-        professionals = RepairPerson.objects.filter(categories_of_repairs=category)
+        
+        location = request.GET.get('location')
+        professionals = RepairPerson.objects.filter(categories_of_repairs=category, zip_location = location)
+        # print(professionals[0].__dict__, professionals[0].zip_location == location)
         # Serialize professional data
         professional_data = [
             {
@@ -245,7 +248,9 @@ def get_professionals_by_category(request):
             }
             for professional in professionals
         ]
+        
         response = JsonResponse({"professionals": professional_data, "status": "200"})
         response["Access-Control-Allow-Origin"] = "*"  # Allow requests from all origins
         return response
+    
     return JsonResponse({"error": "Method not allowed.", "status": "405"})

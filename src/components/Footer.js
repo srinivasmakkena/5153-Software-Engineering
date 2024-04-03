@@ -22,6 +22,7 @@ class Footer extends Component {
             <i className="fas fa-user"></i> <a href="/ProfessionalLogin">Professional Login</a>
           </button>
         </div>
+        
       </footer>
     );
   }

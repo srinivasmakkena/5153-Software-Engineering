@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './Servicesstyles.css'; // Import CSS for styling
 import { Link } from 'react-router-dom';
 
-const Services = () => {
+const Services = ({ location }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false); // State to manage modal visibility
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -27,6 +28,13 @@ const Services = () => {
     fetchCategories();
   }, []);
 
+  const handleLinkClick = (event) => {
+    if (!location) {
+      event.preventDefault(); // Prevent the default link behavior (redirection)
+      setShowModal(true); // Show the modal if location is empty
+    }
+  };
+  
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -41,12 +49,30 @@ const Services = () => {
       <div className="services-grid">
         {/* Map over the categories array and render a Link for each category */}
         {categories.map(category => (
-          <Link key={category.id} to={`/categories/${category.id}`} className="service-card">
-            <img src={`http://localhost:8000${category.image_url}`} alt={category.name} className="category-image" />
+          <Link
+            key={category.id}
+            to={`/categories/${category.id}?location=${location}`}
+            className="service-card"
+            onClick={handleLinkClick} // Attach the click event handler
+          >
+            <img
+              src={`http://localhost:8000${category.image_url}`}
+              alt={category.name}
+              className="category-image"
+            />
             <h3 className="category-name">{category.name}</h3>
           </Link>
         ))}
       </div>
+      {/* Modal for prompting user to fill in location */}
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>Please fill in your location at top.</p>
+            <button onClick={() => setShowModal(false)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

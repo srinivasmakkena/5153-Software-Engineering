@@ -14,6 +14,7 @@ import Account from "./components/Account";
 import Products from "./components/Products";
 import Unauthorized from "./components/Unauthorized";
 import Professinals from "./components/Professinals";
+import Dashboard from "./components/Dashboard";
 
 export class Customer {
   constructor(id, name, email,phone_number) {
@@ -40,6 +41,7 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Corrected state initialization
   const [customer, setCustomer] = useState(null);
   const [ProUser, setProUser] = useState(null);
+  const [location, setLocation] = useState(null);
   console.log('isLoggedIn in App:', isLoggedIn); // to check the isLoogedIn value in App.js whether it is being passed correctly or not
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
@@ -53,24 +55,30 @@ export default function App() {
     if (storedProUser) {
       setProUser(JSON.parse(storedProUser));
     }
+    const location_data = localStorage.getItem('location');
+    if (location_data) {
+      setLocation(JSON.parse(location_data));
+    }
   }, []);
  
 
   
   return (
-
       <Routes>
-        <Route path="/" element={<Layout isLoggedIn={isLoggedIn} customer={customer} />}>
+        <Route path="/" element={<Layout isLoggedIn={isLoggedIn} customer={customer} 
+        setIsLoggedIn={setIsLoggedIn} ProUser={ProUser} setCustomer={setCustomer}
+         setProUser = {setProUser} location={location} setLocation = {setLocation}/>}>
           <Route index element={<Home/>}></Route>
           <Route path="Login" element={<Login setIsLoggedIn={setIsLoggedIn}  setCustomer={setCustomer}/>}/>
-          <Route path="Services" element={isLoggedIn ?<Services/> : <Unauthorized/>}></Route>
+          <Route path="Services" element={isLoggedIn ?<Services location = {location}/> : <Unauthorized/>}></Route>
           <Route path="Location" element={isLoggedIn ?<Location/> : <Unauthorized/>}></Route>
           <Route path="Products" element={isLoggedIn ?<Products/> : <Unauthorized/>}></Route>
           <Route path="Register" element={<Register/>}></Route>
+          <Route path="Dashboard" element={<Dashboard/>}></Route>
           <Route path="ProfessionalLogin" element={<ProfessionalLogin setIsLoggedIn={setIsLoggedIn} setProUser={setProUser}/>}></Route>
-          <Route path="ProfessionalRegister" element={<ProfessionalRegister  setIsLoggedIn={setIsLoggedIn} setProUser={setProUser} setCustomer={setCustomer}/>}></Route>
-          <Route path="Account" element={isLoggedIn ? <Account customer={customer}/> : <Unauthorized/>}></Route>
-          <Route path="categories/:categoryId" element={<Professinals />} />
+          <Route path="ProfessionalRegister" element={<ProfessionalRegister />}></Route>
+          <Route path="Account" element={isLoggedIn ? <Account customer={customer} ProUser={ProUser}/> : <Unauthorized/>}></Route>
+          <Route path="categories/:categoryId" element={<Professinals location={location} />} />
         </Route>
       </Routes> 
   )

@@ -7,16 +7,15 @@
   class Navbar extends Component {
     constructor(props) {
       super(props);
-      console.log(props); // Log the props object to the console
       this.state = {
         clicked: false,
-        userName: props.customer ? props.customer.name : "prakash", // Initialize userName state to hold user's name
+        userName: props.customer, // Initialize userName state to hold user's name
         showNotifications: false,
         hasUnreadNotifications: false,
         notifications: [], // Array to hold notifications with message and timestamp
       };
     }
-
+    
     
 
     toggleNotifications = () => {
@@ -43,28 +42,44 @@
     handleLogout = () => {
       const { setIsLoggedIn } = this.props;
       localStorage.setItem('loggedIn', 'false');
-      setIsLoggedIn(false); // Call setIsLoggedIn to update login status to false
        // Clear customer data
       localStorage.setItem('customer',null);
       // Clear professional user data
       localStorage.setItem('proUser',null);// Clear customer data
       localStorage.removeItem('customer');
-    
       // Clear professional user data
       localStorage.removeItem('proUser');
+      localStorage.removeItem('location');
+      this.props.setCustomer(null);
+      this.props.setProUser(null);
+      setIsLoggedIn(false); // Call setIsLoggedIn to update login status to false
       
+    }
+    handleLocationInputChange = (event) => {
+      const { setLocation } = this.props;
+      const newLocation = event.target.value;
+      localStorage.setItem('location',newLocation);
+      console.log(newLocation);
+      setLocation(newLocation);
     }
 
     render() {
       const { clicked, showNotifications, hasUnreadNotifications, notifications } = this.state;
       const { isLoggedIn } = this.props;
+      console.log(this.props);
+      const {location} = this.props;
+      console.log(location);
       let {userName} = '';
       if (this.props.customer){
          userName  = this.props.customer.name;
       }
-      console.log(this.state)
+      if (this.props.ProUser){
+        userName  = this.props.ProUser.user_name;
+    } 
+    
+    console.log(this.props)
   
-
+  
 
       return (
         <nav>
@@ -78,21 +93,47 @@
           <div>
             <ul id="navbar">
               <li><NavLink exact="true" to="/" activeclassname="active">Home</NavLink></li>
+              
+              {this.props.ProUser != null ? (
               <li>
+              <NavLink to="/DashBoard" activeclassname="active">
+                  Dashboard
+                </NavLink>
+                </li>
+              ):(<>
+                <li>
                 <NavLink to="/Services" activeclassname="active">
                   Services
                 </NavLink>
               </li>
-              <li>
+              
+              {/* <li>
                 <NavLink to="/Location" activeclassname="active" >
                   Location
                 </NavLink>
-              </li>
+              </li> */}
+              
               <li>
                 <NavLink to="/Products" activeclassname="active" >
                   Products
                 </NavLink>
               </li>
+              <li>
+              <div className="location-input">
+              <i class="fa fa-map-marker-alt location-icon" aria-hidden="true"></i>
+              <input
+                    type="text"
+                    id="location"
+                    placeholder="zipcode"
+                    value={location}
+                    onChange={this.handleLocationInputChange}
+                  />
+                </div>
+              </li>
+              
+              </>
+              )}
+              
               <li>
                 {isLoggedIn ? (
                   <div className="dropdown">
