@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Customer, RepairPerson, Product, Cart, Payment, Address, Category, Chat, Offer, Order, Notification, Service, Review
+from .models import Customer, RepairPerson, Product, Cart, Payment, Address, CartItem, Category, Chat, Offer, Order, Notification, Service, Review
 from django.contrib.auth.hashers import make_password, check_password
 from . import products_util  # Importing custom utility for product scraping
 from django.core.serializers import serialize
@@ -186,7 +186,7 @@ def get_products(request):
             'image_url': product.image_url,  # Include the image URL
             'query': product.query
         }
-        for product in products
+        for product in sorted(products,key =lambda x:x.name)
     ]
     return JsonResponse(products_data, safe=False)
 
@@ -209,7 +209,7 @@ def get_categories(request):
             'description': category.description,
             'image_url': category.image.url  # Get the URL of the image
         }
-        for category in categories
+        for category in sorted(categories,key=lambda x : x.name)
     ]
     return JsonResponse(categories_data, safe=False)
 
@@ -246,11 +246,114 @@ def get_professionals_by_category(request):
                 "zip_location": professional.zip_location,
                 "price_per_hour": professional.price_per_hour
             }
-            for professional in professionals
+            for professional in sorted(professionals,key=lambda x:x.price_per_hour)
         ]
         
         response = JsonResponse({"professionals": professional_data, "status": "200"})
         response["Access-Control-Allow-Origin"] = "*"  # Allow requests from all origins
         return response
+    
+    return JsonResponse({"error": "Method not allowed.", "status": "405"})
+
+
+@csrf_exempt
+def get_cart(request):
+    if request.method == "GET":
+        try:
+            customer_id = request.GET.get('customer_id')
+            customer = Customer.objects.get(pk=customer_id)
+        except Customer.DoesNotExist:
+            return JsonResponse({"error": f"Customer with ID {customer_id} does not exist.", "status": "404"})
+        
+        try:
+            cart = Cart.objects.get(customer=customer)
+            cart_items = CartItem.objects.filter(cart=cart)
+            cart_data = [
+                {
+                    "id": item.product.id,
+                    "name": item.product.name,
+                    "price": item.product.price,
+                    "image_url": item.product.image_url,
+                    "quantity": item.quantity
+                }
+                for item in cart_items
+            ]
+            return JsonResponse({"cart_items": cart_data, "status": "200"})
+        except Cart.DoesNotExist:
+            return JsonResponse({"error": f"Cart for customer {customer_id} does not exist.", "status": "404"})
+    
+    return JsonResponse({"error": "Method not allowed.", "status": "405"})
+
+@csrf_exempt
+def add_to_cart(request):
+    if request.method == "POST":
+        try:
+            customer_id = request.POST.get('customer_id')
+            product_id = request.POST.get('product_id')
+            customer = Customer.objects.get(pk=customer_id)
+            product = Product.objects.get(pk=product_id)
+        except (Customer.DoesNotExist, Product.DoesNotExist):
+            return JsonResponse({"error": "Customer or product does not exist.", "status": "404"})
+        
+        try:
+            cart = Cart.objects.get(customer=customer)
+        except Cart.DoesNotExist:
+            cart = Cart.objects.create(customer=customer)
+        
+        try:
+            cart_item = CartItem.objects.get(cart=cart, product=product)
+            cart_item.quantity += 1
+            cart_item.save()
+        except CartItem.DoesNotExist:
+            CartItem.objects.create(cart=cart, product=product)
+        
+        cart_items = CartItem.objects.filter(cart=cart)
+        cart_data = [
+            {
+                "id": item.product.id,
+                "name": item.product.name,
+                "price": item.product.price,
+                "image_url": item.product.image_url,
+                "quantity": item.quantity
+            }
+            for item in cart_items
+        ]
+        return JsonResponse({"cart_items": cart_data, "status": "200"})
+    
+    return JsonResponse({"error": "Method not allowed.", "status": "405"})
+
+@csrf_exempt
+def remove_from_cart(request):
+    if request.method == "POST":
+        try:
+            customer_id = request.POST.get('customer_id')
+            product_id = request.POST.get('product_id')
+            customer = Customer.objects.get(pk=customer_id)
+            product = Product.objects.get(pk=product_id)
+        except (Customer.DoesNotExist, Product.DoesNotExist):
+            return JsonResponse({"error": "Customer or product does not exist.", "status": "404"})
+        
+        try:
+            cart = Cart.objects.get(customer=customer)
+            cart_item = CartItem.objects.get(cart=cart, product=product)
+            if cart_item.quantity > 1:
+                cart_item.quantity -= 1
+                cart_item.save()
+            else:
+                cart_item.delete()
+            cart_items = CartItem.objects.filter(cart=cart)
+            cart_data = [
+                {
+                    "id": item.product.id,
+                    "name": item.product.name,
+                    "price": item.product.price,
+                    "image_url": item.product.image_url,
+                    "quantity": item.quantity
+                }
+                for item in cart_items
+            ]
+            return JsonResponse({"cart_items": cart_data, "status": "200"})
+        except (Cart.DoesNotExist, CartItem.DoesNotExist):
+            return JsonResponse({"error": f"Cart or item not found for customer {customer_id}.", "status": "404"})
     
     return JsonResponse({"error": "Method not allowed.", "status": "405"})

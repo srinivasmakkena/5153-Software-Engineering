@@ -83,11 +83,18 @@ class Order(models.Model):
 
 # Model representing a shopping cart
 class Cart(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)  
-    products = models.ManyToManyField('Product')
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Cart for {self.customer.user_name}"
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)  # default quantity is 1
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name} in cart for {self.cart.customer.user_name}"
     
 # Model representing payment information
 class Payment(models.Model):
@@ -118,7 +125,7 @@ class Review(models.Model):
     review_rating = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return f"Review by {self.review_customer.username} for {self.review_repair_person.user_name}"
+        return f"Review by {self.review_customer.user_name} for {self.review_repair_person.user_name}"
 
 # Model representing services
 class Service(models.Model):
