@@ -100,3 +100,9 @@
   max-width: 60%;
   height: auto;
 }
+
+.product-details .added,
+.product-details .added:hover {
+  background-color: grey; /* Change button color to grey */
+  color: white; /* Change button text color to white */
+}

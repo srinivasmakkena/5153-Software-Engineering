@@ -66,6 +66,7 @@ const Professionals = ({ location }) => {
 
   return (
     <div>
+      
       {category && (
         <div className="category-banner">
           <img

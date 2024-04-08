@@ -315,3 +315,18 @@
 .location-input button[type="submit"] i {
   font-size: 16px;
 }
+.fa-shopping-cart {
+  position: relative; /* Position relative for absolute positioning of the count */
+}
+
+/* Styling for the count number */
+.cart-item-count {
+  position: absolute;
+  top: -8px; /* Adjust top position to fit with the icon */
+  right: -8px; /* Adjust right position to fit with the icon */
+  background-color: #ff0000; /* Background color for the count */
+  color: #ffffff; /* Text color for the count */
+  border-radius: 50%; /* Make it a circle */
+  padding: 4px 8px; /* Add padding for spacing */
+  font-size: 12px; /* Adjust font size */
+}

@@ -276,7 +276,7 @@ def get_cart(request):
                     "image_url": item.product.image_url,
                     "quantity": item.quantity
                 }
-                for item in cart_items
+                for item in sorted(cart_items,key=lambda item:item.product.name)
             ]
             return JsonResponse({"cart_items": cart_data, "status": "200"})
         except Cart.DoesNotExist:

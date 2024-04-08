@@ -15,6 +15,7 @@ import Products from "./components/Products";
 import Unauthorized from "./components/Unauthorized";
 import Professinals from "./components/Professinals";
 import Dashboard from "./components/Dashboard";
+import CartPage from "./components/Cart";
 
 export class Customer {
   constructor(id, name, email,phone_number) {
@@ -42,6 +43,8 @@ export default function App() {
   const [customer, setCustomer] = useState(null);
   const [ProUser, setProUser] = useState(null);
   const [location, setLocation] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+
   console.log('isLoggedIn in App:', isLoggedIn); // to check the isLoogedIn value in App.js whether it is being passed correctly or not
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
@@ -59,20 +62,49 @@ export default function App() {
     if (location_data) {
       setLocation(JSON.parse(location_data));
     }
+    fetchCartDetails();
   }, []);
- 
+  const fetchCartDetails = async () => {
+    try {
+      if (!customer || !customer.id) {
+        return;
+      }
+      const response = await fetch(`http://localhost:8000/get_cart/?customer_id=${customer.id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch cart details');
+      }
+      const data = await response.json();
+      setCartItems(data.cart_items);
+    } catch (error) {
+      console.error('Error fetching cart details:', error);
+    }
+  };
 
   
   return (
       <Routes>
-        <Route path="/" element={<Layout isLoggedIn={isLoggedIn} customer={customer} 
-        setIsLoggedIn={setIsLoggedIn} ProUser={ProUser} setCustomer={setCustomer}
-         setProUser = {setProUser} location={location} setLocation = {setLocation}/>}>
+        <Route
+        path="/"
+        element={(
+          <Layout
+            isLoggedIn={isLoggedIn}
+            customer={customer}
+            setIsLoggedIn={setIsLoggedIn}
+            ProUser={ProUser}
+            setCustomer={setCustomer}
+            setProUser={setProUser}
+            location={location}
+            setLocation={setLocation}
+            cartItems = {cartItems}
+          />
+        )}
+      >
           <Route index element={<Home/>}></Route>
           <Route path="Login" element={<Login setIsLoggedIn={setIsLoggedIn}  setCustomer={setCustomer}/>}/>
           <Route path="Services" element={isLoggedIn ?<Services location = {location}/> : <Unauthorized/>}></Route>
           <Route path="Location" element={isLoggedIn ?<Location/> : <Unauthorized/>}></Route>
-          <Route path="Products" element={isLoggedIn ?<Products/> : <Unauthorized/>}></Route>
+          <Route path="Products" element={isLoggedIn ?<Products customer={customer} ProUser={ProUser}  cartItems = {cartItems} setCartItems={setCartItems}/> : <Unauthorized/>}></Route>
+          <Route path="ShoppingCart" element={isLoggedIn ?<CartPage customer={customer} ProUser={ProUser}    setglobalCartItems = {setCartItems}/> : <Unauthorized/>}></Route>
           <Route path="Register" element={<Register/>}></Route>
           <Route path="Dashboard" element={<Dashboard/>}></Route>
           <Route path="ProfessionalLogin" element={<ProfessionalLogin setIsLoggedIn={setIsLoggedIn} setProUser={setProUser}/>}></Route>
