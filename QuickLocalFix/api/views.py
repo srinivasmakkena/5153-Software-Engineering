@@ -83,6 +83,36 @@ def login_user(request):
     return JsonResponse({"error": "Method not allowed.", "status": "405"})
 
 @csrf_exempt
+def update_account(request):
+    """
+    View function to update account information.
+
+    Accepts POST requests with JSON data containing updated account information.
+    Updates the account information in the database.
+
+    Returns:
+    - JsonResponse: Response indicating success or failure of the update.
+    """
+    if request.method == "POST":
+        data = json.loads(request.body)
+        # user_id = request.user_id  # Assuming you have user authentication and this gives the user ID
+        print(data)
+        # Update the account information based on user ID
+        try:
+            customer = Customer.objects.get(id=data.get("id"))
+            customer.name = data.get("name", customer.user_name)
+            customer.email = data.get("email", customer.email)
+            customer.phone_number = data.get("phone_number", customer.phone_number)
+            customer.save()
+            
+            return JsonResponse({"success": "Account updated successfully.", "status": "200"})
+        except Customer.DoesNotExist:
+            print('error')
+            return JsonResponse({"error": "User not found.", "status": "404"})
+
+    return JsonResponse({"error": "Invalid request method.", "status": "400"})
+
+@csrf_exempt
 def register_professional_user(request):
     """
     View function for professional user registration.
@@ -576,8 +606,20 @@ def get_orders(request):
         try:
             customer = Customer.objects.get(pk=customer_id)
             orders = Order.objects.filter(customer=customer)
-            orders_data = [
-                {
+            orders_data = []
+
+            for order in orders:
+                products_data = []
+                for product in order.products.all():
+                    product_data = {
+                        "id": product.id,
+                        "name": product.name,
+                        "price": product.price,
+                        "image_url": product.image_url
+                    }
+                    products_data.append(product_data)
+
+                order_info = {
                     "id": order.id,
                     "ordered_date": order.ordered_date,
                     "delivery_date": order.delivery_date,
@@ -590,10 +632,11 @@ def get_orders(request):
                         "postal_code": order.address.postal_code,
                         "country": order.address.country
                     },
-                    "order_cost": order.order_cost
+                    "order_cost": order.order_cost,
+                    "products": products_data  # Include products information
                 }
-                for order in orders
-            ]
+                orders_data.append(order_info)
+
             return JsonResponse({"orders": orders_data, "status": "200"})
         except Customer.DoesNotExist:
             return JsonResponse({"error": "Customer not found.", "status": "404"})

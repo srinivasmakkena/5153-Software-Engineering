@@ -17,7 +17,7 @@ urlpatterns = [
     path("remove_from_cart/", views.remove_from_cart, name="remove_from_cart"),  # Mapping '/remove_from_cart/' URL to 'remove_from_cart' view function
     path("add_address/", views.add_address, name="add_address"),  # Mapping '/add_address/' URL to 'add_address' view function
     path("get_address/", views.get_addresses, name="get_address"),  # Mapping '/get_address/' URL to 'get_address' view function
-
+    path('update_account/', views.update_account, name='update_account'),
     # Uncomment the following paths as needed
     
     path("add_payment_option/", views.add_payment_option, name="add_payment_option"),  # Mapping '/add_payment_option/' URL to 'add_payment_option' view function
