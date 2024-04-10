@@ -16,6 +16,7 @@ import Unauthorized from "./components/Unauthorized";
 import Professinals from "./components/Professinals";
 import Dashboard from "./components/Dashboard";
 import CartPage from "./components/Cart";
+import AddressSelectionPage from "./components/AddressSelectionPage ";
 
 export class Customer {
   constructor(id, name, email,phone_number) {
@@ -74,7 +75,11 @@ export default function App() {
         throw new Error('Failed to fetch cart details');
       }
       const data = await response.json();
-      setCartItems(data.cart_items);
+      if (data.cartItems){
+        setCartItems(data.cart_items);}
+       else {
+        setCartItems([]);
+        }
     } catch (error) {
       console.error('Error fetching cart details:', error);
     }
@@ -109,7 +114,8 @@ export default function App() {
           <Route path="Dashboard" element={<Dashboard/>}></Route>
           <Route path="ProfessionalLogin" element={<ProfessionalLogin setIsLoggedIn={setIsLoggedIn} setProUser={setProUser}/>}></Route>
           <Route path="ProfessionalRegister" element={<ProfessionalRegister />}></Route>
-          <Route path="Account" element={isLoggedIn ? <Account customer={customer} ProUser={ProUser}/> : <Unauthorized/>}></Route>
+          <Route path="AddressSelection" element={<AddressSelectionPage customer={customer}  setCustomer={setCustomer} setCartItems={setCartItems}/>} />
+          <Route path="Account" element={isLoggedIn ? <Account customer={customer} setCustomer={setCustomer} ProUser={ProUser}/> : <Unauthorized/>}></Route>
           <Route path="categories/:categoryId" element={<Professinals location={location} />} />
         </Route>
       </Routes> 

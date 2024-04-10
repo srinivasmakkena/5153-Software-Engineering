@@ -59,13 +59,13 @@ const Chat = ({}) => {
           {/* Assuming you have a list of users */}
           {/* Replace the buttons with your actual user selection mechanism */}
           <div className='user-name'>
-            <button className={selectedUser === "John Doe" ? 'active' : ''} onClick={() => setSelectedUser("John Doe")}> <i class="fa fa-user-circle " aria-hidden="true"></i> &nbsp;John Doe</button>
+            <button className={selectedUser === "John Doe" ? 'active' : ''} onClick={() => setSelectedUser("John Doe")}> <i className="fa fa-user-circle " aria-hidden="true"></i> &nbsp;John Doe</button>
           </div>
           <div className='user-name'>
-          <button className={selectedUser === "Jane Smith" ? 'active' : ''} onClick={() => setSelectedUser("Jane Smith")}><i class="fa fa-user-circle " aria-hidden="true"></i>&nbsp;Jane Smith</button>
+          <button className={selectedUser === "Jane Smith" ? 'active' : ''} onClick={() => setSelectedUser("Jane Smith")}><i className="fa fa-user-circle " aria-hidden="true"></i>&nbsp;Jane Smith</button>
           </div>
           <div className='user-name'>
-          <button className={selectedUser === "Alice Johnson" ? 'active' : ''} onClick={() => setSelectedUser("Alice Johnson")}><i class="fa fa-user-circle " aria-hidden="true"></i>&nbsp;Alice Johnson</button>
+          <button className={selectedUser === "Alice Johnson" ? 'active' : ''} onClick={() => setSelectedUser("Alice Johnson")}><i className="fa fa-user-circle " aria-hidden="true"></i>&nbsp;Alice Johnson</button>
           </div>
         </div>
       </div>

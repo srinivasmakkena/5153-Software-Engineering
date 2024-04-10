@@ -95,11 +95,26 @@
                 <li><NavLink exact="true" to="/" activeclassname="active">Home</NavLink></li>
                 
                 {this.props.ProUser != null ? (
+                  <>
                 <li>
                 <NavLink to="/DashBoard" activeclassname="active">
                     Dashboard
                   </NavLink>
                   </li>
+                   <li>
+                   {isLoggedIn ? (
+                     <div className="dropdown">
+                       {/* Change to profile icon */}
+                       <i className="fas fa-user">&nbsp;<>{userName}</></i>
+                       <div className={clicked ? 'dropdown-content show' : 'dropdown-content'}>
+                         <NavLink to="/" onClick={this.handleLogout}>Logout</NavLink>
+                       </div>
+                     </div>
+                   ) : (
+                     <NavLink to="/Login">Login/Register</NavLink>
+                   )}
+                 </li>
+                 </>
                 ):(<>
                   <li>
                   <NavLink to="/Services" activeclassname="active">
@@ -120,7 +135,7 @@
                 </li>
                 <li>
                 <div className="location-input">
-                <i class="fa fa-map-marker-alt location-icon" aria-hidden="true"></i>
+                <i className="fa fa-map-marker-alt location-icon" aria-hidden="true"></i>
                 <input
                       type="text"
                       id="location"
@@ -130,10 +145,6 @@
                     />
                   </div>
                 </li>
-                
-                </>
-                )}
-                
                 <li>
                   {isLoggedIn ? (
                     <div className="dropdown">
@@ -151,6 +162,16 @@
                     <NavLink to="/Login">Login/Register</NavLink>
                   )}
                 </li>
+                <li className="dropdown">
+                      <NavLink to="/ShoppingCart">
+                        <i className="fas fa-shopping-cart"></i>
+                        {this.props.cartItems?.length > 0 && <span className="cart-item-count">{this.props.cartItems.length}</span>}
+                      </NavLink>
+                    </li>
+                </>
+                )}
+                
+               
                 {isLoggedIn && (
                   <>
                     <li className="dropdown">
@@ -169,12 +190,7 @@
                       )}
                     </li>
                     {/* </li> Add shopping cart icon */}
-                    <li className="dropdown">
-                      <NavLink to="/ShoppingCart">
-                        <i className="fas fa-shopping-cart"></i>
-                        {this.props.cartItems.length > 0 && <span className="cart-item-count">{this.props.cartItems.length}</span>}
-                      </NavLink>
-                    </li>
+                   
                 </>
                 )}
               </ul>

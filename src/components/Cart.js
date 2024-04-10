@@ -19,20 +19,23 @@ const CartPage = ({ customer, proUser, setglobalCartItems }) => {
         throw new Error('Failed to fetch cart details');
       }
       const data = await response.json();
-      setCartItems(data.cart_items);
-      setglobalCartItems(data.cart_items);
-
-      // Calculate total price
-      let totalPrice = 0;
-      data.cart_items.forEach(item => {
-        totalPrice += item.price * item.quantity;
-      });
-      setTotalPrice(totalPrice);
+      if (data && data.cart_items) {
+        setCartItems(data.cart_items);
+        // Calculate total price
+        let totalPrice = 0;
+        data.cart_items.forEach(item => {
+          totalPrice += item.price * item.quantity;
+        });
+        setTotalPrice(totalPrice);
+      } else {
+        setCartItems([]);
+        setTotalPrice(0);
+      }
     } catch (error) {
       console.error('Error fetching cart details:', error);
     }
   };
-
+  
   // Call fetchCartDetails when component mounts
   useEffect(() => {
     fetchCartDetails();
@@ -82,7 +85,10 @@ const CartPage = ({ customer, proUser, setglobalCartItems }) => {
   const goToProductsPage = () => {
     navigate('/Products');
   };
-
+  const goToCheckout = () => {
+    // Redirect to address selection page
+    navigate('/AddressSelection');
+  };
   return (
     <div className="cart-page">
       <h2 className="cart-heading">Shopping Cart</h2>
@@ -113,7 +119,7 @@ const CartPage = ({ customer, proUser, setglobalCartItems }) => {
       <div className="cart-actions">
         <button className="continue-shopping-btn" onClick={goToProductsPage}>Continue Shopping</button>
         {cartItems.length > 0 && (
-          <button className="checkout-btn">Checkout</button>
+          <button className="checkout-btn" onClick={goToCheckout}>Checkout</button>
         )}
       </div>
      
