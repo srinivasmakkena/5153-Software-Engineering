@@ -99,9 +99,9 @@ class CartItem(models.Model):
 # Model representing payment information
 class Payment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE) 
-    card_number = models.CharField(max_length=16)
+    card_number = models.CharField(max_length=19)
     card_holder_name = models.CharField(max_length=255)
-    expiration_date = models.DateField()
+    expiration_date = models.CharField(max_length=10)
     cvv = models.CharField(max_length=4)
 
     def __str__(self):

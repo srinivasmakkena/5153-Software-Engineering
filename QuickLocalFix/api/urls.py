@@ -15,14 +15,15 @@ urlpatterns = [
     path("get_cart/", views.get_cart, name="get_cart"),  # Mapping '/get_cart/' URL to 'get_cart' view function
     path("add_to_cart/", views.add_to_cart, name="add_to_cart"),  # Mapping '/add_to_cart/' URL to 'add_to_cart' view function
     path("remove_from_cart/", views.remove_from_cart, name="remove_from_cart"),  # Mapping '/remove_from_cart/' URL to 'remove_from_cart' view function
-    
+    path("add_address/", views.add_address, name="add_address"),  # Mapping '/add_address/' URL to 'add_address' view function
+    path("get_address/", views.get_addresses, name="get_address"),  # Mapping '/get_address/' URL to 'get_address' view function
+
     # Uncomment the following paths as needed
-    # path("add_address/", views.add_address, name="add_address"),  # Mapping '/add_address/' URL to 'add_address' view function
-    # path("get_address/", views.get_address, name="get_address"),  # Mapping '/get_address/' URL to 'get_address' view function
-    # path("add_payment_option/", views.add_payment_option, name="add_payment_option"),  # Mapping '/add_payment_option/' URL to 'add_payment_option' view function
-    # path("get_payment_option/", views.get_payment_option, name="get_payment_option"),  # Mapping '/get_payment_option/' URL to 'get_payment_option' view function
-    # path("add_order/", views.add_order, name="add_order"),  # Mapping '/add_order/' URL to 'add_order' view function
-    # path("get_order_details/", views.get_order_details, name="get_order_details"),  # Mapping '/get_order_details/' URL to 'get_order_details' view function
+    
+    path("add_payment_option/", views.add_payment_option, name="add_payment_option"),  # Mapping '/add_payment_option/' URL to 'add_payment_option' view function
+    path("get_payment_option/", views.get_payment_option, name="get_payment_option"),  # Mapping '/get_payment_option/' URL to 'get_payment_option' view function
+    path("add_order/", views.add_order, name="add_order"),  # Mapping '/add_order/' URL to 'add_order' view function
+    path("get_order_details/", views.get_orders, name="get_orders"),  # Mapping '/get_order_details/' URL to 'get_order_details' view function
     # path("add_notification/", views.add_notification, name="add_notification"),  # Mapping '/add_notification/' URL to 'add_notification' view function
     # path("get_notifications/", views.get_notifications, name="get_notifications"),  # Mapping '/get_notifications/' URL to 'get_notifications' view function
     # path("get_professionals/", views.get_professionals, name="get_professionals"),  # Mapping '/get_professionals/' URL to 'get_professionals' view function
