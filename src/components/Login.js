@@ -4,7 +4,7 @@ import "./Login.css";
 import { Customer } from '../App';
 import loginImage from './assets/login-image.jpg'; // Import your login image here
 
-const Login = ({ setIsLoggedIn, setCustomer }) => {
+const Login = ({ setIsLoggedIn,customer,   setCustomer, cartItems, setCartItems  }) => {
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -12,8 +12,8 @@ const Login = ({ setIsLoggedIn, setCustomer }) => {
   
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    console.log('User Name:', user_name);
-    console.log('Password:', password);
+    // console.log('User Name:', user_name);
+    // console.log('Password:', password);
     try {
         // Send a POST request to the server with email and password in the request body
         const response = await fetch('http://localhost:8000/login/', {
@@ -26,15 +26,18 @@ const Login = ({ setIsLoggedIn, setCustomer }) => {
 
         if (response.ok) {
             const data = await response.json(); // Parse the JSON response
-            console.log(data);
+            
             if (data.success) {
+              
                 setIsLoggedIn(true); // Set login status to true
-                navigate('/'); // Redirect to the homepage
+                fetchCartDetails();
+                console.log(data,"From login");
                 localStorage.setItem('loggedIn', 'true');
                 const user = data.customer;
                 const customer = new Customer(user.id, user.user_name, user.email, user.phone_number);
                 localStorage.setItem('customer', JSON.stringify(customer));
                 setCustomer(customer);
+                navigate('/'); // Redirect to the homepage
             } else {
                 // Handle authentication failure
                 setErrorMessage('Authentication failed. Please check your credentials.');
@@ -49,6 +52,27 @@ const Login = ({ setIsLoggedIn, setCustomer }) => {
         setErrorMessage('An error occurred. Please try again later.');
     }
 };
+const fetchCartDetails = async () => {
+  try {
+    if (!customer || !customer.id) {
+      return;
+    }
+    const response = await fetch(`http://localhost:8000/get_cart/?customer_id=${customer.id}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch cart details');
+    }
+    const data = await response.json();
+    console.log("called fecth cart details from login",data);
+    if (data.cart_items){
+      setCartItems(data.cart_items);}
+     else {
+      setCartItems([]);
+      }
+  } catch (error) {
+    console.error('Error fetching cart details:', error);
+  }
+};
+
 
   return (
     <div className='login-container'>

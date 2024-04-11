@@ -37,7 +37,7 @@ const Account = ({ customer, setCustomer, ProUser }) => {
         throw new Error('Failed to fetch orders');
       }
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setOrders(data.orders);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -78,7 +78,7 @@ const Account = ({ customer, setCustomer, ProUser }) => {
       if (!response.ok) {
         throw new Error('Failed to update account');
       }
-      console.log(response);
+      // console.log(response);
       setEditMode(false); // Exit edit mode after saving
     } catch (error) {
       console.error('Error updating account:', error);

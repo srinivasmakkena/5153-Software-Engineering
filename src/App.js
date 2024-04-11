@@ -46,11 +46,11 @@ export default function App() {
   const [location, setLocation] = useState(null);
   const [cartItems, setCartItems] = useState([]);
 
-  console.log('isLoggedIn in App:', isLoggedIn); // to check the isLoogedIn value in App.js whether it is being passed correctly or not
+  // console.log('isLoggedIn in App:', isLoggedIn); // to check the isLoogedIn value in App.js whether it is being passed correctly or not
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
     setIsLoggedIn(isLoggedIn);
-    console.log('local storage'+isLoggedIn)
+    // console.log('local storage'+isLoggedIn)
     const storedCustomer = localStorage.getItem('customer');
     if (storedCustomer) {
       setCustomer(JSON.parse(storedCustomer));
@@ -75,7 +75,7 @@ export default function App() {
         throw new Error('Failed to fetch cart details');
       }
       const data = await response.json();
-      if (data.cartItems){
+      if (data.cart_items){
         setCartItems(data.cart_items);}
        else {
         setCartItems([]);
@@ -101,11 +101,12 @@ export default function App() {
             location={location}
             setLocation={setLocation}
             cartItems = {cartItems}
+            setCartItems = {setCartItems}
           />
         )}
       >
           <Route index element={<Home/>}></Route>
-          <Route path="Login" element={<Login setIsLoggedIn={setIsLoggedIn}  setCustomer={setCustomer}/>}/>
+          <Route path="Login" element={<Login setIsLoggedIn={setIsLoggedIn} customer={customer} setCustomer={setCustomer} cartItems = {cartItems} setCartItems = {setCartItems} />}/>
           <Route path="Services" element={isLoggedIn ?<Services location = {location}/> : <Unauthorized/>}></Route>
           <Route path="Location" element={isLoggedIn ?<Location/> : <Unauthorized/>}></Route>
           <Route path="Products" element={isLoggedIn ?<Products customer={customer} ProUser={ProUser}  cartItems = {cartItems} setCartItems={setCartItems}/> : <Unauthorized/>}></Route>

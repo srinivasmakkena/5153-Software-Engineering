@@ -13,7 +13,7 @@ const ProLogin = ({ setIsLoggedIn, setProUser , setCustomer}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    console.log('Password:', password);
+    // console.log('Password:', password);
     try {
       // Send a POST request to a different URL for professional login
       const response = await fetch('http://localhost:8000/professional_login/', {
@@ -26,7 +26,7 @@ const ProLogin = ({ setIsLoggedIn, setProUser , setCustomer}) => {
 
       if (response.ok) {
         const data = await response.json(); // Parse the JSON response
-        console.log(data);
+        // console.log(data);
         if (data.success) {
           setIsLoggedIn(true); // Set login status to true
           navigate('/'); // Redirect to the homepage

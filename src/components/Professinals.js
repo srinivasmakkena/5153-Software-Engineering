@@ -21,7 +21,7 @@ const Professionals = ({ location }) => {
           throw new Error("Failed to fetch categories");
         }
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         const category = data.find((cat) => cat.id === parseInt(categoryId));
         setCategory(category);
       } catch (error) {

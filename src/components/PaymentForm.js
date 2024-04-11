@@ -27,7 +27,7 @@ const PaymentForm = ({ customer, setCustomer, fetchPayments }) => {
         },
         body: JSON.stringify(paymentData)
       });
-      console.log(response);
+      // console.log(response);
       if (!response.ok) {
         throw new Error('Failed to add payment');
       }

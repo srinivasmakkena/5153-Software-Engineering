@@ -19,7 +19,7 @@
       }
       
       toggleNotifications = () => {
-        console.log('Toggle notifications');
+        // console.log('Toggle notifications');
         this.setState(prevState => ({
           showNotifications: !prevState.showNotifications,
           hasUnreadNotifications: false, // Mark all notifications as read when opening the dropdown
@@ -52,6 +52,7 @@
         localStorage.removeItem('location');
         this.props.setCustomer(null);
         this.props.setProUser(null);
+        this.props.setCartItems([]);
         setIsLoggedIn(false); // Call setIsLoggedIn to update login status to false
         
       }
@@ -59,7 +60,7 @@
         const { setLocation } = this.props;
         const newLocation = event.target.value;
         localStorage.setItem('location',newLocation);
-        console.log(newLocation);
+        // console.log(newLocation);
         setLocation(newLocation);
       }
 
@@ -67,7 +68,7 @@
         const { clicked, showNotifications, hasUnreadNotifications, notifications, cartItemCount } = this.state;
         const { isLoggedIn } = this.props;
         const {location} = this.props;
-        console.log(location);
+        // console.log(this.props.cartItems);
         let {userName} = '';
 
         if (this.props.customer){
@@ -165,7 +166,7 @@
                 <li className="dropdown">
                       <NavLink to="/ShoppingCart">
                         <i className="fas fa-shopping-cart"></i>
-                        {this.props.cartItems?.length > 0 && <span className="cart-item-count">{this.props.cartItems.length}</span>}
+                        {this.props.cartItems.length > 0 && <span className="cart-item-count">{this.props.cartItems.length}</span>}
                       </NavLink>
                     </li>
                 </>

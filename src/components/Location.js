@@ -40,7 +40,7 @@ const Location = () => {
   };
 
   const handleSearch = () => {
-    console.log('Searching for professionals with zip code:', zipCode);
+    // console.log('Searching for professionals with zip code:', zipCode);
     // Implement your search logic here
     setSearchClicked(true); // Set searchClicked to true when search button is clicked
   };

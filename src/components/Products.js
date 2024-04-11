@@ -33,10 +33,12 @@ function Products({ customer, ProUser, cartItems, setCartItems }) {
         throw new Error('Failed to fetch cart details');
       }
       const data = await response.json();
-      if (data.cartItems) {
+      // console.log(data);
+      if (data.cart_items) {
         setCartItems(data.cart_items);
         const productIds = data.cart_items.map(item => item.id);
         setAddedProducts(productIds);
+        // console.log("added to cart");
       } else {
         setCartItems([]);
         setAddedProducts([]);

@@ -44,7 +44,7 @@ function Register() {
 						setErrorMessage(data.error); // Display error message
 					}
 					
-					console.log(data);
+					// console.log(data);
 				} else {
 					// Handle HTTP errors
 					setErrorMessage('Failed to register. Please try again later.');
