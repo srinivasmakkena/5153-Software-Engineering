@@ -112,7 +112,7 @@ export default function App() {
           <Route path="Products" element={isLoggedIn ?<Products customer={customer} ProUser={ProUser}  cartItems = {cartItems} setCartItems={setCartItems}/> : <Unauthorized/>}></Route>
           <Route path="ShoppingCart" element={isLoggedIn ?<CartPage customer={customer} ProUser={ProUser}    setglobalCartItems = {setCartItems}/> : <Unauthorized/>}></Route>
           <Route path="Register" element={<Register/>}></Route>
-          <Route path="Dashboard" element={<Dashboard/>}></Route>
+          <Route path="Dashboard" element={<Dashboard  ProUser={ProUser} setProUser={setProUser}/>}></Route>
           <Route path="ProfessionalLogin" element={<ProfessionalLogin setIsLoggedIn={setIsLoggedIn} setProUser={setProUser}/>}></Route>
           <Route path="ProfessionalRegister" element={<ProfessionalRegister />}></Route>
           <Route path="AddressSelection" element={<AddressSelectionPage customer={customer}  setCustomer={setCustomer} setCartItems={setCartItems}/>} />

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import './Dashboard.css';
 import Chat from './Chat';
 import dashboardimg from "./assets/dashboard.gif";
+import ProfessionalAccount from './ProfessionalAccount';
 
-const Dashboard = () => {
+const Dashboard = ( ProUser, setProUser) => {
   const [selectedOption, setSelectedOption] = useState("Repairs");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
@@ -14,7 +15,6 @@ const Dashboard = () => {
     { id: 2, name: "Jane Smith", date: "2024-03-29", status: "Completed", service: "Brake Adjustment" },
     { id: 3, name: "Alice Johnson", date: "2024-03-28", status: "In Progress", service: "Chain Replacement" },
   ]);
-  
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -143,10 +143,7 @@ const Dashboard = () => {
           </div>
         )}
         {selectedOption === "Account" && (
-          <div className="card">
-            <h2>Account</h2>
-            <p>This is the Account page. You can view and manage your account settings here.</p>
-          </div>
+          <ProfessionalAccount  ProUser ={ProUser} setProUser = {setProUser}/>
         )}
       </div>
     </div>

@@ -32,12 +32,12 @@ const ProLogin = ({ setIsLoggedIn, setProUser , setCustomer}) => {
           navigate('/'); // Redirect to the homepage
           localStorage.setItem('loggedIn', 'true');
           const user = data.professional;
-          const proUser = new Professional(user.id,user.user_name,user.email,user.phone_number,user.zip_location,user.price_per_hour,user.categories_of_repairs);
+          const proUser = new Professional(user.id,user.user_name,user.phone_number,user.email,user.zip_location,user.price_per_hour,user.categories_of_repairs);
           localStorage.setItem('proUser', JSON.stringify(proUser));
-          const customer = new Customer(user.id, user.user_name, user.email, user.phone_number);
-          localStorage.setItem('customer', JSON.stringify(customer)); 
+          // const customer = new Customer(user.id, user.user_name, user.email, user.phone_number);
+          // localStorage.setItem('customer', JSON.stringify(customer)); 
           setProUser(proUser);
-          setCustomer(customer);
+          // setCustomer(customer);
 
         } else {
           // Handle authentication failure

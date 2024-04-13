@@ -141,7 +141,7 @@
                       type="text"
                       id="location"
                       placeholder="zipcode"
-                      value={location}
+                      value={location|| ''}
                       onChange={this.handleLocationInputChange}
                     />
                   </div>

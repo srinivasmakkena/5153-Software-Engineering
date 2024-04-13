@@ -1,0 +1,118 @@
+import React, { useState, useEffect } from 'react';
+import './ProfessionalAccount.css'; // Import your CSS file for styling
+import ProfessionalImg from "./assets/professional.png"; // Import default image
+
+const ProfessionalAccount = ({ ProUser, setProUser }) => {
+  const [editMode, setEditMode] = useState(false);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [pricePerHour, setPricePerHour] = useState('');
+  const [category, setCategory] = useState('');
+  const [imageURL, setImageURL] = useState('');
+
+  useEffect(() => {
+    if (ProUser && ProUser.ProUser) {
+      const nestedProUser = ProUser.ProUser;
+      setUsername(nestedProUser.user_name || '');
+      setEmail(nestedProUser.email || '');
+      setPhoneNumber(nestedProUser.phone_number || '');
+      setZipCode(nestedProUser.zip_code || '');
+      setPricePerHour(nestedProUser.price_per_hour || '');
+      setCategory(nestedProUser.category[0] || '');
+      setImageURL(nestedProUser.image || ProfessionalImg); // Set default image if no image provided
+    }
+  }, [ProUser]);
+
+  const handleEditClick = () => {
+    setEditMode(true);
+  };
+
+  const handleCancelClick = () => {
+    setEditMode(false);
+  };
+
+  const handleUpdateAccount = (event) => {
+    event.preventDefault();
+    const updatedUser = {
+      ...ProUser,
+      ProUser: {
+        ...ProUser.ProUser,
+        user_name: username,
+        email,
+        phone_number: phoneNumber,
+        zip_code: zipCode,
+        price_per_hour: pricePerHour,
+        category: [category],
+        image: imageURL,
+      },
+    };
+    setProUser(updatedUser);
+    setEditMode(false);
+  };
+
+  return (
+    <div className="card">
+      <h2><u>Account</u></h2>
+
+      {/* Two Columns Layout */}
+      <div className="two-columns">
+        {/* Column 1: Image and Edit Button */}
+        <div className="column">
+          <div className="image-container">
+            <img src={imageURL} alt="Profile" className="profile-image" />
+            {editMode && (
+              <button className="edit-image-button">Edit Image</button>
+            )}
+          </div>
+        </div>
+
+        {/* Column 2: Form Fields and Buttons */}
+        <div className="column">
+          <form onSubmit={handleUpdateAccount}>
+            <div className="form-group">
+              <label className="label" htmlFor="username">Username:</label>
+              <input className="input-field" type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} disabled={!editMode} />
+            </div>
+            <div className="form-group">
+              <label className="label" htmlFor="email">Email:</label>
+              <input className="input-field" type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={!editMode} />
+            </div>
+            <div className="form-group">
+              <label className="label" htmlFor="phoneNumber">Phone Number:</label>
+              <input className="input-field" type="text" id="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} disabled={!editMode} />
+            </div>
+            <div className="form-group">
+              <label className="label" htmlFor="zipCode">Zip Code:</label>
+              <input className="input-field" type="text" id="zipCode" value={zipCode} onChange={(e) => setZipCode(e.target.value)} disabled={!editMode} />
+            </div>
+            <div className="form-group">
+              <label className="label" htmlFor="pricePerHour">Price Per Hour:</label>
+              <input className="input-field" type="text" id="pricePerHour" value={pricePerHour} onChange={(e) => setPricePerHour(e.target.value)} disabled={!editMode} />
+            </div>
+            <div className="form-group">
+              <label className="label" htmlFor="category">Category:</label>
+              <input className="input-field" type="text" id="category" value={category} onChange={(e) => setCategory(e.target.value)} disabled={!editMode} />
+            </div>
+            {editMode && (
+              <div className="button-group">
+                <button className="button" type="submit">Save</button>
+                <button className="button secondary" type="button" onClick={handleCancelClick}>Cancel</button>
+              </div>
+            )}
+          </form>
+
+          {/* Edit Button */}
+          {!editMode && (
+            <div className="button-group">
+              <button className="button" onClick={handleEditClick}>Edit</button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProfessionalAccount;

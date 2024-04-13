@@ -10,50 +10,9 @@ const Login = ({ setIsLoggedIn,customer,   setCustomer, cartItems, setCartItems 
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate(); // Corrected variable name
   
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    // console.log('User Name:', user_name);
-    // console.log('Password:', password);
-    try {
-        // Send a POST request to the server with email and password in the request body
-        const response = await fetch('http://localhost:8000/login/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 'user_name': user_name, 'password':password }), 
-        });
-
-        if (response.ok) {
-            const data = await response.json(); // Parse the JSON response
-            
-            if (data.success) {
-              
-                setIsLoggedIn(true); // Set login status to true
-                fetchCartDetails();
-                console.log(data,"From login");
-                localStorage.setItem('loggedIn', 'true');
-                const user = data.customer;
-                const customer = new Customer(user.id, user.user_name, user.email, user.phone_number);
-                localStorage.setItem('customer', JSON.stringify(customer));
-                setCustomer(customer);
-                navigate('/'); // Redirect to the homepage
-            } else {
-                // Handle authentication failure
-                setErrorMessage('Authentication failed. Please check your credentials.');
-            }
-        } else {
-            // Handle HTTP errors
-            setErrorMessage('Failed to login. Please try again later.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        // Handle other errors
-        setErrorMessage('An error occurred. Please try again later.');
-    }
-};
-const fetchCartDetails = async () => {
+const fetchCartDetails = async (customer) => {
   try {
+    console.log(customer,"inside login")
     if (!customer || !customer.id) {
       return;
     }
@@ -73,6 +32,49 @@ const fetchCartDetails = async () => {
   }
 };
 
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    // console.log('User Name:', user_name);
+    // console.log('Password:', password);
+    try {
+        // Send a POST request to the server with email and password in the request body
+        const response = await fetch('http://localhost:8000/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 'user_name': user_name, 'password':password }), 
+        });
+
+        if (response.ok) {
+            const data = await response.json(); // Parse the JSON response
+            
+            if (data.success) {
+                localStorage.setItem('loggedIn', 'true');
+                const user = data.customer;
+                const customer = new Customer(user.id, user.user_name, user.email, user.phone_number);
+                localStorage.setItem('customer', JSON.stringify(customer));
+                setCustomer(customer);
+                setIsLoggedIn(true); // Set login status to true
+                fetchCartDetails(customer);
+                console.log(data,"From login");
+                
+                navigate('/'); // Redirect to the homepage
+            } else {
+                // Handle authentication failure
+                setErrorMessage('Authentication failed. Please check your credentials.');
+            }
+        } else {
+            // Handle HTTP errors
+            setErrorMessage('Failed to login. Please try again later.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // Handle other errors
+        setErrorMessage('An error occurred. Please try again later.');
+    }
+};
 
   return (
     <div className='login-container'>
