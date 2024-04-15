@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DashboardProducts from "./DashboardProducts"; // Import the Products component
 import "./ProductManagement.css";
+import { toast } from 'react-toastify';
 
 const ProductManagement = ({ professionalData }) => {
   const [usersWithRequests, setUsersWithRequests] = useState([]);
@@ -116,6 +117,7 @@ const ProductManagement = ({ professionalData }) => {
       }
       // After successful deletion, update the cartItems state
       fetchCart();
+      toast.warning('Item removed from cart!', {});
     } catch (error) {
       console.error("Error removing item from cart:", error);
     }

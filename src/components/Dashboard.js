@@ -82,7 +82,7 @@ const Dashboard = (ProUser, setProUser) => {
       setEditMode(false);
       fetchRepairServices();
       setEditedRequest(null);
-      toast.success('Updarted Successfully!', { });
+      toast.success('Updated Successfully!', { });
     } catch (error) {
       console.error('Error updating request:', error);
     }

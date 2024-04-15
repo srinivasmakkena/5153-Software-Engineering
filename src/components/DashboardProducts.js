@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./DashboardProducts.css"
 import productImage from './assets/no_products.png'; // Import your login image here
-
+import { toast } from 'react-toastify';
 function DashboardProducts({ customer, cartItems, setCartItems }) {
   const [query, setQuery] = useState('');
   const [products, setProducts] = useState([]);
@@ -110,6 +110,7 @@ function DashboardProducts({ customer, cartItems, setCartItems }) {
         }
         fetchCartDetails(); // Update cart items after adding to cart
         setAddedProducts([...addedProducts, productId]);
+        toast.success('Item added to cart!', {});
       })
       .catch(error => {
         console.error('Error adding item to cart:', error);
