@@ -16,6 +16,8 @@
 
 .view-heading {
   margin-top: 30;
+  text-align: left;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .view-content {

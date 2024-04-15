@@ -176,12 +176,12 @@ const Account = ({ customer, setCustomer, ProUser }) => {
       </div>
     );
   };
-  
   const printOrderInvoice = (order) => {
     const printWindow = window.open('', '_blank');
+    const paddedOrderId = order.id.toString().padStart(10, '0'); 
     const productsTableRows = order.products.map((product) => (
       `<tr>
-      <td> <img src=${product.image_url} alt=${product.name}-image class="product-image" /></td>
+        <td><img src=${product.image_url} alt=${product.name}-image class="product-image" /></td>
         <td>${product.name}</td>
         <td>$${product.price}</td>
       </tr>`
@@ -191,21 +191,21 @@ const Account = ({ customer, setCustomer, ProUser }) => {
       <html>
         <head>
           <title>Order Invoice</title>
+          <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
           <style>
             body {
-              font-family:'Courier New', Courier, monospace;
-              margin:50px;
+              font-family: 'Courier New', Courier, monospace;
+              margin: 50px;
             }
             .invoice {
               padding: 120px 40px 120px 54px;
               border: 1px solid #ccc;
               border-radius: 5px;
-              max-width:600px;
-              
+              max-width: 600px;
             }
-            .product-image{
-              max-width:40px;
-              height:auto;
+            .product-image {
+              max-width: 40px;
+              height: auto;
             }
             .order-header {
               margin-bottom: 20px;
@@ -223,16 +223,20 @@ const Account = ({ customer, setCustomer, ProUser }) => {
               padding: 8px;
               text-align: left;
             }
+            #qr-code {
+              margin-top: 20px;
+            }
           </style>
         </head>
         <body>
           <div class="invoice">
             <div class="order-header">
-            <h1> QUICKLOCALFIX REPAIR SERVICES <h1>
+              <h1>QUICKLOCALFIX REPAIR SERVICES</h1>
               <h3><u>Order Invoice:</u></h3>
-              <p><strong>Order ID:</strong> ${order.id}</p>
+              <p><strong>Order ID:</strong> ${paddedOrderId}</p>
               <p><strong>Order Status:</strong> ${order.order_status}</p>
             </div>
+            
             <div class="order-details">
               <p><strong>Ordered Date:</strong> ${new Date(order.ordered_date).toLocaleString()}</p>
               <p><strong>Delivery Date:</strong> ${new Date(order.delivery_date).toLocaleString()}</p>
@@ -241,12 +245,12 @@ const Account = ({ customer, setCustomer, ProUser }) => {
               <div><strong>State:</strong> ${order.address.state}</div>
               <div><strong>Postal Code:</strong> ${order.address.postal_code}</div>
               <div><strong>Country:</strong> ${order.address.country}</div>
-              <div  iv><strong>Order Cost:</strong> $ ${order.order_cost}</div>
+              <div><strong>Order Cost:</strong> $ ${order.order_cost}</div>
               <h3><u>Products:</u></h3>
               <table class="product-table">
                 <thead>
                   <tr>
-                  <th>Product Image</th>
+                    <th>Product Image</th>
                     <th>Product Name</th>
                     <th>Price</th>
                   </tr>
@@ -256,12 +260,23 @@ const Account = ({ customer, setCustomer, ProUser }) => {
                 </tbody>
               </table>
             </div>
+            <img id="barcode" />
           </div>
+          
+          <script>
+            // Generate barcode for order ID
+            JsBarcode("#barcode", "${paddedOrderId}", {
+              format: "CODE128",
+              width: 2,
+              height: 50,
+            });
+          </script>
         </body>
       </html>
     `;
     printWindow.document.write(invoiceContent);
   };
+  
   
   const renderOrderCards = () => {
     return orders.map(order => (

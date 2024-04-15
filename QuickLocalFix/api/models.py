@@ -127,20 +127,24 @@ class Review(models.Model):
     def __str__(self):
         return f"Review by {self.review_customer.user_name} for {self.review_repair_person.user_name}"
 
-# Model representing services
 class Service(models.Model):
     date_of_service = models.DateField()
     customer_of_service = models.ForeignKey(Customer, on_delete=models.CASCADE)
     repair_person_of_service = models.ForeignKey(RepairPerson, on_delete=models.CASCADE)
-    servicing_price = models.DecimalField(max_digits=10, decimal_places=2)
+    servicing_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Default value set to 0
     servicing_status = models.CharField(max_length=50) 
     servicing_address = models.ForeignKey(Address, on_delete=models.CASCADE)
     category_of_service = models.ForeignKey(Category, on_delete=models.CASCADE)
     type_of_service = models.TextField()
+    hours_worked = models.DecimalField(max_digits=5, decimal_places=2, default=0)  # Default value set to 0
+
+    def save(self, *args, **kwargs):
+        # Calculate the servicing price based on repair person's price per hour and hours worked
+        self.servicing_price = self.repair_person_of_service.price_per_hour * self.hours_worked
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Service #{self.id} for {self.customer_of_service.user_name} by {self.repair_person_of_service.user_name}"
-
 # Model representing chat messages between customers and repair persons
 class Chat(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer_chats')

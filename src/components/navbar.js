@@ -175,7 +175,7 @@
                
                 {isLoggedIn && (
                   <>
-                    <li className="dropdown">
+                    {/* <li className="dropdown">
                       <button className="notification-button" onClick={this.toggleNotifications}>
                         <i className={`fas ${hasUnreadNotifications ? 'fa-bell' : 'fa-bell-slash'}`}></i>
                       </button>
@@ -189,7 +189,7 @@
                           ))}
                         </div>
                       )}
-                    </li>
+                    </li> */}
                     {/* </li> Add shopping cart icon */}
                    
                 </>

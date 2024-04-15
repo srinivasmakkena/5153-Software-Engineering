@@ -129,7 +129,7 @@ const Professionals = ({ location }) => {
                       View 
                     </Link>
                     <Link
-                      to={`/book-appointment/${professional.id}`}
+                      to={`/booking/${professional.id}`}
                       className="appointment-button"
                     >
                       Book Appointment

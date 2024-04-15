@@ -76,7 +76,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  height: 100%;
+  text-align: left;
+  max-height: 450px; 
+  overflow-y: scroll;
+  
 }
 
 .sub-card {
@@ -84,7 +87,7 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: calc(33.33% - 60px); /* Adjust the width based on the number of cards per row */
+  width: calc(33.33% - 60px);
   position: relative;
 }
 
@@ -102,7 +105,7 @@
   right: 10px;
 }
 
-.view-button {
+.edit-button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -112,7 +115,7 @@
   transition: background-color 0.3s ease;
 }
 
-.view-button:hover {
+.edit-button:hover {
   background-color: #0056b3;
 }
   

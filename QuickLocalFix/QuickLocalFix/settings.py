@@ -32,7 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["localhost","192.168.0.50"]
 
 CORS_ALLOW_CREDENTIALS = True
-
+CORS_ORIGIN_ALLOW_ALL = True 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',  # for localhost (REACT Default)
     'http://192.168.0.50:3000',  # for network 
@@ -67,6 +67,20 @@ CORS_ALLOW_HEADERS = [
 ]
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
+
+
+# Middleware framework
+# https://docs.djangoproject.com/en/2.1/topics/http/middleware/
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
 INSTALLED_APPS = [
     # Add your apps here to enable them
     'django.contrib.admin',
@@ -77,19 +91,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'django.contrib.staticfiles',
     'api',
-]
-
-# Middleware framework
-# https://docs.djangoproject.com/en/2.1/topics/http/middleware/
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'QuickLocalFix.urls'

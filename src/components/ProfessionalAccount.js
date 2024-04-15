@@ -33,8 +33,7 @@ const ProfessionalAccount = ({ ProUser, setProUser }) => {
     setEditMode(false);
   };
 
-  const handleUpdateAccount = (event) => {
-    event.preventDefault();
+  const handleUpdateAccount = async () => {
     const updatedUser = {
       ...ProUser,
       ProUser: {
@@ -48,10 +47,39 @@ const ProfessionalAccount = ({ ProUser, setProUser }) => {
         image: imageURL,
       },
     };
-    setProUser(updatedUser);
-    setEditMode(false);
+  
+    try {
+      const response = await fetch('http://localhost:8000/update_professional_account/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedUser),
+      });
+      console.log(updatedUser);
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Account updated successfully:', data);
+        setEmail(updatedUser.ProUser.email || '');
+        setPhoneNumber(updatedUser.ProUser.phone_number || '');
+        setZipCode(updatedUser.ProUser.zip_code || '');
+        setPricePerHour(updatedUser.ProUser.price_per_hour || '');
+        setEditMode(false); // Exit edit mode
+      } else {
+        // Failed to update account
+        console.error('Failed to update account:', data.error);
+        // Handle error scenario, show error message to the user, etc.
+      }
+    } catch (error) {
+      console.error('Error updating account:', error);
+      // Handle error scenario, show error message to the user, etc.
+    }
   };
-
+  const handleSaveClick = () => {
+    handleUpdateAccount();
+  };
+  
+  
   return (
     <div className="card">
       <h2><u>Account</u></h2>
@@ -73,7 +101,7 @@ const ProfessionalAccount = ({ ProUser, setProUser }) => {
           <form onSubmit={handleUpdateAccount}>
             <div className="form-group">
               <label className="label" htmlFor="username">Username:</label>
-              <input className="input-field" type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} disabled={!editMode} />
+              <input className="input-field" type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} disabled />
             </div>
             <div className="form-group">
               <label className="label" htmlFor="email">Email:</label>
@@ -91,14 +119,10 @@ const ProfessionalAccount = ({ ProUser, setProUser }) => {
               <label className="label" htmlFor="pricePerHour">Price Per Hour:</label>
               <input className="input-field" type="text" id="pricePerHour" value={pricePerHour} onChange={(e) => setPricePerHour(e.target.value)} disabled={!editMode} />
             </div>
-            <div className="form-group">
-              <label className="label" htmlFor="category">Category:</label>
-              <input className="input-field" type="text" id="category" value={category} onChange={(e) => setCategory(e.target.value)} disabled={!editMode} />
-            </div>
             {editMode && (
               <div className="button-group">
-                <button className="button" type="submit">Save</button>
-                <button className="button secondary" type="button" onClick={handleCancelClick}>Cancel</button>
+                <button className="button" type="submit"  onClick={handleSaveClick}><i class="fa fa-pencil-square" aria-hidden="true"></i> Save</button>
+                <button className="button secondary" type="button" onClick={handleCancelClick}><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
               </div>
             )}
           </form>
@@ -106,7 +130,7 @@ const ProfessionalAccount = ({ ProUser, setProUser }) => {
           {/* Edit Button */}
           {!editMode && (
             <div className="button-group">
-              <button className="button" onClick={handleEditClick}>Edit</button>
+              <button className="button" onClick={handleEditClick}><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
             </div>
           )}
         </div>

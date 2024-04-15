@@ -8,6 +8,8 @@ from django.core.serializers import serialize
 import json
 from datetime import datetime,timedelta
 import random
+from decimal import Decimal
+
 def home(request):
     """
     View function for the home page.
@@ -81,6 +83,35 @@ def login_user(request):
             return JsonResponse({"error": "Invalid JSON data.", "status": "400"})
     
     return JsonResponse({"error": "Method not allowed.", "status": "405"})
+
+def get_user_by_name(request):
+    """
+    View function to get a user by user name.
+
+    Accepts GET requests.
+    Retrieves a user by the provided user name in query parameters.
+
+    Args:
+    - request: HttpRequest object.
+
+    Returns:
+    - JsonResponse: Response containing user data if found, otherwise error message.
+    """
+    if request.method == "GET":
+        user_name = request.GET.get("user_name")
+        if user_name:
+            try:
+                user = Customer.objects.get(user_name__iexact=user_name)  # Case-insensitive search
+                serialized_user = serialize('json', [user,])
+                serialized_user_data = json.loads(serialized_user)[0]['fields']
+                serialized_user_data['id'] = user.id
+                return JsonResponse({"success": "User found.", "status": "200", "customer": serialized_user_data})
+            except Customer.DoesNotExist:
+                return JsonResponse({"error": "User not found.", "status": "404"})
+        else:
+            return JsonResponse({"error": "Missing user_name parameter.", "status": "400"})
+
+    return JsonResponse({"error": "Invalid request method.", "status": "400"})
 
 @csrf_exempt
 def update_account(request):
@@ -186,6 +217,40 @@ def login_professional_user(request):
                 return JsonResponse({"success": "Professional User logged in successfully.", "status": "200", "professional": serialized_user_data})
         
     return JsonResponse({"error": "Invalid user_name/password.", "status": "401"})
+@csrf_exempt
+def update_professional_account(request):
+    """
+    View function to update account information.
+
+    Accepts POST requests with JSON data containing updated account information.
+    Updates the account information in the database.
+
+    Returns:
+    - JsonResponse: Response indicating success or failure of the update.
+    """
+    if request.method == "POST":
+        data = json.loads(request.body)
+        # user_id = request.user_id  # Assuming you have user authentication and this gives the user ID
+        print(data)
+        # Update the account information based on user ID
+        try:
+            customer = RepairPerson.objects.get(id=data.get("ProUser").get("id"))
+            customer.name = data.get("ProUser").get("user_name", customer.user_name)
+            customer.email = data.get("ProUser").get("email", customer.email)
+            customer.phone_number = data.get("ProUser").get("phone_number", customer.phone_number)
+            customer.zip_location = data.get("ProUser").get("zip_code", customer.zip_location)
+            customer.price_per_hour = data.get("ProUser").get("price_per_hour", customer.price_per_hour)
+            # Assuming you have a OneToOneField or ForeignKey to Category in your Customer model
+            # customer.category = Category.objects.get(name=data.get("ProUser").get("category"))
+            customer.save()
+            
+            return JsonResponse({"success": "Account updated successfully.", "status": "200"})
+        except Customer.DoesNotExist:
+            print('error')
+            return JsonResponse({"error": "User not found.", "status": "404"})
+
+    return JsonResponse({"error": "Invalid request method.", "status": "400"})
+
 
 def get_products(request):
     """
@@ -286,6 +351,41 @@ def get_professionals_by_category(request):
     
     return JsonResponse({"error": "Method not allowed.", "status": "405"})
 
+
+@csrf_exempt
+def get_professional_by_id(request):
+    """
+    View function for retrieving a professional by their ID.
+
+    Accepts GET requests with a 'professional_id' parameter.
+    Returns professional data associated with the given ID as JSON.
+
+    Args:
+    - request: HttpRequest object.
+    - professional_id: ID of the professional to retrieve.
+
+    Returns:
+    - JsonResponse: JSON response containing professional data.
+    """
+    if request.method == "GET":
+        id = request.GET.get('id')
+        if id:
+            try:
+                professional = RepairPerson.objects.get(pk=id)
+                professional_data = {
+                    "id": professional.id,
+                    "user_name": professional.user_name,
+                    "email": professional.email,
+                    "phone_number": professional.phone_number,
+                    "zip_location": professional.zip_location,
+                    "price_per_hour": professional.price_per_hour,
+                    "categories_of_repairs" :  list(professional.categories_of_repairs.values())
+
+                }
+                return JsonResponse({"professional": professional_data, "status": "200"})
+            except RepairPerson.DoesNotExist:
+                return JsonResponse({"error": "Professional not found.", "status": "404"})
+    return JsonResponse({"error": "Method not allowed.", "status": "405"})
 
 @csrf_exempt
 def get_cart(request):
@@ -642,4 +742,126 @@ def get_orders(request):
             return JsonResponse({"error": "Customer not found.", "status": "404"})
         except Order.DoesNotExist:
             return JsonResponse({"error": "Orders not found for the customer.", "status": "404"})
+    return JsonResponse({"error": "Method not allowed.", "status": "405"})
+
+
+@csrf_exempt
+def add_service_request(request):
+    """
+    View function for adding a new service request.
+
+    Accepts POST requests with JSON data containing service request information.
+    Creates a new service request based on the provided data.
+
+    Returns:
+    - JsonResponse: Response indicating success or failure of service request addition.
+    """
+    if request.method == "POST":
+        data = json.loads(request.body)
+        customer_id = data.get("customer_id")
+        address_id = data.get("address_id")
+        payment_id = data.get("payment_id")
+        selected_date = data.get("date")
+        selected_time = data.get("time")
+        professional_id = data.get("professional_id")
+        # category_id = data.get("category_id")
+        type_of_service = "Inspection"
+        hours_worked = 0
+
+        # Convert selected_date and selected_time to a Python datetime object
+        date_of_service = datetime.strptime(selected_date.split("T")[0] + " " + selected_time, "%Y-%m-%d %I:%M %p")
+
+        # Get customer, address, payment, repair person, and category objects
+        try:
+            customer = Customer.objects.get(pk=customer_id)
+            address = Address.objects.get(pk=address_id)
+            # Assuming you have a Payment model and a RepairPerson model
+            payment = Payment.objects.get(pk=payment_id)
+            professional = RepairPerson.objects.get(pk=professional_id)
+            category_id = professional.categories_of_repairs.first().id
+            category = Category.objects.get(pk=category_id)
+        except (Customer.DoesNotExist, Address.DoesNotExist, Payment.DoesNotExist, RepairPerson.DoesNotExist, Category.DoesNotExist):
+            return JsonResponse({"error": "Invalid customer, address, payment, repair person, or category.", "status": "404"})
+
+        # Create a new Service instance
+        service = Service.objects.create(
+            date_of_service=date_of_service,
+            customer_of_service=customer,
+            repair_person_of_service=professional,
+            servicing_address=address,
+            category_of_service=category,
+            type_of_service=type_of_service,
+            hours_worked=hours_worked,
+            servicing_status = "Pending"
+        )
+
+        return JsonResponse({"success": "Service request added successfully.", "status": "200"})
+
+    return JsonResponse({"error": "Method not allowed.", "status": "405"})
+
+
+@csrf_exempt
+def get_service_requests(request):
+    """
+    View function for fetching service requests based on professional ID.
+
+    Accepts GET requests with a professional_id query parameter.
+    Returns a JSON response containing a list of service requests filtered by professional ID.
+    """
+    if request.method == "GET":
+        professional_id = request.GET.get('professional_id')
+        
+        if professional_id:
+            # Fetch service requests filtered by professional ID
+            service_requests = Service.objects.filter(repair_person_of_service_id=professional_id)
+
+            # Serialize service requests data
+            serialized_data = []
+            for request in service_requests:
+                serialized_request = {
+                    "id": request.id,
+                    "customer_id": request.customer_of_service.user_name,
+                    "address_id": request.servicing_address.__str__(),
+                    "date": request.date_of_service.strftime("%Y-%m-%d"),
+                    "time": request.date_of_service.strftime("%I:%M %p"),
+                    "professional_id": request.repair_person_of_service.user_name,
+                    "type_of_service": request.type_of_service,
+                    "status": request.servicing_status,
+                    "hours_worked" : request.hours_worked,
+                    "price":request.servicing_price,
+                }
+                serialized_data.append(serialized_request)
+
+            return JsonResponse({"service_requests": serialized_data}, status=200)
+        else:
+            return JsonResponse({"error": "Professional ID parameter is required."}, status=400)
+    
+    return JsonResponse({"error": "Method not allowed."}, status=405)
+
+
+@csrf_exempt
+def update_service_request(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        hours_worked = Decimal(data.get("hours_worked"))
+        status = data.get("status")
+        type_of_service = data.get("type_of_service")
+
+        try:
+            service_request = Service.objects.get(id=data.get("id"))
+        except Service.DoesNotExist:
+            return JsonResponse({"error": "Service request not found.", "status": "404"})
+
+        # Update fields if provided
+        if hours_worked is not None:
+            service_request.hours_worked = hours_worked
+        if status:
+            service_request.servicing_status = status
+        if type_of_service:
+            service_request.type_of_service = type_of_service
+
+        service_request.save()
+
+        return JsonResponse({"success": "Service request updated successfully.", "status": "200"})
+
     return JsonResponse({"error": "Method not allowed.", "status": "405"})

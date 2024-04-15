@@ -18,12 +18,17 @@ urlpatterns = [
     path("add_address/", views.add_address, name="add_address"),  # Mapping '/add_address/' URL to 'add_address' view function
     path("get_address/", views.get_addresses, name="get_address"),  # Mapping '/get_address/' URL to 'get_address' view function
     path('update_account/', views.update_account, name='update_account'),
-    # Uncomment the following paths as needed
-    
+    path('add_service_request/', views.add_service_request, name='add_service_request'),
+    path('get_service_requests/', views.get_service_requests, name='add_service_request'),
+    path('professionals/', views.get_professional_by_id, name='get_professional_by_id'),
     path("add_payment_option/", views.add_payment_option, name="add_payment_option"),  # Mapping '/add_payment_option/' URL to 'add_payment_option' view function
     path("get_payment_option/", views.get_payment_option, name="get_payment_option"),  # Mapping '/get_payment_option/' URL to 'get_payment_option' view function
     path("add_order/", views.add_order, name="add_order"),  # Mapping '/add_order/' URL to 'add_order' view function
     path("get_order_details/", views.get_orders, name="get_orders"),  # Mapping '/get_order_details/' URL to 'get_order_details' view function
+    path('update_request', views.update_service_request, name='update_service_request'),
+    path('get_user_by_name/', views.get_user_by_name, name='get_user_by_name'),
+    path('update_professional_account/', views.update_professional_account, name='update_professional_account'),
+    
     # path("add_notification/", views.add_notification, name="add_notification"),  # Mapping '/add_notification/' URL to 'add_notification' view function
     # path("get_notifications/", views.get_notifications, name="get_notifications"),  # Mapping '/get_notifications/' URL to 'get_notifications' view function
     # path("get_professionals/", views.get_professionals, name="get_professionals"),  # Mapping '/get_professionals/' URL to 'get_professionals' view function

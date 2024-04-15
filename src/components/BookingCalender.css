@@ -1,22 +1,24 @@
 /* BookingCalendar.css */
 
 .whole-div {
+  margin-top: 50px;
   display: flex;
   justify-content: space-between; /* Add space between the booking section and payment card */
   
 }
 
 .booking-calendar {
-    margin-top:500px;
-    margin: 100px auto;
+    margin-left: 50px;
     max-width: 400px;
-    margin: 0 auto;
-    padding: 50px;
+    padding: 15px;
     border: 50px solid #f0e6c9;
     border-radius: 10px;
     background-color: #f9f9f9;
   }
-  
+  .professional-details{
+    text-align: left;
+    border-bottom: 1px solid black;
+  }
   .booking-calendar h2 {
     text-align: center;
     margin-bottom: 40px;
@@ -69,42 +71,11 @@
 
 
   .payment-card {
-    margin-top: 10px;
-    margin: 100px auto; 
-    width: 250px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+   background-color: #f9f9f9;
+   padding:10px;;
   }
   
-  .payment-card h2 {
-    text-align: center;
-    margin-bottom: 10px;
-  }
   
-  .payment-card p {
-    text-align: center;
-    margin-bottom: 20px;
-    margin-top: 0px;
-  }
-  
-  .proceed-to-pay-btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color:  rgb(243, 159, 4);
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .proceed-to-pay-btn:hover {
-    background-color:  rgb(243, 159, 4);
-  }
-
 
   
   /* Responsive styles */

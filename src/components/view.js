@@ -1,14 +1,60 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./view.css";
-import {Link} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import ReviewsAndRatings from "./reviews_ratings";
+import professionalImage from "./assets/professional.png";
 import cleaningImage from './assets/banner_image12.jpg';
-import professionalImage from './assets/Pro_image.png';
-import ReviewsAndRatings from './reviews_ratings'; // Import the ReviewsAndRatings component
 
 const View = () => {
+  const { id } = useParams();
+  const [professional, setProfessional] = useState(null);
+
+  useEffect(() => {
+    const fetchProfessional = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/professionals/?id=${id}`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch professional details");
+        }
+
+        const data = await response.json();
+        console.log(data);
+        setProfessional(data.professional);
+      } catch (error) {
+        console.error("Error fetching professional details:", error);
+      }
+    };
+
+    fetchProfessional();
+  }, [id]);
+
+  if (!professional) {
+    return <div>Loading...</div>;
+  }
+
   return (
+    
     <div className="view-container">
-      {/* Services card */}
+        
+      {/* Professional details card */}
+      <div className="view-card">
+        
+        <div className="view-content">
+          <div className="view-details">
+          <h2 className="view-heading">{professional.user_name}</h2>
+            <p>Serving Location: <i>{professional.zip_location}</i></p>
+            <p className="email">Email: {professional.email}</p>
+          <p className="phone-number">Phone number: {`+1 ${professional.phone_number.replace(/.(?=.{4})/g, '*')}`}</p>
+          <p className="price">Price per Hour: <b><i>${professional.price_per_hour}</i></b></p>
+          <p className="category">Category of Repairs: {professional.categories_of_repairs[0].name}</p>
+          </div>
+          <div className="view-image">
+            <img src={professionalImage} alt={professional.user_name} className="view-category-image" />
+          </div>
+          
+        </div>
+      </div>
       <div className="view-card">
         <h2 className="view-heading">Cleaning Services</h2>
         <div className="view-content">
@@ -23,25 +69,8 @@ const View = () => {
         </div>
       </div>
 
-      {/* Professional details card */}
-      <div className="view-card">
-        <h2 className="view-heading">John Doe</h2>
-        <div className="view-content">
-          <div className="view-details">
-            <p>Email: john@example.com</p>
-            <p>Serving Location: 76308</p>
-            <p>Price per Hour: $100</p>
-            <p>Ratings: 4.5/5</p>
-          </div>
-          <div className="view-image">
-            <img src={professionalImage} alt="John Doe" className="view-category-image" />
-          </div>
-          
-        </div>
-      </div>
-
       {/* Book Appointment button */}
-      <Link to="/booking" className="view-book-appointment-btn">Book Appointment</Link>
+      <Link to={`/booking/${id}`} className="view-book-appointment-btn">Book Appointment</Link>
       {/* Reviews and Ratings */}
       <ReviewsAndRatings />
     </div>

@@ -4,6 +4,7 @@ import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
 import creditCardImage from "./assets/creditCardImage2.png";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const AddressSelectionPage = ({ customer, setCustomer, setCartItems }) => {
   const [addresses, setAddresses] = useState([]);
@@ -96,7 +97,12 @@ const AddressSelectionPage = ({ customer, setCustomer, setCartItems }) => {
       if (!response.ok) {
         throw new Error('Failed to place order');
       }
-
+      toast.success('Order confirmed!', {
+        onClose: () => {
+          // Redirect to home page after the notification is closed
+          navigate("/");
+        }
+      });
       // If order placed successfully, navigate to the home page
       setCartItems([]);
       navigate("/");
