@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProfessionalAccount.css'; // Import your CSS file for styling
 import ProfessionalImg from "./assets/professional.png"; // Import default image
+import { toast } from 'react-toastify';
 
 const ProfessionalAccount = ({ ProUser, setProUser }) => {
   const [editMode, setEditMode] = useState(false);
@@ -60,6 +61,7 @@ const ProfessionalAccount = ({ ProUser, setProUser }) => {
       const data = await response.json();
       if (response.ok) {
         console.log('Account updated successfully:', data);
+        toast.success('Account Updated Successfully.', { });
         setEmail(updatedUser.ProUser.email || '');
         setPhoneNumber(updatedUser.ProUser.phone_number || '');
         setZipCode(updatedUser.ProUser.zip_code || '');

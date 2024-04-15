@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./Account.css";
-
+import { toast } from 'react-toastify';
 const Account = ({ customer, setCustomer, ProUser }) => {
   const [selectedTab, setSelectedTab] = useState('account'); // Default to 'account' tab
   const [repairServices, setRepairServices] = useState([]);

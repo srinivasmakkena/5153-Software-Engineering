@@ -55,7 +55,7 @@ const View = () => {
           
         </div>
       </div>
-      <div className="view-card">
+      {/* <div className="view-card">
         <h2 className="view-heading">Cleaning Services</h2>
         <div className="view-content">
           <div className="view-description">
@@ -67,7 +67,7 @@ const View = () => {
             <img src={cleaningImage} alt="Cleaning Services" className="category-image" />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Book Appointment button */}
       <Link to={`/booking/${id}`} className="view-book-appointment-btn">Book Appointment</Link>
