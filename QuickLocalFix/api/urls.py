@@ -29,7 +29,8 @@ urlpatterns = [
     path('update_request', views.update_service_request, name='update_service_request'),
     path('get_user_by_name/', views.get_user_by_name, name='get_user_by_name'),
     path('update_professional_account/', views.update_professional_account, name='update_professional_account'),
-    
+    path('fetch-messages/', views.fetch_messages, name='fetch_messages'),
+    path('send-message/', views.send_message, name='send_message'),
     # path("add_notification/", views.add_notification, name="add_notification"),  # Mapping '/add_notification/' URL to 'add_notification' view function
     # path("get_notifications/", views.get_notifications, name="get_notifications"),  # Mapping '/get_notifications/' URL to 'get_notifications' view function
     # path("get_professionals/", views.get_professionals, name="get_professionals"),  # Mapping '/get_professionals/' URL to 'get_professionals' view function

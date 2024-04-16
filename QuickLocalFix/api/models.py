@@ -154,7 +154,7 @@ class Chat(models.Model):
     way_of_msg = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"Chat from {self.customer.username} to {self.repair_person.user_name}"
+        return f"Chat from {self.customer.user_name} to {self.repair_person.user_name}"
 
 # Model representing offers
 class Offer(models.Model):

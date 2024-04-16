@@ -59,15 +59,30 @@ const BookingCalendar = (customer, setCustomer) => {
     }
   };
   const isDateBlocked = (date) => {
-    // Check if the date is already present in the existing service requests
-    const existingDates = repairRequests.map(request => new Date(request.date));
-    // Block the date if it matches any existing dates
-    return existingDates.some(existingDate =>
-      date.getFullYear() === existingDate.getFullYear() &&
-      date.getMonth() === existingDate.getMonth() &&
-      date.getDate() === existingDate.getDate()
-    );
+    // Create a function to adjust the date to Central Daylight Time (CDT)
+    const adjustToCDT = (date) => {
+      const offset = new Date().getTimezoneOffset(); // Get the current timezone offset
+      return new Date(date.getTime() - offset * 60000); // Adjust the date by subtracting the offset
+    };
+    
+    // Adjust the given date to CDT
+    const adjustedDate = adjustToCDT(date);
+  
+    // Check if the adjusted date is already present in the existing service requests
+    const existingDates = repairRequests.map(request => {
+      const existingDate = new Date(request.date);
+      return adjustToCDT(existingDate); // Adjust each existing date to CDT
+    });
+    console.log(existingDates);
+  
+    // Filter out the date itself and then check if any remaining dates match the given date
+    return existingDates.filter(existingDate =>
+      existingDate.getFullYear() === adjustedDate.getFullYear() &&
+      existingDate.getMonth() === adjustedDate.getMonth() &&
+      existingDate.getDate() === adjustedDate.getDate()
+    ).length > 0;
   };
+  
 
   const renderTimeSlots = () => {
     const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM'];
@@ -93,7 +108,7 @@ const BookingCalendar = (customer, setCustomer) => {
         <div className="booking-calendar">
           {professional && (
             <div className="professional-details">
-              <h2>Selected Professional</h2>
+              <h2><u>Selected Professional</u></h2>
               <div className="professional-info">
                 <p>{customer.name}</p>
                 <p><strong>Name:</strong> {professional.user_name}</p>

@@ -1,11 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import "./Account.css";
 import { toast } from 'react-toastify';
+import ChatPopup from './ChatPopup';
 const Account = ({ customer, setCustomer, ProUser }) => {
   const [selectedTab, setSelectedTab] = useState('account'); // Default to 'account' tab
   const [repairServices, setRepairServices] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [orders, setOrders] = useState([]);
+  const [showChat, setShowChat] = useState(false);
+  const [selectedProfessional, setSelectedProfessional] = useState(null);
+  const [conversation, setConversation] = useState([]);
+
+  const openChat = (professionalName) => {
+    // Fetch conversation for the selected professional and customer
+    console.log(customer.id,professionalName);
+    fetch(`http://localhost:8000/fetch-messages/?customer_id=${customer.id}&repair_person_id=${professionalName}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch conversation');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Assuming the response data contains an array of messages
+        setConversation(data);
+        setSelectedProfessional(professionalName);
+        setShowChat(true);
+      })
+      .catch(error => {
+        console.error('Error fetching conversation:', error);
+        // Handle error
+      });
+  };
+  
+  
+  const sendMessage = async (professional, input_message) => {
+    try {
+      const message = {customer_id:customer.id, repair_person_id:professional, text:input_message, way_of_msg:"u2p"}
+      const response = await fetch(`http://localhost:8000/send-message/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message), // Send the edited request data
+      });
+      const data = await response.json();
+      fetch(`http://localhost:8000/fetch-messages/?customer_id=${customer.id}&repair_person_id=${professional}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch conversation');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setConversation(data);
+      })
+      .catch(error => {
+        console.error('Error fetching conversation:', error);
+      });
+      console.log('message sent successfully:', data);
+    } catch (error) {
+      console.error('Error updating request:', error);
+    }
+  };
+
+  const closeChat = () => {
+    setShowChat(false);
+    setSelectedProfessional(null);
+    setConversation([]);
+  };
+
   const [editedAccount, setEditedAccount] = useState({
     name: customer.name,
     email: customer.email,
@@ -173,7 +237,7 @@ const Account = ({ customer, setCustomer, ProUser }) => {
             </div>
           ))}
         </div>
-        <button className="toggle-details-btn" onClick={() => printOrderInvoice(order)}><i class="fa fa-print" aria-hidden="true"></i> Print Invoice</button>
+        <button className="toggle-details-btn" onClick={() => printOrderInvoice(order)}><i className="fa fa-print" aria-hidden="true"></i> Print Invoice</button>
       </div>
     );
   };
@@ -295,7 +359,10 @@ const renderRepairServiceCards = () => {
         <div><strong>Hours Worked:</strong> {service.hours_worked}</div>
         <div><strong>Price:</strong> {service.price}</div>
         <div><strong>Address:</strong> {service.address_id}</div>
-        <button className='toggle-chat-btn' > <i class="fa fa-commenting" aria-hidden="true"></i> Open Chat</button>
+        {service.status !== 'Cancelled' && service.status !== 'Completed' && (
+          <button className='toggle-chat-btn' onClick={() => openChat(service.professional_id)} > <i className="fa fa-commenting" aria-hidden="true"></i> Open Chat</button>
+        )}
+
       </div>
       
       {/* Add any additional actions or buttons related to the repair service */}
@@ -310,7 +377,7 @@ const renderRepairServiceCards = () => {
         <div className="order-header" onClick={() => toggleOrderDetails(order.id)}>
           <span><strong>Order ID:</strong> {order.id}</span>
           <span><strong>Order Status:</strong> {order.order_status}
-          <button className="toggle-details-btn"> <i class="fa fa-info-circle" aria-hidden="true"></i> {order.showDetails ? "Hide Details" : "Show Details"}</button></span>
+          <button className="toggle-details-btn"> <i className="fa fa-info-circle" aria-hidden="true"></i> {order.showDetails ? "Hide Details" : "Show Details"}</button></span>
         </div>
         <div><strong>Ordered Date:</strong> {new Date(order.ordered_date).toLocaleDateString()}</div>
         <div><strong>Delivery Date:</strong> {new Date(order.delivery_date).toLocaleDateString()}</div>
@@ -376,6 +443,14 @@ const renderRepairServiceCards = () => {
       
       {/* Render selected tab content */}
       {renderTabContent()}
+      {showChat && (
+        <ChatPopup
+          professionalName={selectedProfessional}
+          conversation={conversation}
+          onClose={closeChat}
+          sendMessage = {sendMessage}
+        />
+      )}
     </div>
   );
 }

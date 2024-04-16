@@ -159,7 +159,7 @@ const ProductManagement = ({ professionalData }) => {
                 <img
                   src={item.image_url}
                   alt={item.name}
-                  className="dashboard-product-image"
+                  className="dashboard-product-image-cart"
                 />
                 <div className="dashboard-product-info">
                   <p className="dashboard-product-name">{item.name}</p>

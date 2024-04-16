@@ -876,7 +876,7 @@ def get_service_requests_by_customer(request):
                     "price":request.servicing_price,
                 }
                 serialized_data.append(serialized_request)
-
+            serialized_data = sorted(serialized_data,key=lambda x : x['date'])[::-1]
             return JsonResponse({"service_requests": serialized_data}, status=200)
         else:
             return JsonResponse({"error": "Customer username parameter is required."}, status=400)
@@ -909,3 +909,67 @@ def update_service_request(request):
         return JsonResponse({"success": "Service request updated successfully.", "status": "200"})
 
     return JsonResponse({"error": "Method not allowed.", "status": "405"})
+
+@csrf_exempt
+def fetch_messages(request):
+    """
+    View function to fetch chat messages between a customer and a repair person.
+
+    Accepts GET requests.
+    Retrieves chat messages based on provided parameters.
+
+    Args:
+    - request: HttpRequest object.
+
+    Returns:
+    - JsonResponse: Response containing chat messages.
+    """
+    if request.method == "GET":
+        try:
+            customer_id = request.GET.get("customer_id")
+            repair_person_id = request.GET.get("repair_person_id")
+
+            # Fetch chat messages for the provided customer and repair person
+            customer = Customer.objects.get(pk=customer_id)
+            professional = RepairPerson.objects.get(user_name = repair_person_id)
+            chats = Chat.objects.filter(customer=customer, repair_person=professional)
+            serialized_chats = [{
+                'id': chat.id,
+                'text': chat.text,
+                'time': chat.time,
+                'way_of_msg': chat.way_of_msg
+            } for chat in chats]
+            return JsonResponse(serialized_chats, safe=False)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid request method."}, status=405)
+
+@csrf_exempt
+def send_message(request):
+    """
+    View function to send a chat message.
+
+    Accepts POST requests with JSON data containing the message details.
+    Adds the message to the database.
+
+    Returns:
+    - JsonResponse: Response indicating success or failure of sending the message.
+    """
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            customer_id = data.get("customer_id")
+            repair_person_id = data.get("repair_person_id")
+            text = data.get("text")
+            way_of_msg = data.get("way_of_msg")
+            print(data)
+            customer = Customer.objects.get(id = customer_id)
+            professional = RepairPerson.objects.get(user_name=repair_person_id)
+            # Create a new chat instance and save it to the database
+            chat = Chat(customer=customer, repair_person=professional, text=text, way_of_msg=way_of_msg)
+            chat.save()
+
+            return JsonResponse({"success": "Message sent successfully.", "status": 200})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid request method."}, status=405)

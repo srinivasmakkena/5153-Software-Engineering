@@ -27,7 +27,7 @@ const Chat = ({}) => {
       { id: 3, user: "Alice Johnson", message: "It's been busy, but good overall.", time: generateRandomTime() }
     ]
   });
-
+  
   // Function to handle sending message
   const handleSendMessage = () => {
     if (message.trim() !== '') {

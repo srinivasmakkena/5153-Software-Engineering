@@ -79,9 +79,9 @@
     margin: 0px;
   }
   
-  .dashboard-product-image {
+  .dashboard-product-image-cart {
     width: auto; /* Adjusted width */
-    height: 50px; /* Adjusted height */
+    max-height: 60px; /* Adjusted height */
     margin-right: 10px;
   }
   
