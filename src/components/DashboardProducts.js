@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "./DashboardProducts.css"
 import productImage from './assets/no_products.png'; // Import your login image here
 import { toast } from 'react-toastify';
+
 function DashboardProducts({ customer, cartItems, setCartItems }) {
   const [query, setQuery] = useState('');
   const [products, setProducts] = useState([]);
@@ -18,11 +19,13 @@ function DashboardProducts({ customer, cartItems, setCartItems }) {
       }
     }
   }, [customer]);
+
   useEffect(()=>{
     setCartItems(cartItems);
     const productIds = cartItems.map(item => item.id);
     setAddedProducts(productIds);
   },[cartItems]);
+
   useEffect(() => {
     fetchCartDetails();
   }, []);
@@ -37,12 +40,10 @@ function DashboardProducts({ customer, cartItems, setCartItems }) {
         throw new Error('Failed to fetch cart details');
       }
       const data = await response.json();
-      // console.log(data);
       if (data.cart_items) {
         setCartItems(data.cart_items);
         const productIds = data.cart_items.map(item => item.id);
         setAddedProducts(productIds);
-        // console.log("added to cart");
       } else {
         setCartItems([]);
         setAddedProducts([]);
@@ -114,20 +115,19 @@ function DashboardProducts({ customer, cartItems, setCartItems }) {
       })
       .catch(error => {
         console.error('Error adding item to cart:', error);
-        // Optionally, you can handle the error here (e.g., show an error message)
       });
   };
 
   return (
-    <div className="container">
-      <div className="search-sort-container">
-        <div className="search-form">
-          <div className="search-container">
+    <div className="dashboard-container">
+      <div className="dashboard-search-sort-container">
+        <div className="dashboard-search-form">
+          <div className="dashboard-search-container">
             <input type="text" placeholder="Search..." value={query} onChange={(text_event) => setQuery(text_event.target.value)} />
             <button type="button" onClick={handleSearch}><i className="fa fa-search" aria-hidden="true"></i></button>
           </div>
         </div>
-        <div className="sort-dropdown">
+        <div className="dashboard-sort-dropdown">
           <label htmlFor="sort">Sort by: </label>
           <select id="sort" value={sortOption} onChange={(e) => sortProducts(e.target.value)}>
             <option value="">Select an option</option>
@@ -143,20 +143,20 @@ function DashboardProducts({ customer, cartItems, setCartItems }) {
       ) : error ? (
         <p>Error: {error}</p>
       ) : products.length === 0 ? (
-        <div className="no-product">
+        <div className="dashboard-no-product">
           <div>
             <img src={productImage} alt="No products found" />
             <p>No products found. Try searching for something to get started!</p>
           </div>
         </div>
       ) : (
-        <div className="product-container">
+        <div className="dashboard-product-container">
           {products.map(product => (
-            <div key={product.id} className="product-card">
-              <div className="product-image">
+            <div key={product.id} className="dashboard-product-card">
+              <div className="dashboard-product-image">
                 <img src={product.image_url} alt={product.name} />
               </div>
-              <div className="product-details">
+              <div className="dashboard-product-details">
                 <h3>{product.name}</h3>
                 <p>Price: $ {product.price}</p>
                 <button className={addedProducts.includes(product.id) ? 'added' : ''} onClick={() => addToCart(product.id)} disabled={addedProducts.includes(product.id)}>

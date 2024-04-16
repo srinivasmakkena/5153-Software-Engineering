@@ -14,22 +14,10 @@ const Account = ({ customer, setCustomer, ProUser }) => {
 
   useEffect(() => {
     // Fetch repair services data when the component mounts
-    // fetchRepairServices();
+    fetchRepairServices();
     fetchOrders();
   }, []);
 
-  const fetchRepairServices = async () => {
-    try {
-      const response = await fetch('http://localhost:8000');
-      if (!response.ok) {
-        throw new Error('Failed to fetch repair services');
-      }
-      const data = await response.json();
-      setRepairServices(data);
-    } catch (error) {
-      console.error('Error fetching repair services:', error);
-    }
-  };
   const fetchOrders = async () => {
     try {
       const response = await fetch('http://localhost:8000/get_order_details/?customer_id=' + customer.id);
@@ -37,14 +25,27 @@ const Account = ({ customer, setCustomer, ProUser }) => {
         throw new Error('Failed to fetch orders');
       }
       const data = await response.json();
-      // console.log(data);
+      
       setOrders(data.orders);
     } catch (error) {
       console.error('Error fetching orders:', error);
     }
   };
 
-
+  const fetchRepairServices = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/get_service_requests_by_customer/?customer_id=' + customer.id);
+      if (!response.ok) {
+        throw new Error('Failed to fetch repair services');
+      }
+      const data = await response.json();
+      console.log(data);
+      setRepairServices(data.service_requests);
+    } catch (error) {
+      console.error('Error fetching repair services:', error);
+    }
+  };
+  
   // Function to handle tab selection
   const handleTabSelect = (tabName) => {
     setSelectedTab(tabName);
@@ -172,7 +173,7 @@ const Account = ({ customer, setCustomer, ProUser }) => {
             </div>
           ))}
         </div>
-        <button className="toggle-details-btn" onClick={() => printOrderInvoice(order)}>Print Invoice</button>
+        <button className="toggle-details-btn" onClick={() => printOrderInvoice(order)}><i class="fa fa-print" aria-hidden="true"></i> Print Invoice</button>
       </div>
     );
   };
@@ -278,13 +279,38 @@ const Account = ({ customer, setCustomer, ProUser }) => {
   };
   
   
+// Render repair service cards
+const renderRepairServiceCards = () => {
+  return repairServices.map(service => (
+    <div key={service.id} className="repair-service-card">
+      {/* Render repair service details */}
+      <div className="service-details">
+        {/* <div><strong>Customer:</strong> {service.customer_id}</div> */}
+        <div><strong>Service Id:</strong> {service.id}</div>
+        <div><strong>Date:</strong> {service.date}</div>
+        <div><strong>Time:</strong> {service.time}</div>
+        <div><strong>Professional:</strong> {service.professional_id}</div>
+        <div><strong>Type of Service:</strong> {service.type_of_service}</div>
+        <div><strong>Status:</strong> {service.status}</div>
+        <div><strong>Hours Worked:</strong> {service.hours_worked}</div>
+        <div><strong>Price:</strong> {service.price}</div>
+        <div><strong>Address:</strong> {service.address_id}</div>
+        <button className='toggle-chat-btn' > <i class="fa fa-commenting" aria-hidden="true"></i> Open Chat</button>
+      </div>
+      
+      {/* Add any additional actions or buttons related to the repair service */}
+    </div>
+  ));
+};
+
+  
   const renderOrderCards = () => {
     return orders.map(order => (
       <div key={order.id} className="order-card">
         <div className="order-header" onClick={() => toggleOrderDetails(order.id)}>
           <span><strong>Order ID:</strong> {order.id}</span>
           <span><strong>Order Status:</strong> {order.order_status}
-          <button className="toggle-details-btn">{order.showDetails ? "Hide Details" : "Show Details"}</button></span>
+          <button className="toggle-details-btn"> <i class="fa fa-info-circle" aria-hidden="true"></i> {order.showDetails ? "Hide Details" : "Show Details"}</button></span>
         </div>
         <div><strong>Ordered Date:</strong> {new Date(order.ordered_date).toLocaleDateString()}</div>
         <div><strong>Delivery Date:</strong> {new Date(order.delivery_date).toLocaleDateString()}</div>
@@ -330,14 +356,9 @@ const Account = ({ customer, setCustomer, ProUser }) => {
         );
       case 'repairServices':
         return (
-          <div>
-            {/* Display repair services information */}
-            {repairServices.map(service => (
-              <div key={service.id}>
-                {/* Render individual repair service */}
-              </div>
-            ))}
-          </div>
+          <div className="repair-services-container">
+          {renderRepairServiceCards()}
+        </div>
         );
       default:
         return null;

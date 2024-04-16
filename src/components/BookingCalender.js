@@ -61,7 +61,6 @@ const BookingCalendar = (customer, setCustomer) => {
   const isDateBlocked = (date) => {
     // Check if the date is already present in the existing service requests
     const existingDates = repairRequests.map(request => new Date(request.date));
-  
     // Block the date if it matches any existing dates
     return existingDates.some(existingDate =>
       date.getFullYear() === existingDate.getFullYear() &&

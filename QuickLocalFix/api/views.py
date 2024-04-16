@@ -840,6 +840,50 @@ def get_service_requests(request):
 
 
 @csrf_exempt
+def get_service_requests_by_customer(request):
+    """
+    View function for fetching service requests based on customer username.
+
+    Accepts GET requests with a customer_username query parameter.
+    Returns a JSON response containing a list of service requests filtered by customer username.
+    """
+    if request.method == "GET":
+        customer_id = request.GET.get('customer_id')
+        
+        if customer_id:
+            # Fetch customer based on username
+            try:
+                customer = Customer.objects.get(id=customer_id)
+            except Customer.DoesNotExist:
+                return JsonResponse({"error": "Customer not found."}, status=404)
+
+            # Fetch service requests filtered by customer
+            service_requests = Service.objects.filter(customer_of_service=customer)
+
+            # Serialize service requests data
+            serialized_data = []
+            for request in service_requests:
+                serialized_request = {
+                    "id": request.id,
+                    "customer_id": request.customer_of_service.user_name,
+                    "address_id": request.servicing_address.__str__(),
+                    "date": request.date_of_service.strftime("%Y-%m-%d"),
+                    "time": request.date_of_service.strftime("%I:%M %p"),
+                    "professional_id": request.repair_person_of_service.user_name,
+                    "type_of_service": request.type_of_service,
+                    "status": request.servicing_status,
+                    "hours_worked" : request.hours_worked,
+                    "price":request.servicing_price,
+                }
+                serialized_data.append(serialized_request)
+
+            return JsonResponse({"service_requests": serialized_data}, status=200)
+        else:
+            return JsonResponse({"error": "Customer username parameter is required."}, status=400)
+    
+    return JsonResponse({"error": "Method not allowed."}, status=405)
+
+@csrf_exempt
 def update_service_request(request):
     if request.method == "POST":
         data = json.loads(request.body)

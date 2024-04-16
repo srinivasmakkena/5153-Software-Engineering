@@ -1,17 +1,17 @@
-.container {
+.dashboard-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   max-width: 90%;
-  padding : 50px;
-  padding-top : 0px;
+  padding: 50px;
+  padding-top: 0px;
   margin-top: 0px;
   background-color: white;
   max-width: fit-content;
 }
 
-.search-sort-container {
+.dashboard-search-sort-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,16 +19,16 @@
   margin-bottom: 20px;
 }
 
-.search-container {
+.dashboard-search-container {
   display: flex;
   align-items: center;
 }
 
-.search-form {
+.dashboard-search-form {
   margin-right: 10px;
 }
 
-.sort-dropdown {
+.dashboard-sort-dropdown {
   margin-left: auto;
 }
 
@@ -37,7 +37,7 @@
   border-radius: 5px;
 }
 
-.product-container {
+.dashboard-product-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
@@ -45,7 +45,7 @@
   margin-top: 40px;
 }
 
-.product-card {
+.dashboard-product-card {
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
@@ -58,12 +58,12 @@
   cursor: pointer;
 }
 
-.product-card:hover {
+.dashboard-product-card:hover {
   background-color: rgba(0, 0, 0, 0.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.product-image {
+.dashboard-product-image {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,32 +72,28 @@
   overflow: hidden;
 }
 
-.product-image img {
+.dashboard-product-image img {
   max-width: 100%;
   max-height: 100%;
   transition: transform 0.3s ease;
 }
 
-/* .product-card:hover .product-image img {
-  transform: scale(1.2);
-} */
-
-.product-details {
+.dashboard-product-details {
   padding: 20px;
 }
 
-.product-details h3 {
+.dashboard-product-details h3 {
   margin-top: 0;
 }
 
-.product-details p {
+.dashboard-product-details p {
   margin: 0;
   margin-bottom: 10px;
   font-style: italic;
   font-weight: bold;
 }
 
-.product-details button {
+.dashboard-product-details button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -106,10 +102,11 @@
   cursor: pointer;
 }
 
-.product-details button:hover {
+.dashboard-product-details button:hover {
   background-color: #0056b3;
 }
-.no-product {
+
+.dashboard-no-product {
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -118,15 +115,14 @@
   margin-top: 40px;
 }
 
-.no-product img {
+.dashboard-no-product img {
   max-width: 40%;
   height: auto;
   margin-bottom: 20px; 
 }
 
-
-.product-details .added,
-.product-details .added:hover {
+.dashboard-product-details .added,
+.dashboard-product-details .added:hover {
   background-color: grey;
   color: white;
 }
