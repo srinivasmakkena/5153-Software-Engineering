@@ -83,6 +83,84 @@ def login_user(request):
             return JsonResponse({"error": "Invalid JSON data.", "status": "400"})
     
     return JsonResponse({"error": "Method not allowed.", "status": "405"})
+@csrf_exempt
+def add_review(request):
+    """
+    View function for adding a review.
+
+    Accepts POST requests with JSON data containing review information.
+    Adds a new review to the database.
+
+    Returns:
+    - JsonResponse: Response indicating success or failure of adding the review.
+    """
+    if request.method == "POST":
+        data = json.loads(request.body)
+        repair_person_id = data.get("professional_id")
+        customer_id = data.get("customer_id")
+        review_text = data.get("text")
+        review_rating = data.get("rating")
+        print(repair_person_id,customer_id,review_text,review_rating)
+        try:
+            repair_person = RepairPerson.objects.get(id=repair_person_id)
+            customer = Customer.objects.get(id=customer_id)
+            review = Review.objects.create(
+                review_repair_person=repair_person,
+                review_customer=customer,
+                review_text=review_text,
+                review_rating=review_rating
+            )
+            review.save()
+            print("saved reivew")
+            return JsonResponse({"success": "Review added successfully.", "status": "200"})
+        except (RepairPerson.DoesNotExist, Customer.DoesNotExist) as e:
+            print(e)
+            return JsonResponse({"error": "Repair person or customer does not exist.", "status": "404"})
+        except Exception as ex:
+            print(ex)
+
+    return JsonResponse({"error": "Invalid request method.", "status": "400"})
+
+def fetch_reviews(request):
+    """
+    View function to fetch reviews for a repair person.
+
+    Accepts GET requests with query parameters containing repair_person_id.
+    Retrieves reviews for the specified repair person.
+
+    Returns:
+    - JsonResponse: Response containing reviews if found, otherwise error message.
+    """
+    if request.method == "GET":
+        repair_person_id = request.GET.get("repair_person_id")
+        if repair_person_id:
+            try:
+                repair_person = RepairPerson.objects.get(id=repair_person_id)
+                reviews = Review.objects.filter(review_repair_person=repair_person)
+                serialized_reviews = [
+                    {
+                        "review_text": review.review_text,
+                        "review_rating": review.review_rating,
+                        "review_customer": {
+                            "id": review.review_customer.id,
+                            "user_name": review.review_customer.user_name,
+                            # Include other customer attributes as needed
+                        },
+                        "review_repair_person": {
+                            "id": review.review_repair_person.id,
+                            "user_name": review.review_repair_person.user_name,
+                            # Include other repair person attributes as needed
+                        }
+                    } 
+                    for review in reviews
+                ]
+                return JsonResponse({"success": "Reviews fetched successfully.", "status": "200", "reviews": serialized_reviews})
+            except RepairPerson.DoesNotExist:
+                return JsonResponse({"error": "Repair person not found.", "status": "404"})
+        else:
+            return JsonResponse({"error": "Missing repair_person_id parameter.", "status": "400"})
+
+    return JsonResponse({"error": "Invalid request method.", "status": "400"})
 
 def get_user_by_name(request):
     """

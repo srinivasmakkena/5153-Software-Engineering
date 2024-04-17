@@ -106,4 +106,38 @@
   .user-account-input-area button:hover {
     background-color: #0056b3;
   }
-  
+  .no-messages {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    height: 100%;
+    color: #999;
+    font-size: 18px;
+  }
+    /* Chat.css */
+.user-emoji-keyboard {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  bottom: 70px;
+  background-color: white;
+  right: 40px;
+  font-size: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 40%;
+  overflow-x: scroll;
+  box-shadow: 3px 3px 10px grey;
+}
+.user-emoji-keyboard::-webkit-scrollbar {
+  height: 5px; /* Width of the scrollbar */
+}
+.user-emoji-keyboard span {
+  cursor: pointer;
+  font-size: 24px;
+  margin: 0 5px;
+}
+
+.user-emoji-keyboard span:hover {
+  transform: scale(1.2);
+}

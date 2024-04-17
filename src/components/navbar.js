@@ -52,7 +52,7 @@
         localStorage.removeItem('location');
         this.props.setCustomer(null);
         this.props.setProUser(null);
-        this.props.setCartItems([]);
+        // this.props.setCartItems([]);
         setIsLoggedIn(false); // Call setIsLoggedIn to update login status to false
         
       }

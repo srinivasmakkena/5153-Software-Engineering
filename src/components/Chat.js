@@ -1,94 +1,215 @@
-import React, { useState } from 'react';
-import './Chat.css';
+import React, { useState, useEffect } from "react";
+import "./Chat.css";
 
-const Chat = ({}) => {
-  const [message, setMessage] = useState('');
+const Chat = ({ repairRequests, ProUser }) => {
+  const [message, setMessage] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
-  const [chats] = useState([
-    { id: 1, user: "John Doe", message: "Hey, can you help me with my bike?" },
-    { id: 2, user: "Jane Smith", message: "Sure, what seems to be the problem?" },
-    { id: 3, user: "John Doe", message: "I think I have a flat tire." },
-    { id: 4, user: "Jane Smith", message: "No worries, I can fix that for you." },
-  ]);
-  const [userConversations, setUserConversations] = useState({
-    "John Doe": [
-      { id: 1, user: "John Doe", message: "Hey, how's it going?", time: generateRandomTime() },
-      { id: 2, user: "You", message: "Hey! Not bad, you?", time: generateRandomTime() },
-      { id: 3, user: "John Doe", message: "Pretty good. By the way, did you watch the game last night?", time: generateRandomTime() }
-    ],
-    "Jane Smith": [
-      { id: 1, user: "Jane Smith", message: "Hi there!", time: generateRandomTime() },
-      { id: 2, user: "You", message: "Hey Jane! How are you?", time: generateRandomTime() },
-      { id: 3, user: "Jane Smith", message: "I'm doing great, thanks for asking.", time: generateRandomTime() }
-    ],
-    "Alice Johnson": [
-      { id: 1, user: "Alice Johnson", message: "Hello!", time: generateRandomTime() },
-      { id: 2, user: "You", message: "Hi Alice! How's your day going?", time: generateRandomTime() },
-      { id: 3, user: "Alice Johnson", message: "It's been busy, but good overall.", time: generateRandomTime() }
-    ]
-  });
+  const [users, setUsers] = useState(null);
+  const [SelectedCustomer, setSelectedCustomer] = useState(null);
+  const [userConversations, setUserConversations] = useState({});
+  const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false); 
+  useEffect(() => {
+    const fetchConversations = async () => {
+      if (SelectedCustomer) {
+        try {
+          console.log(ProUser);
+          const response = await fetch(
+            `http://localhost:8000/fetch-messages/?customer_id=${SelectedCustomer.id}&repair_person_id=${ProUser.ProUser.user_name}`
+          );
+          const data = await response.json();
+          setUserConversations(data);
+          console.log(data);
+        } catch (error) {
+          console.error("Error fetching conversations:", error);
+        }
+      }
+    };
+    fetchConversations();
+  }, [SelectedCustomer]);
+  const handleSelectEmoji = (emoji) => {
+    setMessage(message + emoji);
+  };
+  useEffect(() => {
+    const fetchConversationsPeriodically = () => {
+      if (SelectedCustomer && ProUser) {
+        const intervalId = setInterval(() => {
+          fetch(`http://localhost:8000/fetch-messages/?customer_id=${SelectedCustomer.id}&repair_person_id=${ProUser.ProUser.user_name}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to fetch conversation');
+              }
+              return response.json();
+            })
+            .then(data => {
+              setUserConversations(data);
+              console.log(data);
+            })
+            .catch(error => {
+              console.error('Error fetching conversation:', error);
+            });
+        }, 3000);
+        return () => clearInterval(intervalId);
+      }
+    };
+    const intervalId = fetchConversationsPeriodically();
+    return () => clearInterval(intervalId);
+
+  }, [SelectedCustomer, ProUser]);
+
+
   
-  // Function to handle sending message
-  const handleSendMessage = () => {
-    if (message.trim() !== '') {
-      const conversation = userConversations[selectedUser] || [];
-      const newMessage = { id: conversation.length + 1, user: 'You', message, time: generateRandomTime() };
-      setUserConversations({
-        ...userConversations,
-        [selectedUser]: [...conversation, newMessage],
+  useEffect(() => {
+    const fetchUserId = async () => {
+      if (selectedUser) {
+        try {
+          const response = await fetch(
+            `http://localhost:8000/get_user_by_name/?user_name=${selectedUser}`
+          );
+          const data = await response.json();
+          if (data.status === "200") {
+            setSelectedCustomer(data.customer);
+          } else {
+            console.error("Error fetching user ID:", data.error);
+          }
+        } catch (error) {
+          console.error("Error fetching user ID:", error);
+        }
+      }
+    };
+    fetchUserId();
+  }, [selectedUser]);
+
+  useEffect(() => {
+    if (repairRequests) {
+      // Filter repair requests based on status
+      const filteredRequests = repairRequests.filter(request => request.status !== "Completed" && request.status !== "Cancelled");
+      // Extract unique customer IDs from filtered repair requests
+      const uniqueCustomerIds = Array.from(new Set(filteredRequests.map(request => request.customer_id)));
+      setUsers(uniqueCustomerIds);
+    } else {
+      setUsers([]);
+    }
+  }, [repairRequests]);
+  
+
+  const sendMessage = async (input_message) => {
+    try {
+      const message = { customer_id: SelectedCustomer.id, repair_person_id: ProUser.ProUser.user_name, text: input_message, way_of_msg: "p2u" }
+      const response = await fetch(`http://localhost:8000/send-message/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message), // Send the edited request data
       });
-      setMessage('');
+      const data = await response.json();
+      fetch(`http://localhost:8000/fetch-messages/?customer_id=${SelectedCustomer.id}&repair_person_id=${ProUser.ProUser.user_name}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch conversation');
+          }
+          return response.json();
+        })
+        .then(data => {
+          setUserConversations(data);
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('Error fetching conversation:', error);
+        });
+      console.log('message sent successfully:', data);
+    } catch (error) {
+      console.error('Error updating request:', error);
     }
   };
 
-  // Function to generate random time
-  function generateRandomTime() {
-    const date = new Date(Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000); // Generate random date within the last 7 days
-    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`; // Format date as DD/MM/YYYY
-    const hours = String(Math.floor(Math.random() * 12)).padStart(2, '0');
-    const minutes = String(Math.floor(Math.random() * 60)).padStart(2, '0');
-    const ampm = Math.random() < 0.5 ? 'AM' : 'PM';
-    return `${formattedDate} ${hours}:${minutes} ${ampm}`;
-  }
+  // Function to handle sending message
+  const handleSendMessage = () => {
+    if (message.trim() !== "") {
+      sendMessage(message);
+    };
+    setMessage("");
+  };
+
 
   return (
     <div className="chat-container">
       <div className="user-selection">
-        <h2><u>Users</u></h2>
+        <h2>
+          <u>Users</u>
+        </h2>
         <div className="user-list">
-          {/* Assuming you have a list of users */}
-          {/* Replace the buttons with your actual user selection mechanism */}
-          <div className='user-name'>
-            <button className={selectedUser === "John Doe" ? 'active' : ''} onClick={() => setSelectedUser("John Doe")}> <i className="fa fa-user-circle " aria-hidden="true"></i> &nbsp;John Doe</button>
-          </div>
-          <div className='user-name'>
-          <button className={selectedUser === "Jane Smith" ? 'active' : ''} onClick={() => setSelectedUser("Jane Smith")}><i className="fa fa-user-circle " aria-hidden="true"></i>&nbsp;Jane Smith</button>
-          </div>
-          <div className='user-name'>
-          <button className={selectedUser === "Alice Johnson" ? 'active' : ''} onClick={() => setSelectedUser("Alice Johnson")}><i className="fa fa-user-circle " aria-hidden="true"></i>&nbsp;Alice Johnson</button>
-          </div>
+          {/* Render user cards */}
+          {users &&
+            users.map((user) => (
+              <div className="user-name" key={user}>
+                <button
+                  className={selectedUser === user ? "active" : ""}
+                  onClick={() => setSelectedUser(user)}
+                >
+                  <i className="fa fa-user-circle " aria-hidden="true"></i>{" "}
+                  &nbsp;{user}
+                </button>
+              </div>
+            ))}
         </div>
       </div>
+
       <div className="conversation">
-        <h2>Conversation with {selectedUser || '...'}</h2>
+      <h2> {selectedUser ? "Conversation with " + selectedUser : "Select a user to start conversation"}</h2>
+
         <div className="message-container">
           {/* Render conversation messages */}
-          {userConversations[selectedUser] && userConversations[selectedUser].map(message => (
-            <div key={message.id} className={`chat ${message.user === 'You' ? 'sent' : 'received'}`}>
-              <div>{message.message}</div>
-              <div className="time">{message.time}</div>
-            </div>
-          ))}
+          {selectedUser && userConversations && userConversations.length > 0 ? (
+            userConversations.map((message) => (
+              <div
+                key={message.id}
+                className={`chat ${message.way_of_msg === "p2u" ? "sent" : "received"
+                  }`}
+              >
+                <div>{message.text}</div>
+                <div className="time">{message.time}</div>
+              </div>
+            ))
+          ) : (
+            selectedUser && (
+              <div className="no-messages">No messages found. Start a conversation!</div>
+            )
+          )}
+           {showEmojiKeyboard && (
+          <div className="emoji-keyboard">
+            {/* EmojiKeyboard component */}
+            <span onClick={() => handleSelectEmoji("😊")}>😊</span>
+            <span onClick={() => handleSelectEmoji("😂")}>😂</span>
+            <span onClick={() => handleSelectEmoji("😍")}>😍</span>
+            <span onClick={() => handleSelectEmoji("😎")}>😎</span>
+            <span onClick={() => handleSelectEmoji("👍")}>👍</span>
+            <span onClick={() => handleSelectEmoji("👌")}>👌</span>
+            <span onClick={() => handleSelectEmoji("❤️")}>❤️</span>
+            <span onClick={() => handleSelectEmoji("🎉")}>🎉</span>
+            <span onClick={() => handleSelectEmoji("😘")}>😘</span>
+            <span onClick={() => handleSelectEmoji("😜")}>😜</span>
+            <span onClick={() => handleSelectEmoji("😇")}>😇</span>
+            <span onClick={() => handleSelectEmoji("🤣")}>🤣</span>
+            <span onClick={() => handleSelectEmoji("😁")}>😁</span>
+            <span onClick={() => handleSelectEmoji("😋")}>😋</span>
+            <span onClick={() => handleSelectEmoji("😌")}>😌</span>
+            {/* Add more emojis as needed */}
+          </div>
+        )}
         </div>
-        <div className="bottom-bar">
+        {selectedUser && (<div className="bottom-bar">
           <input
             type="text"
             placeholder="Type your message..."
             value={message}
-            onChange={e => setMessage(e.target.value)}
+            onChange={(e) => setMessage(e.target.value)}
           />
-          <button  onClick={handleSendMessage}>Send</button>
-        </div>
+          <button onClick={() => setShowEmojiKeyboard(!showEmojiKeyboard)}style={{backgroundColor:'white',padding:'0px', fontSize:'25px'}}>😊</button> {/* Button to toggle EmojiKeyboard */}
+          <button onClick={handleSendMessage}>Send</button>
+          
+        </div>)}
+       
       </div>
     </div>
   );

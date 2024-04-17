@@ -11,6 +11,24 @@ const Account = ({ customer, setCustomer, ProUser }) => {
   const [selectedProfessional, setSelectedProfessional] = useState(null);
   const [conversation, setConversation] = useState([]);
 
+  useEffect(() => {
+    const fetchConversations = async () => {
+      if (selectedProfessional && customer.id) {
+        try {
+          const response = await fetch(`http://localhost:8000/fetch-messages/?customer_id=${customer.id}&repair_person_id=${selectedProfessional}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch conversation');
+          }
+          const data = await response.json();
+          setConversation(data);
+        } catch (error) {
+          console.error('Error fetching conversation:', error);
+        }
+      }
+    };
+    const intervalId = setInterval(fetchConversations, 3000);
+    return () => clearInterval(intervalId);
+  }, [selectedProfessional, customer.id]);
   const openChat = (professionalName) => {
     // Fetch conversation for the selected professional and customer
     console.log(customer.id,professionalName);

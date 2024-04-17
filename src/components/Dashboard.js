@@ -9,8 +9,6 @@ import { toast } from 'react-toastify';
 const Dashboard = (ProUser, setProUser) => {
   const [selectedOption, setSelectedOption] = useState("Repairs");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
   const [professionalData, setProfessionalData] = useState(null);
   const [repairRequests, setRepairRequests] = useState([]);
   const [editMode, setEditMode] = useState(false);
@@ -51,18 +49,6 @@ const Dashboard = (ProUser, setProUser) => {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  const handleUserSelect = (user) => {
-    setSelectedUser(user);
-    setCartItems([]);
-  };
-  const handleClearUser = () => {
-    setSelectedUser(null);
-    setCartItems([]);
-  };
-  const addToCart = (item) => {
-    setCartItems([...cartItems, item]);
-  };
-
   const handleEditRequest = (request) => {
     setEditMode(true);
     setEditedRequest(request);
@@ -108,9 +94,7 @@ const Dashboard = (ProUser, setProUser) => {
     const { name, value } = event.target;
     setEditedRequest({ ...editedRequest, [name]: value });
   };
-  const removeFromCart = (itemToRemove) => {
-    setCartItems(cartItems.filter((item) => item !== itemToRemove));
-  };
+ 
   const filteredRequests = repairRequests.filter((request) => {
     // Concatenate all attributes into a single string
     const searchString = `${request.customer_id} ${request.type_of_service} ${request.id} ${request.date} ${request.time} ${request.price} ${request.some_other_data} ${request.status} ${request.hours_worked}`.toLowerCase();
@@ -270,7 +254,7 @@ const Dashboard = (ProUser, setProUser) => {
             </div>
           </div>
         )}
-        {selectedOption === "Chats" && <Chat />}
+        {selectedOption === "Chats" && <Chat repairRequests= {repairRequests} ProUser ={ProUser}/>}
         {selectedOption === "Products" && (
           <ProductManagement professionalData={professionalData}/>
         )}

@@ -125,9 +125,10 @@ function Home() {
         <div
           className="banner-container"
           style={{
-            // overflow: "hidden",
+            overflow: "hidden",
             marginBottom: "65px",
             width: "auto",
+            // overflow-x: hidden;
             height: "auto",
           }}
         >
@@ -201,8 +202,10 @@ function Home() {
         <div
           style={{
             display: "flex",
-            justifyContent: "center",
-            marginTop: "25px",
+            // justifyContent: "center",
+            // marginTop: "25px",
+            flexWrap: "nowrap",
+            overflowX: "auto",
           }}
         >
           <div className="box">

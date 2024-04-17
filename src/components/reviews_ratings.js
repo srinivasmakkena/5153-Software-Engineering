@@ -1,36 +1,127 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import './ReviewsAndRatings.css';
 
-const ReviewsAndRatings = () => {
-  // Dummy data for reviews and ratings
-  const reviews = [
-    { id: 1, customer: 'John Doe', rating: 5, text: 'Great service, fixed my appliances quickly!' },
-    { id: 2, customer: 'Jane Smith', rating: 4, text: 'Excellent price transperancy, highly recommend!' },
-    { id: 3, customer: 'alice', rating: 5, text: 'Adding Parts to the cart and tracking status is so cool !!' },
-    { id: 4, customer: 'John Doe', rating: 5, text: 'Great service, fixed my appliances quickly!' },
-    { id: 5, customer: 'Jane Smith', rating: 4, text: 'Excellent price transperancy, highly recommend!' },
-    { id: 6, customer: 'alice', rating: 5, text: 'Adding Parts to the cart and tracking status is so cool !!' },
-    { id: 7, customer: 'John Doe', rating: 5, text: 'Great service, fixed my appliances quickly!' },
-    { id: 8, customer: 'Jane Smith', rating: 4, text: 'Excellent price transperancy, highly recommend!' },
-    // Add more reviews as needed
-  ];
+const ReviewsAndRatings = ({ customer, Pid }) => {
+  const [reviews, setReviews] = useState([]);
+  const [newReviewText, setNewReviewText] = useState('');
+  const [selectedRating, setSelectedRating] = useState(5); // Default rating value
+  const [showInput, setShowInput] = useState(true);
+  const [repairRequests, setRepairRequests] = useState([]);
+  const [showInputBlock, setShowInputBlock] = useState(true);
+  useEffect(() => {
+    fetchReviews();
+    fetchRepairRequests();
+  }, [Pid]);
+  useEffect(() => {
+    const userCanReview = repairRequests.some(request => request.customer_id === customer.customer.name);
+    console.log(userCanReview,repairRequests,customer);
+    setShowInputBlock(userCanReview);
+  }, [repairRequests, customer]);
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/fetch-reviews/?repair_person_id=${Pid}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch reviews");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      if (data.reviews) {
+        setReviews(data.reviews);
+      } else {
+        setReviews([]);
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
+  const fetchRepairRequests = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/get_service_requests?professional_id=${Pid}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch repair requests");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      setRepairRequests(data.service_requests);
+    } catch (error) {
+      console.error("Error fetching repair requests:", error);
+    }
+  };
+  useEffect(() => {
+    const userReviewed = reviews.some(review => review.review_customer.id === customer.customer.id);
+    console.log(userReviewed,reviews,customer);
+    setShowInput(!userReviewed);
+  }, [reviews, customer]);
+
+  const handleAddReview = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/add-review/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ professional_id: Pid, text: newReviewText, rating: selectedRating, customer_id: customer.customer.id }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add review");
+      }
+
+      fetchReviews();
+      setNewReviewText('');
+      setSelectedRating(5); // Reset rating selection
+    } catch (error) {
+      console.error("Error adding review:", error);
+    }
+  };
 
   return (
-    <div className="reviews-and-ratings">
-      <h2 style={{ fontSize: "1.5rem",marginBottom: "1.0rem",fontFamily: 'Roboto, sans-serif', color: "orange",textAlign: 'center', marginTop: '20px' }}>Reviews and Ratings</h2>
-      <div className="review-cards">
-        {reviews.map(review => (
-          <div key={review.id} className="review-card">
-            <div className="customer-info">
-              <span className="customer-name">{review.customer}</span>
-              <span className="rating-stars">{'★'.repeat(review.rating)}</span>
+    <div className="reviews-and-ratings-professional">
+      {showInputBlock && (
+        <>
+        {showInput ? (
+        <div className="add-review-container-professional">
+          <div className="input-title"><b>Write your Review:<i class="fa fa-star-half-o" aria-hidden="true"></i></b></div>
+          <textarea
+            type="text"
+            value={newReviewText}
+            onChange={(e) => setNewReviewText(e.target.value)}
+            placeholder="Add your review..."
+          />
+          <select value={selectedRating} onChange={(e) => setSelectedRating(parseInt(e.target.value))}>
+            {[1, 2, 3, 4, 5].map(rating => (
+              <option key={rating} value={rating}>{'★'.repeat(rating)}</option>
+            ))}
+          </select>
+          {!newReviewText.trim() || selectedRating  && <button onClick={handleAddReview} className='review-button-add'>Add Review</button>}
+        </div>
+      ) : (
+        <div className="reviewed-message">You have already reviewed this professional.</div>
+      )}
+      </>
+    )}
+      <h2 className="reviews-heading-professional">Reviews and Ratings</h2>
+      <div className="review-cards-professional">
+      {reviews.length > 0 ? (
+          reviews.map(review => (
+            <div key={review} className="review-card-professional">
+              <div className="customer-info-professional">
+                <span className="customer-name-professional">{review.review_customer.user_name}</span>
+                <span className="rating-stars-professional">{'★'.repeat(review.review_rating)}</span>
+              </div>
+              <div className="review-text-professional">&emsp;{review.review_text}</div>
             </div>
-            <div className="review-text">{review.text}</div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="no-reviews">No reviews yet.</div>
+        )}
       </div>
     </div>
   );
 };
-
 
 export default ReviewsAndRatings;

@@ -51,25 +51,6 @@ export default function App() {
   const [location, setLocation] = useState(null);
   const [cartItems, setCartItems] = useState([]);
 
-  // console.log('isLoggedIn in App:', isLoggedIn); // to check the isLoogedIn value in App.js whether it is being passed correctly or not
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-    setIsLoggedIn(isLoggedIn);
-    // console.log('local storage'+isLoggedIn)
-    const storedCustomer = localStorage.getItem('customer');
-    if (storedCustomer) {
-      setCustomer(JSON.parse(storedCustomer));
-    }
-    const storedProUser = localStorage.getItem('proUser');
-    if (storedProUser) {
-      setProUser(JSON.parse(storedProUser));
-    }
-    const location_data = localStorage.getItem('location');
-    if (location_data) {
-      setLocation(JSON.parse(location_data));
-    }
-    fetchCartDetails();
-  }, []);
   const fetchCartDetails = async () => {
     try {
       if (!customer || !customer.id) {
@@ -89,6 +70,28 @@ export default function App() {
       console.error('Error fetching cart details:', error);
     }
   };
+  // console.log('isLoggedIn in App:', isLoggedIn); // to check the isLoogedIn value in App.js whether it is being passed correctly or not
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    setIsLoggedIn(isLoggedIn);
+    // console.log('local storage'+isLoggedIn)
+    const storedCustomer = localStorage.getItem('customer');
+    if (storedCustomer) {
+      setCustomer(JSON.parse(storedCustomer));
+    }
+    const storedProUser = localStorage.getItem('proUser');
+    if (storedProUser) {
+      setProUser(JSON.parse(storedProUser));
+    }
+    const location_data = localStorage.getItem('location');
+    if (location_data) {
+      setLocation(JSON.parse(location_data));
+    }
+    
+    fetchCartDetails();
+    
+  }, []);
+  
 
   
   return (
@@ -123,7 +126,7 @@ export default function App() {
           <Route path="ProfessionalRegister" element={<ProfessionalRegister />}></Route>
           <Route path="AddressSelection" element={<AddressSelectionPage customer={customer}  setCustomer={setCustomer} setCartItems={setCartItems}/>} />
           <Route path="Account" element={isLoggedIn ? <Account customer={customer} setCustomer={setCustomer} ProUser={ProUser}/> : <Unauthorized/>}></Route>
-          <Route path="professional/:id" element={<View />} />
+          <Route path="professional/:id" element={<View customer={customer}/>} />
           <Route path="booking/:id" element={<BookingCalander customer={customer} />} />
           <Route path="categories/:categoryId" element={<Professinals location={location} />} />
         </Route>
