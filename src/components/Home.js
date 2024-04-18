@@ -11,6 +11,22 @@ function Home() {
   const images = Object.values(BannerImages);
   const images2 = Object.values(Banner2Images);
   const groupSize = 3;
+  const reviews = [
+    { id: 1, customer: 'John Doe', rating: 5, text: 'Great service, fixed my appliances quickly!' },
+    { id: 2, customer: 'Jane Smith', rating: 4, text: 'Excellent price transparency, highly recommend!' },
+    { id: 3, customer: 'Alice', rating: 5, text: 'Adding parts to the cart and tracking status is so cool!' },
+    { id: 4, customer: 'Michael Johnson', rating: 4, text: 'Responsive customer support, really helpful.' },
+    { id: 5, customer: 'Emily Brown', rating: 3, text: 'Good service, but delivery took longer than expected.' },
+    { id: 6, customer: 'David Lee', rating: 5, text: 'Impressive product quality, exceeded my expectations.' },
+    { id: 7, customer: 'Samantha Clark', rating: 4, text: 'Easy to navigate website, hassle-free shopping experience.' },
+    { id: 8, customer: 'Matthew Taylor', rating: 5, text: 'Prompt delivery and well-packaged items, satisfied with my purchase.' },
+    { id: 9, customer: 'Sophia Martinez', rating: 3, text: 'Average service, could improve communication with customers.' },
+    { id: 10, customer: 'Liam Wilson', rating: 4, text: 'Good variety of products, found exactly what I needed.' },
+    { id: 11, customer: 'Olivia White', rating: 5, text: 'The website is user-friendly and offers great deals!' },
+    { id: 12, customer: 'Ethan Harris', rating: 3, text: 'Satisfactory experience, but shipping could be faster.' },
+  ];
+  
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -202,7 +218,7 @@ function Home() {
         <div
           style={{
             display: "flex",
-            // justifyContent: "center",
+            justifyContent: "center",
             // marginTop: "25px",
             flexWrap: "nowrap",
             overflowX: "auto",
@@ -214,15 +230,27 @@ function Home() {
                 key={index}
                 src={image}
                 alt={`${index + 1}`}
-                style={{ width: "450px", height: "auto", margin: "0 10px" }}
+                style={{ width: "450px", height: "auto", margin:'35px'}}
               />
             ))}
           </div>
         </div>
       </div>
       {/* End of Second Banner Section */}
-
-      <ReviewsAndRatings />
+      <div className="reviews-and-ratings">
+      <h2 style={{ fontSize: "1.5rem",marginBottom: "1.0rem",fontFamily: 'Roboto, sans-serif', color: "orange",textAlign: 'center', marginTop: '20px' }}>Reviews and Ratings</h2>
+      <div className="review-cards">
+        {reviews.map(review => (
+          <div key={review.id} className="review-card">
+            <div className="customer-info">
+              <span className="customer-name">{review.customer}</span>
+              <span className="rating-stars">{'★'.repeat(review.rating)}</span>
+            </div>
+            <div className="review-text">{review.text}</div>  
+          </div>
+        ))}
+      </div>
+    </div>
     </div>
   );
 }
