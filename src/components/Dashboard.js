@@ -23,15 +23,19 @@ const Dashboard = (ProUser, setProUser) => {
     }
   }, [ProUser]);
   const fetchRepairServices = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8000/get_service_requests?professional_id=${professionalData.id}`
-      );
-      const data = await response.json();
-      setRepairRequests(data.service_requests); // Assuming service_requests is the key for the array of services in the response
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching repair services:", error);
+    if (professionalData && professionalData.id)
+      {
+          try {
+        
+        const response = await fetch(
+          `http://localhost:8000/get_service_requests?professional_id=${professionalData.id}`
+        );
+        const data = await response.json();
+        setRepairRequests(data.service_requests); // Assuming service_requests is the key for the array of services in the response
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching repair services:", error);
+      }
     }
   };
   useEffect(() => {
@@ -181,7 +185,7 @@ const Dashboard = (ProUser, setProUser) => {
                   <p>
                     <b>Date:</b> {request.date}, {request.time}
                   </p>
-                  <p><b>Date:</b> <i>${request.price}</i></p>                  
+                  <p><b>Price:</b> <i>${request.price}</i></p>                  
                   {(editMode &&
                     editedRequest &&
                     editedRequest.id === request.id )?

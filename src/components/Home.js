@@ -230,7 +230,7 @@ function Home() {
                 key={index}
                 src={image}
                 alt={`${index + 1}`}
-                style={{ width: "450px", height: "auto", margin:'35px'}}
+                style={{ width: "450px", height: "auto", margin:'5px'}}
               />
             ))}
           </div>

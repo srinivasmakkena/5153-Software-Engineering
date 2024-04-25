@@ -57,16 +57,17 @@ const ProfessionalAccount = ({ ProUser, setProUser }) => {
         },
         body: JSON.stringify(updatedUser),
       });
-      console.log(updatedUser);
+      console.log(updatedUser,ProUser);
       const data = await response.json();
       if (response.ok) {
-        console.log('Account updated successfully:', data);
-        toast.success('Account Updated Successfully.', { });
+        // console.log('Account updated successfully:', data);
         setEmail(updatedUser.ProUser.email || '');
         setPhoneNumber(updatedUser.ProUser.phone_number || '');
         setZipCode(updatedUser.ProUser.zip_code || '');
         setPricePerHour(updatedUser.ProUser.price_per_hour || '');
-        setEditMode(false); // Exit edit mode
+        setEditMode(false);  // Exit edit mode
+        updatedUser.setProUser(updatedUser.ProUser);
+        toast.success('Account Updated Successfully.');
       } else {
         // Failed to update account
         console.error('Failed to update account:', data.error);
@@ -100,7 +101,7 @@ const ProfessionalAccount = ({ ProUser, setProUser }) => {
 
         {/* Column 2: Form Fields and Buttons */}
         <div className="column">
-          <form onSubmit={handleUpdateAccount}>
+           <form > {/*onSubmit={handleUpdateAccount} >*/}
             <div className="form-group">
               <label className="label" htmlFor="username">Username:</label>
               <input className="input-field" type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} disabled />

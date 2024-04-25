@@ -36,7 +36,8 @@ const ProLogin = ({ setIsLoggedIn, setProUser , setCustomer}) => {
           localStorage.setItem('proUser', JSON.stringify(proUser));
           // const customer = new Customer(user.id, user.user_name, user.email, user.phone_number);
           // localStorage.setItem('customer', JSON.stringify(customer)); 
-          setProUser(proUser);
+          if (proUser)
+            setProUser(proUser);
           // setCustomer(customer);
 
         } else {
