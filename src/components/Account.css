@@ -1,0 +1,265 @@
+.account-container {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 50px;
+}
+
+.tab-navigation {
+  margin-bottom: 20px;
+}
+
+.tab-navigation button {
+  background-color: #ccc;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-right: 5px;
+  border-radius: 5px 5px 0 0;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.tab-navigation button:hover {
+  background-color: #ddd;
+}
+
+.tab-navigation button.active {
+  background-color: #ddd;
+  border-bottom: 2px solid #007bff; /* Highlight active tab with bottom border */
+  color: #007bff; /* Dim active tab text */
+}
+
+.tab-navigation button:not(.active) {
+  color: #777; /* Dim inactive tab text */
+}
+
+
+.user-info {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.info-item {
+  margin-bottom: 10px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.info-item strong {
+  margin-right: 10px;
+}
+
+.info-item1 {
+  flex: 1;
+}
+
+.user-info input {
+  width: calc(100% - 160px);
+  padding: 5px;
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.user-icon {
+  margin-right: 10px;
+}
+
+.edit-buttons {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-top: -10px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  opacity: 0.8;
+}
+
+
+.address-tab {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.address-info {
+  margin-top: 5px;
+}
+
+/* Add these styles to Account.css */
+.order-card {
+  position: relative;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+  text-align: left;
+  border-radius: 5px;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggle-details-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.toggle-details-btn:hover {
+  background-color: #0056b3;
+}
+
+.order-details-container {
+  display: flex;
+  justify-content: flex-end; /* Align to the right */
+  margin-top: 10px; /* Adjust margin as needed */
+  width: 95%;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.order-details {
+  border: 1px solid #ccc;
+  /* border-radius: 5px; */
+  padding: 30px;
+  text-align: left;
+}
+
+
+
+.order-card:hover {
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.order-header button {
+  margin-left: 30px;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.product-image {
+  width: auto;
+  max-height: 40px;
+  margin-right: 10px;
+}
+
+.product-details {
+  flex: 1;
+}
+
+.product-name {
+  font-weight: bold;
+}
+
+.product-price {
+  margin-top: 5px;
+}
+
+.tab-navigation button.active {
+  background-color: #ddd;
+  border-bottom: 2px solid #007bff;
+  color: #007bff;
+}
+.print-btn{
+  /* background-color: #ddd; */
+  border-bottom: 2px solid #007bff;
+  color: #007bff;
+}
+.repair-service-card {
+  position: relative;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+  transition: all 0.3s ease;
+  text-align: left;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.repair-service-card:hover {
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.service-details {
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.service-details div {
+  margin-bottom: 10px;
+}
+
+.service-details strong {
+  margin-right: 10px;
+}
+
+.toggle-details-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.toggle-details-btn:hover {
+  background-color: #0056b3;
+}
+.toggle-chat-btn {
+  position: absolute;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  right:40px;
+  bottom:40px;
+  padding: 8px 16px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.toggle-chat-btn:hover {
+  background-color: #0056b3;
+}

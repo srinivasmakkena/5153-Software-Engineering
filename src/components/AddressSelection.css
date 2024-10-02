@@ -1,0 +1,386 @@
+/* AddressSelection.css */
+
+.address-selection-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: fit-content;
+    margin-top: 50px;
+    align-items: center;
+  }
+  
+  .foldable-container {
+    margin : 20px;
+    padding : 20px;
+    /* border: 1px solid #ccc; */
+    border-radius: 15px;
+    min-width: 1000px;;
+    border: 1px solid #ccc;
+  }
+  
+  .foldable-container h2 {
+    /* padding: 10px; */
+    margin: 0;
+    cursor: pointer;
+    /* background-color: rgba(0,91,143,0.4); */
+    color: rgb(0,91,143);
+    max-width: fit-content;
+    border-radius: 5px;
+    text-align: center; /* Center the text horizontally */
+    /* margin: auto; Center the element vertically */
+    /* margin-bottom: 20px; */
+    /* border: 1px solid black; */
+  }
+  .foldable-container > div {
+    padding: 10px;
+    /* display: none; */
+  }
+  
+  .foldable-container > div.show {
+    display: block;
+  }
+  
+  .address-list-container {
+    margin-top: 20px;;
+    background-color: rgba(0, 0, 0, 0.1); /* Semi-transparent white background */
+    backdrop-filter: blur(10px); /* Background blur */
+    border-radius: 5px;
+    overflow: hidden; /* Ensure blur doesn't bleed out */
+    margin-bottom: 20px;
+  }
+  .payment-list-container {
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.1); /* Semi-transparent white background */
+    backdrop-filter: blur(10px); /* Background blur */
+    border-radius: 5px;
+    overflow: hidden; /* Ensure blur doesn't bleed out */
+    margin-bottom: 20px;
+  }
+  .address-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .address-option:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .address-option input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  .selected-address {
+    color: #007bff; /* Change color for selected items */
+  }
+  
+  .address-details {
+    display: flex;
+    align-items: center;
+  }
+  
+  .address-icon {
+    width: 40px;
+    margin-right: 10px;
+  }
+  
+  .address-details-text {
+    flex-grow: 1;
+  }
+  
+  
+  .address-list {
+    width: 100%;
+    border-collapse: collapse; /* Collapse borders */
+  }
+  
+  .address-list tr {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .address-list td {
+    padding: 15px;
+    text-align: left;
+  }
+  
+  .no-addresses-message {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .add-address-form {
+    margin-top: 20px;
+  }
+  
+  .toggle-form-btn,
+  .submit-btn {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .toggle-form-btn:hover,
+  .submit-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
+  .expandable-form {
+    display: flex;
+    flex-direction: column;
+    /* gap: 10px; */
+    margin-top: 25px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .expandable-form input[type="text"] {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 90%;
+    margin-top: 5%;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-bottom: 0%;
+  }
+  
+  .expandable-form input[type="text"]:focus {
+    outline: none;
+    border-color: #4CAF50; /* Green on focus */
+  }
+  
+  .expandable-form button[type="submit"] {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .expandable-form button[type="submit"]:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
+  .payment-list-container {
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.1); /* Semi-transparent white background */
+    backdrop-filter: blur(10px); /* Background blur */
+    border-radius: 5px;
+    overflow: hidden; /* Ensure blur doesn't bleed out */
+    margin-bottom: 20px;
+  }
+  
+  .payment-list {
+    width: 100%;
+    border-collapse: collapse; /* Collapse borders */
+  }
+  
+  .payment-list tr {
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .payment-list td {
+    padding: 15px;
+    text-align: left;
+  }
+  
+  .no-payments-message {
+    font-size: 18px;
+    color: #555;
+    padding: 15px;
+  }
+  
+  .payment-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .payment-option:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .payment-option input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  .selected-payment {
+    color: #007bff; /* Change color for selected items */
+  }
+  
+  .payment-details {
+    display: flex;
+    align-items: center;
+  }
+  
+  .payment-icon {
+    width: 40px;
+    margin-right: 10px;
+  }
+  
+  .payment-details-text {
+    flex-grow: 1;
+  }
+  .add-payment-form {
+    position: relative;
+  }
+  
+  .credit-card {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .credit-card-image {
+    position: relative;
+    width: 95%;
+    margin: 30px auto;
+    margin-bottom: 80px;
+  }
+  .foldable-container h3 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .foldable-container h3.selected-address {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #007bff; /* Change color for selected items */
+  }
+  
+  /* Selected payment */
+  .foldable-container h3.selected-payment {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #007bff; /* Change color for selected items */
+  }
+  .credit-card-input {
+    position: absolute;
+    background: none;
+    color: #000;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  .card-number {
+    top: 185px;
+    left: 120px;
+    max-width: 380px;
+    color: white;
+    max-height: 35px;
+    backdrop-filter: blur(20px);
+    font-family: fantasy;
+  }
+  
+  .card-holder-name {
+    top: 265px;
+    left: 120px;
+    max-width: 280px;
+    backdrop-filter: blur(20px);
+    max-height: 30px;
+    color: white;
+    font-family: cursive;
+  }
+  
+  .expiration-date {
+    top: 230px;
+    left: 310px;
+    max-width: 100px;
+    max-height: 30px;
+    color: white;
+    backdrop-filter: blur(20px);
+    font-family: serif;
+  }
+  
+  .cvv {
+    top: 105px;
+    left: 1px;
+    background-color: #fff;
+    backdrop-filter: blur(20px);
+    max-width: 104px;
+    max-height: 50px;
+    font-family: serif;
+  }
+  
+  .submit-button {
+    position: absolute;
+    bottom: 10px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .confirm-order-button {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .confirm-order-button button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .confirm-order-button button:disabled {
+    background-color: #ccc; /* Light gray */
+    cursor: not-allowed;
+  }
+  
+  /* Cart summary */
+.cart-details {
+  margin-top: 20px;
+}
+
+.cart-summary-heading {
+  margin: 10px 0;
+  font-size: 24px;
+  color: #555;
+}
+
+.cart-items {
+  margin-bottom: 20px;
+}
+
+.cart-item-summary {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.cart-item-summary p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.cart-total-price {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}

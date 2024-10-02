@@ -1,0 +1,351 @@
+
+ nav{
+    display : flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 25px 5%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 30px;
+    z-index: 1000;
+ }
+    #navbar{
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       margin-right: 40%;
+       padding-right: 80px;
+   }
+   
+   #navbar li{
+       list-style: none;
+       padding:0 20px;
+       position: relative;
+       box-sizing: border-box; 
+       box-sizing: border-box; 
+   }
+
+   a{
+    text-decoration: none;
+    color :white;
+    
+ }
+   #navbar li a{
+      text-decoration: none;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: black;
+      transition: 0.3ms ease-in-out;
+   }
+   
+   #navbar li a:hover,
+   #navbar li a.active{
+       color: rgb(243, 159, 4);
+   }
+   
+   #navbar li a:hover::after,
+   #navbar li a.active::after{
+       content:"";
+       width:60%;
+       height:2px;
+       background: rgb(243, 159, 4);
+       position: absolute;
+       bottom: -4px;
+       left: 20px;
+   }
+   
+  li .navlink .active
+  {
+    color: rgb(243, 159, 4);
+  }
+  li .navlink .active
+  {
+    color: rgb(243, 159, 4);
+  }
+   #desktop {
+       display: none;
+   }
+   
+   #desktop i{
+        color: white;
+        align-items: center;
+   }
+ 
+
+/*SearchBar*/
+
+/* Style for the search form */
+.search-form {
+  display: flex; /* Use flexbox to align items horizontally */
+  align-items:center; /* Align items vertically within the flex container */
+  margin-bottom: 40px;
+}
+
+/* Style for the search input field */
+.search-form input[type="text"] {
+  margin-top: 55px;
+  padding: 8px; /* Adjust padding as needed */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 4px; /* Add border radius */
+  margin-right: 10px;
+}
+
+/* Style for the search button */
+.search-form button {
+  display: flex;
+  padding: 8px; /* Adjust padding as needed */
+  background-color: #fff; /* Button background color */
+  margin-top: 40px;
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 4px; /* Add border radius */
+  cursor: pointer; /* Add cursor pointer */
+  transition: background-color 0.3s ease; /* Add transition for hover effect */
+}
+
+/* Style for the search button on hover */
+.search-form button:hover {
+  background-color: #ff6b00; /* Button background color on hover */
+  color: #fff; /* Button text color on hover */
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* Dropdown Button */
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  /* Links inside the Dropdown */
+  .dropdown-content a, .dropdown-content span {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  /* Style the username */
+  .username {
+    cursor: pointer;
+  }
+
+    @media screen and (max-width: 769px) {
+       #navbar{
+           display: flex;
+           flex-direction: column;
+           align-items: flex-start;
+           justify-content: flex-start;
+           position: absolute;
+           position: absolute;
+           top: 90px;
+           left: 0px;
+           width: 300px;
+           height: 100vh;
+           background: #2a3239;
+           box-shadow: 0 40px;
+       } 
+   }
+
+
+/* Style for the notifications dropdown content */
+
+
+/* Style for the notification items */
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc; /* Add a border between notification items */
+}
+
+.notification-item:last-child {
+  border-bottom: none; /* Remove border from the last notification item */
+}
+
+/* Style for the notification item text */
+.notification-item p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Style for the notification item timestamp */
+.notification-item p:last-child {
+  color: #888;
+}
+
+/* Style for the notification button */
+.notification-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #000;
+  transition: color 0.3s ease;
+}
+
+/* Style for the notification button on hover */
+.notification-button:hover {
+  color: orange;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  display: none;
+}
+
+.notification-dropdown.show {
+  display: block;
+}
+
+.notification-dropdown p {
+  padding: 10px;
+  margin: 0;
+}
+
+ /*done here*/
+ 
+ /* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%; /* Position the dropdown below the bell icon */
+  right: 0; /* Align the dropdown to the right side */
+  background-color: #f9f9f9;
+  min-width: 200px; /* Adjust width as needed */
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Show the dropdown menu */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Style for the notification items */
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd; /* Add bottom border between items */
+}
+
+/* Style for the notification items on hover */
+.notification-item:hover {
+  background-color: #f1f1f1;
+}
+
+.profile-icon {
+  display: flex; /* Ensure icon and username are displayed as flex items */
+  align-items: center; /* Align items vertically */
+  text-decoration: none; /* Remove default link decoration */
+  color: black; /* Set text color */
+  font-weight: bold; /* Set font weight */
+}
+
+.profile-icon i {
+  margin: 5px; /* Add some margin between the icon and the username */
+}
+
+.location-input {
+  position: relative;
+  width: 95px; /* Adjust width as needed */
+  display: flex;
+  align-items: center;
+}
+.location-icon {
+  margin-right: 5px; /* Adjust spacing as needed */
+}
+
+/* Style for the input field */
+.location-input input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  height: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  margin-top: 15px;
+}
+
+/* Style for the search button */
+.location-input button[type="submit"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  background-color: #007bff; /* Change to desired button color */
+  border: none;
+  border-radius: 0 5px 5px 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Hover effect for the search button */
+.location-input button[type="submit"]:hover {
+  background-color: #0056b3; /* Change to desired hover color */
+}
+
+/* Font Awesome icon styling (assuming you're using Font Awesome for the search icon) */
+.location-input button[type="submit"] i {
+  font-size: 16px;
+}
+.fa-shopping-cart {
+  position: relative; /* Position relative for absolute positioning of the count */
+}
+
+/* Styling for the count number */
+.cart-item-count {
+  position: absolute;
+  top: -8px; /* Adjust top position to fit with the icon */
+  right: -8px; /* Adjust right position to fit with the icon */
+  background-color: #ff0000; /* Background color for the count */
+  color: #ffffff; /* Text color for the count */
+  border-radius: 50%; /* Make it a circle */
+  padding: 4px 8px; /* Add padding for spacing */
+  font-size: 12px; /* Adjust font size */
+}

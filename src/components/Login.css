@@ -1,0 +1,49 @@
+.login-container {
+  max-width: 80%;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Align items evenly */
+}
+
+.login-content {
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Align items evenly */
+}
+
+.login-image {
+  flex: 1; /* Occupy half of the container */
+}
+
+.login-image img {
+  max-width: 100%; /* Ensure image does not exceed parent's width */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.login-form {
+  flex: 1; /* Occupy half of the container */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Align items in a column */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  padding-left: 100px; /* Add some spacing between image and form */
+
+}
+
+.login-form h2 {
+  margin-bottom: 20px; /* Add margin below heading */
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px; /* Add margin below error message */
+}
+
+#register {
+  color: blue;
+  text-decoration: underline;
+}

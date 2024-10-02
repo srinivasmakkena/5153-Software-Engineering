@@ -1,0 +1,43 @@
+/* Footerstyles.css */
+a {
+  text-decoration: none;
+  color: white;
+}
+
+footer {
+  /* position: fixed; */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #484747;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.footer-buttons {
+  display: flex; /* Arrange buttons in a row */
+  justify-content: center; /* Center align buttons */
+}
+
+.footer-button {
+  background-color: rgba(0, 0, 0, 0); /* Button background color */
+  color: #fff; /* Button text color */
+  border: none; /* Remove button border */
+  border-radius: 50px; /* Round button shape */
+  padding: 15px 30px; /* Add padding for spacing */
+  margin: 0 10px; /* Add margin between buttons */
+  cursor: pointer; /* Add cursor pointer on hover */
+  transition: background-color 0.3s ease; /* Add transition for smooth hover effect */
+  font-weight: bold; /* Add bold font weight */
+  text-transform: uppercase; /* Convert text to uppercase */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+  
+}
+
+.footer-button:hover {
+  background-color: #ff6b00; /* Change background color on hover */
+  transform: translateY(-3px); /* Add animation to lift button slightly on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Adjust shadow on hover */
+}

@@ -1,0 +1,99 @@
+/* BookingCalendar.css */
+
+.whole-div {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-between; /* Add space between the booking section and payment card */
+  
+}
+
+.booking-calendar {
+    margin-left: 50px;
+    max-width: 400px;
+    padding: 15px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  .professional-details{
+    text-align: left;
+    border-bottom: 1px solid black;
+  }
+  .booking-calendar h2 {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+
+  }
+  
+  /* .date-picker {
+    margin-bottom: 100px;
+    margin-top: 100;
+    
+  } */
+  
+  .time-slots {
+    display: flex;
+    flex-wrap: wrap; 
+  }
+  
+  .time-slot {
+    padding: 5px;
+    margin: 5px;
+    font-style: italic;
+    border: 1px solid #eedec0;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .time-slot:hover{
+    background-color: #ccc;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  .time-slot.selected {
+    background-color: rgb(243, 159, 4);;
+    color: #fff;
+  }
+  
+  .confirm-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: rgb(243, 159, 4);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .confirm-btn:hover {
+    background-color: rgb(243, 159, 4);
+  }
+
+
+  .payment-card {
+   background-color: #f9f9f9;
+   padding:10px;;
+  }
+  
+  
+
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .booking-calendar {
+      padding: 10px;
+    }
+  
+    .date-picker {
+      text-align: center;
+    }
+  }
+
+
+
+  

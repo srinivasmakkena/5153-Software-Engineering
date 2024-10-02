@@ -1,0 +1,99 @@
+.select-user-dashboard select {
+    padding: 8px 10px; /* Adjusted padding */
+    font-size: 14px; /* Adjusted font size */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    width: 100%;
+    max-height: 50px;
+    background-color: #f8f9fa;
+    transition: border-color 0.3s ease;
+  }
+
+
+  .select-user-dashboard {
+    width: fit-content;
+    margin-left: 20px;
+  }
+  
+  .select-user-dashboard select:hover {
+    border-color: #007bff;
+  }
+  
+  .select-user-dashboard select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  .product-management-container {
+    padding: 5px;
+    background-color: white;
+    display: flex;
+    min-height: 590px;
+    border-radius: 10px;
+  }
+  
+  .product-list-dashboard {
+    flex: 0 0 75%;
+    /* margin-right: 20px; */
+    /* overflow-y: scroll; */
+  }
+  
+  .dashboard-cart {
+    flex: 1; /* Takes remaining space */
+    overflow-y: scroll;
+    max-height: 500px;
+    margin-top: 60px;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 5px;
+  }
+  
+  /* Style for product list */
+  .select-user-dashboard {
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-cart {
+    width: 25%; /* Adjusted width */
+    float: right; /* Float the cart to the right */
+    padding-left: 0px; /* Add some padding */
+  }
+  
+  .dashboard-cart h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-cart-items {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f8f9fa;
+  }
+  
+  .dashboard-cart-item {
+    display: flex;
+    align-items: center;
+    padding: 0px;
+    margin: 0px;
+  }
+  
+  .dashboard-product-image-cart {
+    width: auto; /* Adjusted width */
+    max-height: 60px; /* Adjusted height */
+    margin-right: 10px;
+  }
+  
+  .dashboard-product-info {
+    flex-grow: 1;
+  }
+  
+  .dashboard-product-name {
+    font-weight: bold;
+  }
+  
+  .dashboard-product-price {
+    color: #007bff;
+  }
+  

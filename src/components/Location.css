@@ -1,0 +1,61 @@
+.professional-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.professional-card {
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.professional-card img {
+  width: 50%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+
+}
+
+.professional-card h3 {
+  margin-top: 0;
+}
+
+.ratings {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  color: #FFD700; /* Yellow color for stars */
+  border: black;
+}
+.star::before {
+  content: '★★★★★';
+  position: absolute;
+  color: transparent;
+  -webkit-text-stroke: 1px black; /* Add black border */
+}
+
+.location-container {
+  padding: 20px;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+  color: black; /* Set text color to contrast with button background */
+  cursor: pointer; /* Change cursor to pointer to indicate interactivity */
+  transition: 0.3s ease; /* Add transition for smoother hover effect */
+}
+
+.search-bar input {
+  padding: 8px;
+  margin-right: 10px;
+}
+
+.search-bar :hover {
+  background-color: rgba(245, 163, 9, 0.8); /* Darken button color on hover */
+}
+
+

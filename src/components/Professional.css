@@ -1,0 +1,131 @@
+.professionals-container {
+    width: 80%;
+    margin: 50px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .professionals-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .professional-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    position: relative;
+  }
+  
+  .professional-card:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .professional-card-inner {
+    display: flex;
+  }
+  
+  .professional-card-image {
+    flex: 1;
+  }
+  
+  .professional-card-image img {
+    width: 60%;
+    height: auto;
+  }
+  
+  .professional-card-details {
+    flex: 2;
+    padding: 20px;
+    color: #333; /* Text color */
+  }
+  
+  .professional-card h3 {
+    margin-top: 0;
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  .professional-card p {
+    margin: 10px 0;
+    color: #666;
+    
+  }
+  
+  .professional-card p b {
+    color: #333;
+  }
+  
+  .professional-card p i {
+    color: #007bff;
+  }
+  
+  
+  .category-banner {
+    background-color: transparent;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    text-align: left;
+  }
+  
+  .category-image {
+    width: 400px;
+    height: auto;
+    margin-right: 20px;
+  }
+  
+  .category-details h2 {
+    margin: 0;
+    font-size: 35px; /* Increase font size for category name */
+    font-weight: bold; /* Make category name bold */
+    color: #333;
+    text-align: left;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Text shadow */
+    text-decoration: underline; 
+  }
+  
+  .category-details p {
+    margin-top: 15px;
+    font-size: 19px; /* Increase font size for description */
+    color: #666;
+    line-height: 1.5;
+  }
+
+.button-container {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+  
+.view-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+  }
+  
+  .view-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .appointment-button {
+    display: inline-block;
+    background-color: #28a745;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .appointment-button:hover {
+    background-color: #218838;
+  }

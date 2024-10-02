@@ -1,0 +1,105 @@
+/* Registerstyles.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.register-container {
+  max-width: 80%; /* Adjust container width as needed */
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column; /* Adjust to stack content */
+  align-items: center; /* Center content horizontally */
+}
+
+.registration-content {
+  display: flex;
+  justify-content: space-between; /* Add space between columns */
+  align-items: center; /* Center items vertically */
+  width: 100%; /* Ensure full width */
+}
+
+.registration-image {
+  padding-bottom: 20px; /* Add spacing between image and form */
+}
+
+.registration-image img {
+  max-width: 70%; /* Ensure image does not exceed parent's width */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.registration-form {
+  width: 100%; /* Ensure full width */
+  padding-left: 20px; /* Add spacing between image and form */
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  /* border: 1px solid #ccc; */
+  border-radius: 4px;
+  width: 80%; /* Ensure all input fields have the same width */
+  box-sizing: border-box; /* Include padding and border in the width */
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+button[type="submit"] {
+  padding: 10px;
+  background-color: orange;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: auto;
+  margin: 10px auto;
+  display: block;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+.custom-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 80%; /* Adjust width as needed */
+}
+
+.custom-select option {
+  padding: 10px;
+  background-color: #f9f9f9; /* Background color of options */
+  color: #333; /* Text color of options */
+}
+/* End of Registerstyles.css */
+
+#login {
+  color: blue;
+  text-decoration: underline;
+}

@@ -1,0 +1,118 @@
+.card {
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.two-columns {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+}
+
+.column {
+  flex: 1;
+  max-width: 400px; /* Optionally set max-width for columns */
+}
+
+.image-container {
+  position: relative;
+  width: 200px; 
+}
+
+.column:nth-child(2) {
+  background-color: #fff; /* Set background color for the form column */
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to the form column */
+  padding: 20px;
+  display: flex; /* Add flex display to align items */
+  flex-direction: column; /* Set flex-direction to column */
+  align-items: center; /* Align items at the center */
+  padding-left: 0px;
+}
+
+.profile-image {
+  width: 100%;
+  border-radius: 100px;
+  object-fit: cover;
+  padding-right: 0px;
+}
+
+.edit-image-button {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 1px; /* Increase margin between form groups */
+  display: flex; /* Add flex display to align items */
+  flex-wrap: wrap; /* Allow items to wrap */
+  align-items: center; /* Align items at the center */
+}
+
+.label {
+  color: #333; /* Dark gray */
+  font-weight: bold; /* Make the label text bold */
+  font-size: 16px; /* Increase font size */
+  flex: 0 0 calc(50% - 10px); /* Adjust label width */
+  text-align: right; /* Align label text to right */
+  margin-right: 10px; /* Add margin to the right */
+}
+
+.input-field {
+  width: calc(50% - 10px); /* Adjust input width */
+  padding: 10px; /* Adjust padding for better spacing */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px; /* Increase font size */
+  flex: 0 0 calc(50% - 10px); /* Adjust input width */
+}
+
+.input-field:disabled {
+  border: none; /* Remove border when disabled */
+  background-color: transparent; /* Transparent background */
+}
+
+.button-group {
+  margin-top: 20px;
+  text-align: right;
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #007bff; /* Blue */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: fit-content
+}
+
+.button.secondary {
+  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: #6c757d; /* Dark gray */
+  margin-left: 10px;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Media Query for Responsive Design */
+@media (max-width: 768px) {
+  .label,
+  .input-field {
+    width: 100%; /* Set width to 100% for smaller screens */
+    margin-right: 0; /* Remove margin for smaller screens */
+  }
+}

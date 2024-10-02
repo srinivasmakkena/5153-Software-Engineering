@@ -1,0 +1,143 @@
+.user-account-popup {
+    position: fixed;
+    bottom: 50px;
+    right: 40px;
+    width: 300px;
+    height: 400px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 12px 12px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .user-account-header {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .user-account-header span {
+    font-weight: bold;
+  }
+  
+  .user-account-close-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .user-account-close-btn:hover {
+    color: #555;
+  }
+  
+  .user-account-conversation {
+    overflow-y: auto;
+    padding: 10px;
+    width: auto;
+    height: calc(100% - 130px);
+  }
+  
+  .user-account-message {
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+    font-size: 12px;
+    text-align: left;
+    width: fit-content;
+  }
+  
+  .user-account-message.sent {
+    background-color: #007bff;
+    margin-left: auto; /* Aligns sent messages to the right */
+  }
+  
+  .user-account-message.received {
+    background-color: #ccc;
+    margin-right: auto; /* Aligns received messages to the left */
+  }
+  
+  .user-account-message.received.user-account-message-content {
+    color: #000; /* Text color for message content */
+  }
+  
+  .user-account-message.sent.user-account-message-content {
+    color: #000; /* Text color for message content */
+  }
+  
+  .u ser-account-message-time {
+    font-size: 8px; /* Font size for message time */
+    color: #888; /* Text color for message time */
+  }
+  
+  .user-account-input-area {
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 280px;
+  }
+  
+  .user-account-input-area input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .user-account-input-area button {
+    padding: 8px 8px;
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-top: -15px;
+    cursor: pointer;
+  }
+  
+  .user-account-input-area button:hover {
+    background-color: #0056b3;
+  }
+  .no-messages {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    height: 100%;
+    color: #999;
+    font-size: 18px;
+  }
+    /* Chat.css */
+.user-emoji-keyboard {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  bottom: 70px;
+  background-color: white;
+  right: 40px;
+  font-size: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 40%;
+  overflow-x: scroll;
+  box-shadow: 3px 3px 10px grey;
+}
+.user-emoji-keyboard::-webkit-scrollbar {
+  height: 5px; /* Width of the scrollbar */
+}
+.user-emoji-keyboard span {
+  cursor: pointer;
+  font-size: 24px;
+  margin: 0 5px;
+}
+
+.user-emoji-keyboard span:hover {
+  transform: scale(1.2);
+}

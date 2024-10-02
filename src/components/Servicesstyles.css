@@ -1,0 +1,79 @@
+/* Filename: components/ServicesPage.css */
+
+.services-container {
+  padding: 20px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(100px, 1fr)); /* Adjust grid-template-columns for 3 cards per row */
+  gap: 40px;
+  
+}
+
+.service-card {
+  border: none; /* Remove the border */
+  padding: 30px; /* Adjust padding as needed */
+  border-radius: 5px; /* Adjust border-radius */
+  background-color: white; /* Change background color to button color */
+  text-align: center;
+  font-size: 18px;
+  color: black; /* Set text color to contrast with button background */
+  cursor: pointer; /* Change cursor to pointer to indicate interactivity */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Add transition for smoother hover effect and shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+}
+
+.service-card:hover {
+  /* background-color: rgba(245, 163, 9, 0.8); Darken button color on hover */
+  background-color: rgba(0,0,0, 0.05); /* Darken button color on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Darken shadow on hover */
+}
+
+.category-image {
+  max-width: 180px; /* Adjust image width as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin-bottom: 10px; /* Add space between image and text */
+  transition: transform 0.3s ease; /* Add transition for smooth zoom effect */
+}
+
+.service-card:hover .category-image {
+  transform: scale(1.2); /* Increase image size on hover */
+}
+
+.category-name {
+  margin: 0; /* Remove default margin */
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+/* Additional styles for close button */
+.modal-content button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal-content button:hover {
+  background-color: #d32f2f;
+}

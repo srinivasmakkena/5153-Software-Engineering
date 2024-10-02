@@ -1,0 +1,27 @@
+// export { default as BannerImage1 } from './banner_image1.jpg';
+// export { default as BannerImage2 } from './banner_image2.png';
+// export { default as BannerImage4 } from './banner_image4.jpg';
+// export { default as BannerImage5 } from './banner_image5.jpg';
+// export { default as BannerImage6 } from './banner_image6.jpg';
+// export { default as BannerImage7 } from './banner_image7.jpg';
+// export { default as BannerImage8 } from './banner_image8.jpg';
+// export { default as BannerImage9 } from './banner_image9.jpg';
+// export { default as BannerImage10 } from './banner_image10.jpg';
+// export { default as BannerImage11 } from './banner_image11.png';
+// export { default as BannerImage12 } from './banner_image12.jpg';
+// export { default as BannerImage3 } from './banner_image3.jpg';
+
+export { default as BannerImage1 } from './categories/image (1).png';
+export { default as BannerImage2 } from './categories/image (2).png';
+export { default as BannerImage3 } from './categories/image (3).png';
+export { default as BannerImage4 } from './categories/image (4).png';
+export { default as BannerImage5 } from './categories/image (5).png';
+export { default as BannerImage6 } from './categories/image (6).png';
+export { default as BannerImage7 } from './categories/image (7).png';
+export { default as BannerImage8 } from './categories/image (8).png';
+export { default as BannerImage9 } from './categories/image (9).png';
+export { default as BannerImage10 } from './categories/image (10).png';
+export { default as BannerImage11 } from './categories/image (11).png';
+export { default as BannerImage12 } from './categories/image (12).png';
+export { default as BannerImage13 } from './categories/image (13).png';
+export { default as BannerImage14 } from './categories/image (14).png';

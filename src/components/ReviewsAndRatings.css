@@ -1,0 +1,103 @@
+/* ReviewsAndRatings.css */
+
+.reviews-and-ratings-professional {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.reviews-heading-professional {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-family: 'Roboto', sans-serif;
+  color: orange;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.review-cards-professional {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.review-card-professional {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.customer-info-professional {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.customer-name-professional {
+  font-weight: bold;
+}
+
+.rating-stars-professional {
+  font-size: 1.2rem;
+  color: gold;
+}
+
+.review-text-professional {
+  margin-top: 10px;
+  text-align: left;
+  font-style: italic;
+}
+.add-review-container-professional {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.add-review-container-professional textarea {
+  flex: 1;
+  margin: 15px 5px 15px 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize:vertical;
+}
+
+.add-review-container-professional select {
+  /* margin-top: -15px; */
+  color: gold;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.add-review-container-professional button {
+  padding: 10px 20px;
+  /* margin-top: -15px; */
+  margin-left: 5px;;
+  background-color: orange;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-review-container-professional button:hover {
+  background-color: #ff7f00;
+}
+
+
+.no-reviews {
+  text-align: center;
+  font-style: italic;
+  color: #666;
+  margin-top: 20px;
+}
+
+.reviewed-message {
+  text-align: center;
+  font-style: italic;
+  color: #666;
+  margin-top: 20px;
+}
