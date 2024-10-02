@@ -1,6 +1,6 @@
 import Layout from "./Layout";
 import './App.css';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import "./styles.css";
 import Login from "./components/Login";
 import Home from "./components/Home";
@@ -51,25 +51,27 @@ export default function App() {
   const [location, setLocation] = useState(null);
   const [cartItems, setCartItems] = useState([]);
 
-  const fetchCartDetails = async () => {
+  const fetchCartDetails = useCallback(async () => {
     try {
       if (!customer || !customer.id) {
-        return;
+        return; // Ensure customer is valid before making the request
       }
-      const response = await fetch(`https://quicklocalfixapi.pythonanywhere.com//get_cart/?customer_id=${customer.id}`);
+
+      const response = await fetch(`https://quicklocalfixapi.pythonanywhere.com/get_cart/?customer_id=${customer.id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch cart details');
       }
+
       const data = await response.json();
-      if (data.cart_items){
-        setCartItems(data.cart_items);}
-       else {
-        setCartItems([]);
-        }
+      if (data.cart_items) {
+        setCartItems(data.cart_items); // Set cart items if they exist
+      } else {
+        setCartItems([]); // Set empty array if no cart items
+      }
     } catch (error) {
       console.error('Error fetching cart details:', error);
     }
-  };
+  }, [customer, setCartItems]);
   // console.log('isLoggedIn in App:', isLoggedIn); // to check the isLoogedIn value in App.js whether it is being passed correctly or not
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
@@ -90,7 +92,7 @@ export default function App() {
     
     fetchCartDetails();
     
-  }, []);
+  }, [fetchCartDetails]);
   
 
   

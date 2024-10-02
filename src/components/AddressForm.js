@@ -26,7 +26,7 @@ const AddressForm = ({ customer, setCustomer, fetchAddresses }) => {
         },
         body: JSON.stringify(formData)
       });
-      const responseData = await response.json();
+      // const responseData = await response.json();
       // console.log(response);
       if (!response.ok) {
         throw new Error('Failed to add address');

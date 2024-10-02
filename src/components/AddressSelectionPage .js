@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
 import "./AddressSelection.css";
 import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
@@ -16,54 +16,57 @@ const AddressSelectionPage = ({ customer, setCustomer, setCartItems }) => {
   const [cartDetails, setCartDetails] = useState({ cart_items: [], total_price: 0 });
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-  useEffect(() => {
-    fetchAddresses();
-    fetchPayments();
-    fetchCartDetails();
-  }, [customer]);
 
-  const fetchAddresses = async () => {
-    try {
-      const response = await fetch(
-        `https://quicklocalfixapi.pythonanywhere.com//get_address/?customer_id=${customer.id}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch addresses");
-      }
-      const data = await response.json();
-      setAddresses(data.addresses);
-    } catch (error) {
-      console.error("Error fetching addresses:", error);
+ // Memoize the fetchAddresses function to avoid unnecessary re-renders
+ const fetchAddresses = useCallback(async () => {
+  try {
+    const response = await fetch(
+      `https://quicklocalfixapi.pythonanywhere.com//get_address/?customer_id=${customer.id}`
+    );
+    if (!response.ok) {
+      throw new Error('Failed to fetch addresses');
     }
-  };
+    const data = await response.json();
+    setAddresses(data.addresses);
+  } catch (error) {
+    console.error('Error fetching addresses:', error);
+  }
+}, [customer.id]);
 
-  const fetchPayments = async () => {
-    try {
-      const response = await fetch(
-        `https://quicklocalfixapi.pythonanywhere.com//get_payment_option/?customer_id=${customer.id}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch payments");
-      }
-      const data = await response.json();
-      setPayments(data.payments);
-    } catch (error) {
-      console.error("Error fetching payments:", error);
+// Memoize the fetchPayments function
+const fetchPayments = useCallback(async () => {
+  try {
+    const response = await fetch(
+      `https://quicklocalfixapi.pythonanywhere.com//get_payment_option/?customer_id=${customer.id}`
+    );
+    if (!response.ok) {
+      throw new Error('Failed to fetch payments');
     }
-  };
+    const data = await response.json();
+    setPayments(data.payments);
+  } catch (error) {
+    console.error('Error fetching payments:', error);
+  }
+}, [customer.id]);
 
-  const fetchCartDetails = async () => {
-    try {
-      const response = await fetch(`https://quicklocalfixapi.pythonanywhere.com//get_cart/?customer_id=${customer.id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch cart details');
-      }
-      const data = await response.json();
-      setCartDetails(data);
-    } catch (error) {
-      console.error('Error fetching cart details:', error);
+// Memoize the fetchCartDetails function
+const fetchCartDetails = useCallback(async () => {
+  try {
+    const response = await fetch(`https://quicklocalfixapi.pythonanywhere.com//get_cart/?customer_id=${customer.id}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch cart details');
     }
-  };
+    const data = await response.json();
+    setCartDetails(data);
+  } catch (error) {
+    console.error('Error fetching cart details:', error);
+  }
+}, [customer.id]);
+useEffect(() => {
+  fetchAddresses();
+  fetchPayments();
+  fetchCartDetails();
+}, [customer, fetchAddresses, fetchPayments, fetchCartDetails]);
 
   const handleAddressSelect = (addressId) => {
     setSelectedAddress(addressId);

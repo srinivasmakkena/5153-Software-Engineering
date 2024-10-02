@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
 import "./Account.css";
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import ChatPopup from './ChatPopup';
 const Account = ({ customer, setCustomer, ProUser }) => {
   const [selectedTab, setSelectedTab] = useState('account'); // Default to 'account' tab
@@ -94,27 +94,20 @@ const Account = ({ customer, setCustomer, ProUser }) => {
     phone_number: customer.phone_number
   });
 
-  useEffect(() => {
-    // Fetch repair services data when the component mounts
-    fetchRepairServices();
-    fetchOrders();
-  }, []);
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       const response = await fetch('https://quicklocalfixapi.pythonanywhere.com//get_order_details/?customer_id=' + customer.id);
       if (!response.ok) {
         throw new Error('Failed to fetch orders');
       }
       const data = await response.json();
-      
       setOrders(data.orders);
     } catch (error) {
       console.error('Error fetching orders:', error);
     }
-  };
+  }, [customer.id]); // Add customer.id as a dependency to ensure it's updated when it changes
 
-  const fetchRepairServices = async () => {
+  const fetchRepairServices = useCallback(async () => {
     try {
       const response = await fetch('https://quicklocalfixapi.pythonanywhere.com//get_service_requests_by_customer/?customer_id=' + customer.id);
       if (!response.ok) {
@@ -126,8 +119,13 @@ const Account = ({ customer, setCustomer, ProUser }) => {
     } catch (error) {
       console.error('Error fetching repair services:', error);
     }
-  };
-  
+  }, [customer.id]);
+    useEffect(() => {
+    // Fetch repair services data when the component mounts
+    fetchRepairServices();
+    fetchOrders();
+  }, [fetchRepairServices,fetchOrders]);
+
   // Function to handle tab selection
   const handleTabSelect = (tabName) => {
     setSelectedTab(tabName);
@@ -407,13 +405,6 @@ const renderRepairServiceCards = () => {
   };
 
 
-  const toggleProductDetails = (orderId) => {
-    setOrders(prevOrders =>
-      prevOrders.map(order =>
-        order.id === orderId ? { ...order, showDetails: !order.showDetails } : order
-      )
-    );
-  };
   const renderTabContent = () => {
     switch (selectedTab) {
       case 'account':

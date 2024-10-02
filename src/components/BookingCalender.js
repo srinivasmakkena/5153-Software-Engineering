@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
 import DatePicker from 'react-datepicker';
 import { useParams } from "react-router-dom";
 import 'react-datepicker/dist/react-datepicker.css';
@@ -13,6 +13,19 @@ const BookingCalendar = (customer, setCustomer) => {
   const [professional, setProfessional] = useState(null);
   const [repairRequests, setRepairRequests] = useState([]);
   const nested_customer = customer.customer;
+  const fetchRepairServices = useCallback(async () => {
+    try {
+      const response = await fetch(`https://quicklocalfixapi.pythonanywhere.com/get_service_requests?professional_id=${id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch repair services');
+      }
+      const data = await response.json();
+      setRepairRequests(data.service_requests); // Assuming 'service_requests' is the correct key
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching repair services:', error);
+    }
+  }, [id]);
   useEffect(() => {
     const fetchProfessional = async () => {
       try {
@@ -31,7 +44,7 @@ const BookingCalendar = (customer, setCustomer) => {
 
     fetchProfessional();
     fetchRepairServices();
-  }, [id]);
+  }, [id, fetchRepairServices]);
 
   const handleDateSelect = (date) => {
     setSelectedDate(date);
@@ -41,23 +54,11 @@ const BookingCalendar = (customer, setCustomer) => {
     setSelectedTime(time);
   };
 
-  const handleAppointmentConfirmation = () => {
-    setIsAppointmentConfirmed(true);
-    setSelectedDate(null);
-    setSelectedTime(null);
-  };
-  const fetchRepairServices = async () => {
-    try {
-      const response = await fetch(
-        `https://quicklocalfixapi.pythonanywhere.com//get_service_requests?professional_id=${id}`
-      );
-      const data = await response.json();
-      setRepairRequests(data.service_requests); // Assuming service_requests is the key for the array of services in the response
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching repair services:", error);
-    }
-  };
+  // const handleAppointmentConfirmation = () => {
+  //   setIsAppointmentConfirmed(true);
+  //   setSelectedDate(null);
+  //   setSelectedTime(null);
+  // };
   const isDateBlocked = (date) => {
     // Create a function to adjust the date to Central Daylight Time (CDT)
     const adjustToCDT = (date) => {
